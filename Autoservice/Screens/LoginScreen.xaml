@@ -1,0 +1,54 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    mc:Ignorable="d"
+    Width="200"
+    Height="250"
+    x:Class="Autoservice.Screens.LoginScreen"
+    VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="btv" />
+    </UserControl.Resources>
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding Loaded}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    <Grid>
+        <Grid.Resources>
+            <ResourceDictionary
+                Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="50" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock Text="Login" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+
+            <TextBox Margin="0, 5, 0, 0"
+                     controls:TextBoxHelper.Watermark="Login"
+                     Text="{Binding User.Login}" />
+        </StackPanel>
+
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Password" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+                               HorizontalAlignment="Center" />
+
+            <TextBox Margin="0, 5, 0, 0"
+                     controls:TextBoxHelper.Watermark="Password"
+                     Text="{Binding User.Password}" />
+        </StackPanel>
+
+        <Button Grid.Row="2" HorizontalAlignment="Right" Content="Log In" Width="100" Command="{Binding LogIn}" />
+    </Grid>
+</UserControl>
