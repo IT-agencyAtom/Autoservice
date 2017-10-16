@@ -7,26 +7,26 @@
         xmlns:managers="clr-namespace:ConstaSoft.Core.Controls.Managers;assembly=ConstaSoft.Core"
         xmlns:controls1="clr-namespace:ConstaSoft.Core.Controls;assembly=ConstaSoft.Core"
         xmlns:utils="clr-namespace:ConstaSoft.Core.Utils;assembly=ConstaSoft.Core"
-        xmlns:relevantAds="clr-namespace:Autoservice"
-
-                      xmlns:managers11="clr-namespace:Autoservice.Screens.Managers"
-                      xmlns:screens1="clr-namespace:Autoservice.Screens"
-                      xmlns:zoiper="clr-namespace:Autoservice"
-                      mc:Ignorable="d"
+        xmlns:autoservice="clr-namespace:Autoservice"
+        xmlns:managers11="clr-namespace:Autoservice.Screens.Managers"
+        xmlns:screens1="clr-namespace:Autoservice.Screens"        
+        mc:Ignorable="d"
         WindowState="Maximized"
         DataContext="{Binding Source={StaticResource Locator}, Path=Main}"
         Title="{Binding Title}">
     <controls:MetroWindow.Resources>
         <DataTemplate DataType="{x:Type managers11:LoginManager}">
             <screens1:LoginScreen />
-        </DataTemplate>        
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type managers11:OrderManager}">
+            <screens1:OrderScreen />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type managers11:SettingsManager}">
             <screens1:SettingsScreen />
         </DataTemplate>
         <DataTemplate DataType="{x:Type managers:PanelManager}">
             <controls1:Panel />
         </DataTemplate>
-
         <BooleanToVisibilityConverter x:Key="btv" />
     </controls:MetroWindow.Resources>
     <controls:MetroWindow.RightWindowCommands>
@@ -47,9 +47,9 @@
     </controls:MetroWindow.RightWindowCommands>
     <Grid>
         <Grid.Resources>
-            <zoiper:SelectedItemToContentConverter x:Key="SelectedItemToContentConverter" />
+            <autoservice:SelectedItemToContentConverter x:Key="SelectedItemToContentConverter" />
 
-            <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type zoiper:CustomHamburgerMenuIconItem}">
+            <DataTemplate x:Key="MenuItemTemplate" DataType="{x:Type autoservice:CustomHamburgerMenuIconItem}">
                 <Grid x:Name="RootGrid"
                       Height="48"
                       Background="Transparent">

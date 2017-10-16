@@ -163,9 +163,9 @@
       <DependentUpon>AddUserDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\Managers\AddUserManager.cs" />
-    <Compile Include="Migrations\201710110740201_Initial-Migration.cs" />
-    <Compile Include="Migrations\201710110740201_Initial-Migration.Designer.cs">
-      <DependentUpon>201710110740201_Initial-Migration.cs</DependentUpon>
+    <Compile Include="Migrations\201710162055160_InitialMigration.cs" />
+    <Compile Include="Migrations\201710162055160_InitialMigration.Designer.cs">
+      <DependentUpon>201710162055160_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
@@ -173,7 +173,11 @@
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Managers\LoginManager.cs" />
+    <Compile Include="Screens\Managers\OrderManager.cs" />
     <Compile Include="Screens\Managers\SettingsManager.cs" />
+    <Compile Include="Screens\OrderScreen.xaml.cs">
+      <DependentUpon>OrderScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screens\SettingsScreen.xaml.cs">
       <DependentUpon>SettingsScreen.xaml</DependentUpon>
     </Compile>
@@ -199,8 +203,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201710110740201_Initial-Migration.resx">
-      <DependentUpon>201710110740201_Initial-Migration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710162055160_InitialMigration.resx">
+      <DependentUpon>201710162055160_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -244,6 +248,10 @@
     <Page Include="Screens\LoginScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\OrderScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\SettingsScreen.xaml">
       <Generator>MSBuild:Compile</Generator>

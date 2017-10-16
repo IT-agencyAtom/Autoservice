@@ -16,5 +16,9 @@ namespace Autoservice.DAL.Entities
         {
             Id = Guid.NewGuid();
         }
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

@@ -24,5 +24,9 @@ namespace Autoservice.DAL.Entities
         {
             Automobile,Motocycle
         }
+        public override string ToString()
+        {
+            return string.Format("{0} {1}",Brand,Model);
+        }
     }
 }

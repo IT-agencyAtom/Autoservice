@@ -9,7 +9,7 @@ namespace Autoservice.DAL.Services
 {
     /// <summary>
     /// Database application service.</summary>
-    public class RelevantAdsService : ServiceBase, IRelevantAdsService
+    public class GeneralService : ServiceBase, IGeneralService
     {
         private readonly IActivityRepository _activityRepository;
         private readonly ICarRepository _carRepository;
@@ -22,7 +22,7 @@ namespace Autoservice.DAL.Services
 
         protected Logger _logger;
 
-        public RelevantAdsService(
+        public GeneralService(
             IDbWorker dbWorker,IActivityRepository activityRepository,ICarRepository carRepository,IClientRepository clientRepository,IMasterRepository masterRepository,            
             IOrderRepository orderRepository,ISparePartRepository sparePartRepository, IUserRepository userRepository, IWorkRepository workRepository)
             : base(dbWorker)
@@ -218,6 +218,8 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
+                order.Car = null;
+                order.Client = null;
                 _orderRepository.Add(order);
 
                 scope.SaveChanges();

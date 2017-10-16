@@ -196,7 +196,7 @@ namespace Autoservice.Screens.Managers
 
             if (result == MessageDialogResult.Affirmative)
             {
-                var relevantAdsService = Get<IRelevantAdsService>();
+                var relevantAdsService = Get<IGeneralService>();
                 relevantAdsService.DeleteUser(SelectedUser);
 
                 await
@@ -230,8 +230,8 @@ namespace Autoservice.Screens.Managers
         {
             SetIsBusy(true);
 
-            var relevantAdsService = Get<IRelevantAdsService>();
-            Users = new ObservableCollection<User>(await Task.Run(() => relevantAdsService.GetAllUsers()));
+            var service = Get<IGeneralService>();
+            Users = new ObservableCollection<User>(await Task.Run(() => service.GetAllUsers()));
             
             RaisePropertyChanged("Users");
 

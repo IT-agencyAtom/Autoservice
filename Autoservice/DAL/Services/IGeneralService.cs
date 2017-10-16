@@ -5,7 +5,7 @@ namespace Autoservice.DAL.Services
 {
     /// <summary>
     /// Database application service interface.</summary>
-    public interface IRelevantAdsService
+    public interface IGeneralService
     {       
         /// <summary>
         /// Update user.</summary>
@@ -18,6 +18,12 @@ namespace Autoservice.DAL.Services
         void DeleteUser(User user);
         /// <summary>
         /// Get all users.</summary>
-        List<User> GetAllUsers();       
+        List<User> GetAllUsers();
+        /// <summary>
+        /// Get all orders
+        /// </summary>
+        /// <returns></returns>
+        List<Order> GetAllOrders();
+        List<Client> GetAllClients();
     }
 }

@@ -18,7 +18,7 @@ using MahApps.Metro.IconPacks;
 using Autoservice.Controls.Managers;
 using Autoservice.DAL.Common.Context;
 using Autoservice.DAL.Services;
-//using Autoservice.Migrations;
+using Autoservice.Migrations;
 using Autoservice.Screens.Managers;
 using Autoservice.ViewModel.Utils;
 
@@ -39,6 +39,7 @@ namespace Autoservice
         
         private SettingsManager _settingsManager;
         private LoginManager _loginManager;
+        private OrderManager _orderManager;
 
         private ObservableCollection<ScreenManager> _tabScreens;
 
@@ -89,7 +90,7 @@ namespace Autoservice
 
             checkUpdates();
 
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<RelevantAdsDBContext, Configuration>());    
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AutoServiceDBContext, Configuration>());    
                      
 
             _settingsManager = new SettingsManager
@@ -102,6 +103,11 @@ namespace Autoservice
                 SetIsBusy = isBusy => IsBusy = isBusy,
                 OnLogIn = () => RefreshTabs()
             };
+            _orderManager = new OrderManager
+            {
+                SetIsBusy = isBusy => IsBusy = isBusy
+            };
+
 
             ShowChangelog = new RelayCommand(() => Process.Start("Changelog.docx"));
             ShowLogs = new RelayCommand(() => Process.Start(Path.Combine(Environment.GetFolderPath(
@@ -141,10 +147,13 @@ namespace Autoservice
                     Tag = _settingsManager
                 });
             }
-            else
+            TabScreens.Add(new ScreenManager
             {
-               
-            }
+                Label = "Orders",
+                ToolTip = "Orders",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Tab },
+                Tag = _orderManager
+            });
 
             TabScreens.Add(new ScreenManager
             {

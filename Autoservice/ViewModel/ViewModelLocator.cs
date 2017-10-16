@@ -54,13 +54,20 @@ namespace Autoservice.ViewModel
             RegisterRepositories<AutoServiceDBContext>(builder);
 
             // Service registration
-            builder.RegisterAssemblyTypes(typeof(RelevantAdsService).Assembly)
+            builder.RegisterAssemblyTypes(typeof(GeneralService).Assembly)
                 .Where(t => t.Name.EndsWith("Service")).AsImplementedInterfaces().InstancePerDependency();
         }
 
         public void RegisterRepositories<TContext>(ContainerBuilder builder)
                 where TContext : DbContext, IAutoServiceDBContext
-        {           
+        {
+            builder.RegisterType<ClientRepository<TContext>>().As<IClientRepository>().InstancePerDependency();
+            builder.RegisterType<ActivityRepository<TContext>>().As<IActivityRepository>().InstancePerDependency();
+            builder.RegisterType<CarRepository<TContext>>().As<ICarRepository>().InstancePerDependency();
+            builder.RegisterType<MasterRepository<TContext>>().As<IMasterRepository>().InstancePerDependency();
+            builder.RegisterType<OrderRepository<TContext>>().As<IOrderRepository>().InstancePerDependency();
+            builder.RegisterType<SparePartRepository<TContext>>().As<ISparePartRepository>().InstancePerDependency();
+            builder.RegisterType<WorkRepository<TContext>>().As<IWorkRepository>().InstancePerDependency();
             builder.RegisterType<UserRepository<TContext>>().As<IUserRepository>().InstancePerDependency();
            
         }

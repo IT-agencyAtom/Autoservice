@@ -31,16 +31,16 @@ namespace Autoservice.Migrations
                         Id = c.Guid(nullable: false),
                         StartDate = c.DateTime(nullable: false),
                         PersonalNumber = c.String(),
+                        ClientId = c.Guid(nullable: false),
                         RepairZone = c.String(),
+                        CarId = c.Guid(nullable: false),
                         Status = c.Int(nullable: false),
-                        Car_Id = c.Guid(),
-                        Client_Id = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Cars", t => t.Car_Id)
-                .ForeignKey("dbo.Clients", t => t.Client_Id)
-                .Index(t => t.Car_Id)
-                .Index(t => t.Client_Id);
+                .ForeignKey("dbo.Cars", t => t.CarId, cascadeDelete: true)
+                .ForeignKey("dbo.Clients", t => t.ClientId, cascadeDelete: true)
+                .Index(t => t.ClientId)
+                .Index(t => t.CarId);
             
             CreateTable(
                 "dbo.Cars",
@@ -120,14 +120,14 @@ namespace Autoservice.Migrations
             DropForeignKey("dbo.Works", "Order_Id", "dbo.Orders");
             DropForeignKey("dbo.SpareParts", "Order_Id", "dbo.Orders");
             DropForeignKey("dbo.Masters", "Order_Id", "dbo.Orders");
-            DropForeignKey("dbo.Orders", "Client_Id", "dbo.Clients");
-            DropForeignKey("dbo.Orders", "Car_Id", "dbo.Cars");
+            DropForeignKey("dbo.Orders", "ClientId", "dbo.Clients");
+            DropForeignKey("dbo.Orders", "CarId", "dbo.Cars");
             DropForeignKey("dbo.Activities", "Order_Id", "dbo.Orders");
             DropIndex("dbo.Works", new[] { "Order_Id" });
             DropIndex("dbo.SpareParts", new[] { "Order_Id" });
             DropIndex("dbo.Masters", new[] { "Order_Id" });
-            DropIndex("dbo.Orders", new[] { "Client_Id" });
-            DropIndex("dbo.Orders", new[] { "Car_Id" });
+            DropIndex("dbo.Orders", new[] { "CarId" });
+            DropIndex("dbo.Orders", new[] { "ClientId" });
             DropIndex("dbo.Activities", new[] { "User_Id" });
             DropIndex("dbo.Activities", new[] { "Order_Id" });
             DropTable("dbo.Users");
