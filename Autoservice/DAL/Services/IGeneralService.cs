@@ -25,5 +25,6 @@ namespace Autoservice.DAL.Services
         /// <returns></returns>
         List<Order> GetAllOrders();
         List<Client> GetAllClients();
+        List<Car> GetAllCars();
     }
 }

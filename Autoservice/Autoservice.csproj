@@ -163,15 +163,19 @@
       <DependentUpon>AddUserDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\Managers\AddUserManager.cs" />
-    <Compile Include="Migrations\201710162055160_InitialMigration.cs" />
-    <Compile Include="Migrations\201710162055160_InitialMigration.Designer.cs">
-      <DependentUpon>201710162055160_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201710171713180_InitialMigration.cs" />
+    <Compile Include="Migrations\201710171713180_InitialMigration.Designer.cs">
+      <DependentUpon>201710171713180_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
+    <Compile Include="Screens\CarsScreen.xaml.cs">
+      <DependentUpon>CarsScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screens\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\Managers\CarsManager.cs" />
     <Compile Include="Screens\Managers\LoginManager.cs" />
     <Compile Include="Screens\Managers\OrderManager.cs" />
     <Compile Include="Screens\Managers\SettingsManager.cs" />
@@ -203,8 +207,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201710162055160_InitialMigration.resx">
-      <DependentUpon>201710162055160_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710171713180_InitialMigration.resx">
+      <DependentUpon>201710171713180_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -244,6 +248,10 @@
     <Page Include="Resources\IconsNonShared.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\CarsScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\LoginScreen.xaml">
       <Generator>MSBuild:Compile</Generator>

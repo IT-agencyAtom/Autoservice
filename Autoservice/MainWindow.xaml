@@ -21,6 +21,9 @@
         <DataTemplate DataType="{x:Type managers11:OrderManager}">
             <screens1:OrderScreen />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type managers11:CarsManager}">
+            <screens1:CarsScreen />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type managers11:SettingsManager}">
             <screens1:SettingsScreen />
         </DataTemplate>

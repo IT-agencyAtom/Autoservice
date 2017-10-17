@@ -16,35 +16,36 @@ namespace Autoservice.Migrations
 
         protected override void Seed(DAL.Common.Context.AutoServiceDBContext context)
         {
-            Guid firstClientId = Guid.NewGuid();
-            Guid firstCarId = Guid.NewGuid();
-            Guid secondClientId = Guid.NewGuid();
-            Guid secondCarId = Guid.NewGuid();
-            context.Clients.AddOrUpdate(c => c.Id,
-                new Client
+            Client firstClient;
+            Car firstCar;
+            Client secondClient;
+            Car secondCar;
+            
+            context.Clients.AddOrUpdate(c => c.Name,
+                firstClient = new Client
                 {
-                    Id = firstClientId,
+                    Id = Guid.NewGuid(),
                     Name = "Ivan Ivanov"
                 },
-                new Client
+                secondClient = new Client
                 {
-                    Id = secondClientId,
+                    Id = Guid.NewGuid(),
                     Name = "Petr Petrov"
                 }
                 );
             context.Cars.AddOrUpdate(c => c.RegistrationNumber,
-                new Car
+                firstCar = new Car
                 {
-                    Id = firstCarId,
+                    Id = Guid.NewGuid(),
                     RegistrationNumber = "c345cc69",
                     Brand = "Volkswagen",
                     Model = "Passat",
                     Type = Car.CarType.Automobile,
                     Mileage = 60000
                 },
-                new Car
+                secondCar = new Car
                 {
-                    Id= secondCarId,
+                    Id= Guid.NewGuid(),
                     RegistrationNumber = "t673ok98",
                     Brand = "Skoda",
                     Model = "Octavia",
@@ -57,9 +58,9 @@ namespace Autoservice.Migrations
                 {
                     StartDate = DateTime.Now.AddDays(-45),
                     PersonalNumber = "a4124681cc",
-                    ClientId = firstClientId,
+                    ClientId = firstClient.Id,
                     RepairZone = "Zone X65DA",
-                    CarId = firstCarId,
+                    CarId = firstCar.Id,
                     Status = OrderStatus.Closed,
                     SpareParts = new List<SparePart>(),
                     Works = new List<Work>(),
@@ -70,9 +71,9 @@ namespace Autoservice.Migrations
                 {
                     StartDate = DateTime.Now.AddDays(-23),
                     PersonalNumber = "a4124682cc",
-                    ClientId = secondClientId,
+                    ClientId = secondClient.Id,
                     RepairZone = "Zone X61DS",
-                    CarId = secondCarId,
+                    CarId = secondCar.Id,
                     Status = OrderStatus.Closed,
                     SpareParts = new List<SparePart>(),
                     Works = new List<Work>(),

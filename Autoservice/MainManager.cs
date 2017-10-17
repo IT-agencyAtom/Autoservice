@@ -40,6 +40,7 @@ namespace Autoservice
         private SettingsManager _settingsManager;
         private LoginManager _loginManager;
         private OrderManager _orderManager;
+        private CarsManager _carsManager;
 
         private ObservableCollection<ScreenManager> _tabScreens;
 
@@ -107,6 +108,10 @@ namespace Autoservice
             {
                 SetIsBusy = isBusy => IsBusy = isBusy
             };
+            _carsManager = new CarsManager
+            {
+                SetIsBusy = isBusy => IsBusy = isBusy
+            };
 
 
             ShowChangelog = new RelayCommand(() => Process.Start("Changelog.docx"));
@@ -136,6 +141,20 @@ namespace Autoservice
                 return;
             }
 
+            TabScreens.Add(new ScreenManager
+            {
+                Label = "Orders",
+                ToolTip = "Orders",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Tab },
+                Tag = _orderManager
+            });
+            TabScreens.Add(new ScreenManager
+            {
+                Label = "Cars",
+                ToolTip = "Cars",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Car },
+                Tag = _carsManager
+            });
             if (UserService.Instance.IsAdmin)
             {                
 
@@ -146,14 +165,7 @@ namespace Autoservice
                     Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Settings },
                     Tag = _settingsManager
                 });
-            }
-            TabScreens.Add(new ScreenManager
-            {
-                Label = "Orders",
-                ToolTip = "Orders",
-                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Tab },
-                Tag = _orderManager
-            });
+            }           
 
             TabScreens.Add(new ScreenManager
             {

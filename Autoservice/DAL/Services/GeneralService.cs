@@ -210,7 +210,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.GetAll();
+                return _orderRepository.GetAll(o=>o.Car,o=>o.Client);
             }
         }
 
