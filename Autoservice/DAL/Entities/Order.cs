@@ -18,13 +18,15 @@ namespace Autoservice.DAL.Entities
         public Client Client { get; set; }
         public string RepairZone { get; set; }
         public List<SparePart> SpareParts { get; set; }
-        public List<Work> Works { get; set; }
+        public List<Master> Masters { get; set; }
         public Guid CarId { get; set; }
         [ForeignKey("CarId")]
         public Car Car { get; set; }
-        public List<Master> Masters { get; set; }
+        public List<Work> Works { get; set; }
         public OrderStatus Status { get; set; }
         public List<Activity> Activities { get; set; }
+        public int TotalPrice { get; set; }
+        public PaymentMethod? PaymentMethod { get; set; }
 
 
         public Order()
@@ -35,6 +37,10 @@ namespace Autoservice.DAL.Entities
     }
     public enum OrderStatus
     {
-        New,InWork,Closed
+        New,InMaster,Closed
+    }
+    public enum PaymentMethod
+    {
+        Cash,BankCard,BankTransfer
     }
 }

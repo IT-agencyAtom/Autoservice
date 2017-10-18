@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Autoservice.Screens.CarsScreen"
+﻿<UserControl x:Class="Autoservice.Screens.WorksScreen"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -64,7 +64,7 @@
                     Grid.Column="4"
                     Margin="0,0,25,0"
                     FontSize="15"
-                    Text="{Binding Cars.Count}" />
+                    Text="{Binding Works.Count}" />
                 <Rectangle
                     Grid.Column="5"
                     Width="25"
@@ -82,7 +82,7 @@
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     controls:TextBoxHelper.ButtonCommand="{Binding ClearFilter}"
-                    Text="{Binding CarsFilterString, UpdateSourceTrigger=PropertyChanged}">
+                    Text="{Binding WorksFilterString, UpdateSourceTrigger=PropertyChanged}">
                     <TextBox.Style>
                         <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
                             <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
@@ -101,7 +101,7 @@
             </Grid>
         </Grid>
         <ScrollViewer Grid.Row="1" Margin="10,2">
-            <GroupBox Header="Cars">
+            <GroupBox Header="Works">
                 <DataGrid
                     Name="dg"
                     Margin="5"
@@ -109,9 +109,9 @@
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
                     IsSynchronizedWithCurrentItem="True"
-                    ItemsSource="{Binding Cars}"
+                    ItemsSource="{Binding Works}"
                     RenderOptions.ClearTypeHint="Enabled"
-                    SelectedItem="{Binding SelectedCar}"
+                    SelectedItem="{Binding SelectedWork}"
                     TextOptions.TextFormattingMode="Display">
                     <i:Interaction.Triggers>
                         <i:EventTrigger EventName="CellEditEnding">
@@ -122,26 +122,8 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="2*" Header="Reg. Number" Binding="{Binding RegistrationNumber}"></DataGridTextColumn>
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Brand}"
-                            Header="Brand"
-                             />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Model}"
-                            Header="Model"
-                            />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Type}"
-                            Header="Type"
-                             />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Mileage}"
-                            Header="MileAge"></DataGridTextColumn>
+                        <DataGridTextColumn Width="2*" Header="Name" Binding="{Binding Name}"></DataGridTextColumn>
+                        <DataGridTextColumn Width="2*" Header="Price" Binding="{Binding Price}"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>

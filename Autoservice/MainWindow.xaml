@@ -24,6 +24,18 @@
         <DataTemplate DataType="{x:Type managers11:CarsManager}">
             <screens1:CarsScreen />
         </DataTemplate>
+        <DataTemplate DataType="{x:Type managers11:ClientsManager}">
+            <screens1:ClientsScreen/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type managers11:WorksManager}">
+            <screens1:WorksScreen/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type managers11:MastersManager}">
+            <screens1:MastersScreen/>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type managers11:ActivityManager}">
+            <screens1:ActivityScreen />
+        </DataTemplate>
         <DataTemplate DataType="{x:Type managers11:SettingsManager}">
             <screens1:SettingsScreen />
         </DataTemplate>

@@ -7,8 +7,8 @@
     <ProjectGuid>{9417A686-3E44-4A7E-A5D4-7C32A6491000}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>RelevantAds.Zoiper</RootNamespace>
-    <AssemblyName>RelevantAds.Zoiper</AssemblyName>
+    <RootNamespace>Autoservice</RootNamespace>
+    <AssemblyName>Autoservice</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -23,7 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\RelevantAds.Zoiper.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Autoservice.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -163,19 +163,35 @@
       <DependentUpon>AddUserDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\Managers\AddUserManager.cs" />
-    <Compile Include="Migrations\201710171713180_InitialMigration.cs" />
-    <Compile Include="Migrations\201710171713180_InitialMigration.Designer.cs">
-      <DependentUpon>201710171713180_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201710180748300_InitialMigration.cs" />
+    <Compile Include="Migrations\201710180748300_InitialMigration.Designer.cs">
+      <DependentUpon>201710180748300_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
       <DependentUpon>CarsScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\Managers\ActivityManager.cs" />
+    <Compile Include="Screens\ActivityScreen.xaml.cs">
+      <DependentUpon>ActivityScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\Managers\MastersManager.cs" />
+    <Compile Include="Screens\Managers\WorksManager.cs" />
+    <Compile Include="Screens\MastersScreen.xaml.cs">
+      <DependentUpon>MastersScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\WorksScreen.xaml.cs">
+      <DependentUpon>WorksScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\ClientsScreen.xaml.cs">
+      <DependentUpon>ClientsScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screens\LoginScreen.xaml.cs">
       <DependentUpon>LoginScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Managers\CarsManager.cs" />
+    <Compile Include="Screens\Managers\ClientsManager.cs" />
     <Compile Include="Screens\Managers\LoginManager.cs" />
     <Compile Include="Screens\Managers\OrderManager.cs" />
     <Compile Include="Screens\Managers\SettingsManager.cs" />
@@ -207,8 +223,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201710171713180_InitialMigration.resx">
-      <DependentUpon>201710171713180_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710180748300_InitialMigration.resx">
+      <DependentUpon>201710180748300_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -253,6 +269,22 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Screens\ActivityScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\MastersScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\WorksScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Screens\ClientsScreen.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Screens\LoginScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -271,17 +303,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <COMReference Include="ZoiperAPI">
-      <Guid>{77A2B1E0-8F33-43D0-BEDB-CAAD48B929ED}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>1</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

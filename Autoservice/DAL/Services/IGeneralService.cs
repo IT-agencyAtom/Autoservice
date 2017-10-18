@@ -26,5 +26,8 @@ namespace Autoservice.DAL.Services
         List<Order> GetAllOrders();
         List<Client> GetAllClients();
         List<Car> GetAllCars();
+        List<Work> GetAllWorks();
+        List<Master> GetAllMasters();
+        List<Activity> GetAllActivities();
     }
 }

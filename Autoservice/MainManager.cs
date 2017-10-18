@@ -41,6 +41,10 @@ namespace Autoservice
         private LoginManager _loginManager;
         private OrderManager _orderManager;
         private CarsManager _carsManager;
+        private ClientsManager _clientsManager;
+        private WorksManager _worksManager;
+        private MastersManager _mastersManager;
+        private ActivityManager _activitymanager;
 
         private ObservableCollection<ScreenManager> _tabScreens;
 
@@ -112,8 +116,22 @@ namespace Autoservice
             {
                 SetIsBusy = isBusy => IsBusy = isBusy
             };
-
-
+            _clientsManager = new ClientsManager
+            {
+                SetIsBusy = isBusy => IsBusy = isBusy
+            };
+            _worksManager = new WorksManager
+            {
+                SetIsBusy = isBusy => IsBusy = isBusy
+            };
+            _mastersManager = new MastersManager
+            {
+                SetIsBusy = isBusy => IsBusy = isBusy
+            };
+            _activitymanager = new ActivityManager
+            {
+                SetIsBusy = isBusy => IsBusy = isBusy
+            };
             ShowChangelog = new RelayCommand(() => Process.Start("Changelog.docx"));
             ShowLogs = new RelayCommand(() => Process.Start(Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), @"ConstaSoft\" + Assembly.GetExecutingAssembly().GetName().Name + @"\Logs")));
@@ -154,6 +172,34 @@ namespace Autoservice
                 ToolTip = "Cars",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Car },
                 Tag = _carsManager
+            });
+            TabScreens.Add(new ScreenManager
+            {
+                Label = "Clients",
+                ToolTip = "Clients",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.HumanGreeting },
+                Tag = _clientsManager
+            });
+            TabScreens.Add(new ScreenManager
+            {
+                Label = "Works",
+                ToolTip = "Works",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Wrench },
+                Tag = _worksManager
+            });
+            TabScreens.Add(new ScreenManager
+            {
+                Label = "Masters",
+                ToolTip = "Masters",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Worker },
+                Tag = _mastersManager
+            });
+            TabScreens.Add(new ScreenManager
+            {
+                Label = "Activities",
+                ToolTip = "Activities",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Run },
+                Tag = _activitymanager
             });
             if (UserService.Instance.IsAdmin)
             {                

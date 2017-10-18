@@ -4,6 +4,7 @@ using Autoservice.DAL.Common.Context;
 using Autoservice.DAL.Common.Interfaces;
 using Autoservice.DAL.Entities;
 using Autoservice.DAL.Repositories.Interfaces;
+using System;
 
 namespace Autoservice.DAL.Services
 {
@@ -210,7 +211,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.GetAll(o=>o.Car,o=>o.Client);
+                return _orderRepository.GetAll(o=>o.Car,o=>o.Client,o=>o.Works,o=>o.Masters,o=>o.Activities);
             }
         }
 
@@ -361,6 +362,14 @@ namespace Autoservice.DAL.Services
 
                     scope.SaveChanges();
                 }
+            }
+        }
+
+        public List<Activity> GetAllActivities()
+        {
+            using (Db.BeginReadOnlyWork())
+            {
+                return _activityRepository.GetAll(a => a.Order,a=>a.User);
             }
         }
     }
