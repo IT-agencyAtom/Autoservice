@@ -28,6 +28,15 @@ namespace Autoservice.DAL.Services
         List<Car> GetAllCars();
         List<Work> GetAllWorks();
         List<Master> GetAllMasters();
-        List<Activity> GetAllActivities();
+        List<Activity> GetAllActivities();        
+        void AddClient(Client client);
+        void DeleteClient(Client selectedClient);
+        void UpdateWork(Work work);
+        void AddWork(Work work);
+        void DeleteWork(Work selectedWork);
+        void UpdateOrder(Order order);
+        void AddOrder(Order order);
+        void UpdateClient(Client client);
+        void DeleteOrder(Order selectedOrder);
     }
 }

@@ -159,10 +159,22 @@
     <Compile Include="DAL\Services\IGeneralService.cs" />
     <Compile Include="DAL\Services\ServiceBase.cs" />
     <Compile Include="DAL\Entities\User.cs" />
+    <Compile Include="Dialogs\AddClientDialog.xaml.cs">
+      <DependentUpon>AddClientDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddUserDialog.xaml.cs">
       <DependentUpon>AddUserDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AddOrderDialog.xaml.cs">
+      <DependentUpon>AddOrderDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\AddWorkDialog.xaml.cs">
+      <DependentUpon>AddWorkDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\Managers\AddOrderManager.cs" />
+    <Compile Include="Dialogs\Managers\AddClientManager.cs" />
     <Compile Include="Dialogs\Managers\AddUserManager.cs" />
+    <Compile Include="Dialogs\Managers\AddWorkManager.cs" />
     <Compile Include="Migrations\201710180748300_InitialMigration.cs" />
     <Compile Include="Migrations\201710180748300_InitialMigration.Designer.cs">
       <DependentUpon>201710180748300_InitialMigration.cs</DependentUpon>
@@ -249,9 +261,21 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Dialogs\AddClientDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\AddUserDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AddOrderDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AddWorkDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

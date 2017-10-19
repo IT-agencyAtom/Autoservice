@@ -1,6 +1,11 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
+using Autoservice.Dialogs;
+using Autoservice.Dialogs.Managers;
 using ConstaSoft.Core.Controls.Managers;
+using GalaSoft.MvvmLight.Command;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,6 +13,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Autoservice.Screens.Managers
@@ -18,7 +24,7 @@ namespace Autoservice.Screens.Managers
         private ICollectionView _worksView { get; set; }
 
         public ObservableCollection<Work> Works { get; set; }
-        public Master SelectedWork { get; set; }
+        public Work SelectedWork { get; set; }
 
         public string WorksFilterString
         {
@@ -53,11 +59,33 @@ namespace Autoservice.Screens.Managers
         {
             return work.Name.ToLower().Contains(WorksFilterString);
         }
+        public RelayCommand MouseDoubleClickCommand { get; set; }
 
         public WorksManager()
         {
             Panel = new PanelManager
             {
+                LeftButtons = new ObservableCollection<PanelButtonManager>
+                {
+                    new PanelButtonManager
+                    {
+                        OnButtonAction = o => AddHandler(),
+                        ButtonIcon = "appbar_add",
+                        ButtonText = "Add"
+                    },
+                    new PanelButtonManager
+                    {
+                        OnButtonAction = o => EditHandler(),
+                        ButtonIcon = "appbar_edit",
+                        ButtonText = "Edit"
+                    },
+                    new PanelButtonManager
+                    {
+                        OnButtonAction = o => DeleteHandler(),
+                        ButtonIcon = "appbar_delete",
+                        ButtonText = "Delete"
+                    }
+                },
                 MiddleButtons = new ObservableCollection<PanelButtonManager>
                 {
                     new PanelButtonManager
@@ -66,13 +94,101 @@ namespace Autoservice.Screens.Managers
                         ButtonIcon = "appbar_refresh",
                         ButtonText = "Refresh"
                     }
-                },
-
-                RightButtons = new ObservableCollection<PanelButtonManager>
-                {
-
                 }
             };
+            MouseDoubleClickCommand = new RelayCommand(EditHandler);
+        }
+
+        private async void AddHandler()
+        {
+            SetIsBusy(true);
+
+            var addManager = new AddWorkManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => addManager.initializeAdd());
+
+            var addDialog = new AddWorkDialog(addManager);
+
+            addDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+
+                if (addManager.WasChanged)
+                {
+                    await Task.Run(() => addManager.Save2DB());
+
+                    Refresh();
+                }
+
+                SetIsBusy(false);
+            };
+
+            addDialog.Show();
+        }
+
+        private async void EditHandler()
+        {
+            if (SelectedWork == null)
+                return;
+
+            SetIsBusy(true);
+
+            var addManager = new AddWorkManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => addManager.initializeEdit(SelectedWork));
+
+            var addDialog = new AddWorkDialog(addManager);
+
+            addDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+
+                if (addManager.WasChanged)
+                {
+                    await Task.Run(() => addManager.Save2DB());
+
+                    Refresh();
+                }
+
+                SetIsBusy(false);
+            };
+            addDialog.Show();
+        }
+
+        private async void DeleteHandler()
+        {
+            if (SelectedWork == null)
+                return;
+
+            var deleteDialogSettings = new MetroDialogSettings
+            {
+                AffirmativeButtonText = "Yes",
+                NegativeButtonText = "No",
+                FirstAuxiliaryButtonText = "Cancel"
+            };
+
+            var metroWindow = Application.Current.MainWindow as MetroWindow;
+            if (metroWindow == null)
+                return;
+
+            SetIsBusy(true);
+
+            var result =
+                await
+                    metroWindow.ShowMessageAsync("Confirm work delete",
+                        $"Are you sure to delete work {SelectedWork.Name}",
+                        MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, deleteDialogSettings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                var relevantAdsService = Get<IGeneralService>();
+                relevantAdsService.DeleteWork(SelectedWork);
+
+                await
+                    metroWindow.ShowMessageAsync("Success", $"Work {SelectedWork.Name} was deleted");
+
+                Refresh();
+            }
+
+            SetIsBusy(false);
         }
 
         public async override void Refresh()
