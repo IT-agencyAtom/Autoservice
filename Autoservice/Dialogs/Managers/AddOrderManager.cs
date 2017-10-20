@@ -11,17 +11,59 @@ using System.Threading.Tasks;
 
 namespace Autoservice.Dialogs.Managers
 {
-    public class AddOrderManager:PanelViewModelBase
+    public class AddOrderManager : PanelViewModelBase
     {
+        private int _selectedStatus;
+        private int _selectedMethod;
+        private Client _selectedClient;
+        private Car _selectedCar;
         public Action OnExit { get; set; }
 
         public string Title { get; set; }
 
+        public ObservableCollection<Client> Clients { get; private set; }
+        public ObservableCollection<Car> Cars { get; private set; }
+
         public string[] Statuses { get; private set; }
         public string[] Methods { get; private set; }
 
-        public string SelectedStatus { get; set; }
-        public string SelectedMethod { get; set; }
+        public int SelectedStatus
+        {
+            get { return _selectedStatus; }
+            set
+            {
+                _selectedStatus = value;
+                Order.Status = (OrderStatus)value;
+                RaisePropertyChanged("SelectedStatus");
+            }
+        }
+        public int SelectedMethod {
+            get { return _selectedMethod; }
+            set
+            {
+                _selectedMethod = value;
+                Order.PaymentMethod = (PaymentMethod)value;
+                RaisePropertyChanged("SelectedMethod");
+            }
+        }
+
+        public Client SelectedClient { get { return _selectedClient; }
+            set
+            {
+                _selectedClient = value;
+                Order.Client = value;
+                RaisePropertyChanged("SelectedClient");
+            }
+        }
+        public Car SelectedCar { get { return _selectedCar; }
+            set
+            {
+                _selectedCar = value;
+                Order.Car = value;
+                RaisePropertyChanged("SelectedCar");
+            }
+        }
+
 
 
         private Order _order;
@@ -37,7 +79,9 @@ namespace Autoservice.Dialogs.Managers
                 _order = value;
                 RaisePropertyChanged("Order");
             }
-        }        
+        }
+
+        public bool IsEdit => _isEdit;
         //Комманды
         public RelayCommand Save { get; private set; }
 
@@ -55,8 +99,12 @@ namespace Autoservice.Dialogs.Managers
             initialize();
 
             Order = order;
-            SelectedMethod = Order.PaymentMethod.ToString();
-            SelectedStatus = Order.Status.ToString();
+            SelectedMethod = (int)Order.PaymentMethod;
+            SelectedStatus = (int)Order.Status;
+            SelectedClient = Order.Client;
+            SelectedCar = Order.Car;
+            RaisePropertyChanged("SelectedStatus");
+            RaisePropertyChanged("SelectedMethod");
             Title = "Edit Order";
         }
 
@@ -119,8 +167,14 @@ namespace Autoservice.Dialogs.Managers
                 relevantAdsService.AddOrder(Order);
         }
 
-        public override void Refresh()
+        public async override void Refresh()
         {
+            SetIsBusy(true);
+            var service = Get<IGeneralService>();
+            Clients = new ObservableCollection<Client>(await Task.Run(() => service.GetAllClients()));
+            Cars = new ObservableCollection<Car>(await Task.Run(() => service.GetAllCars()));
+            RaisePropertyChanged("Clients");
+            RaisePropertyChanged("Cars");
             SetIsBusy(false);
         }
     }

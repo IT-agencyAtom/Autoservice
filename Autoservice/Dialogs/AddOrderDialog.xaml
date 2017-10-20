@@ -52,20 +52,18 @@
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Number" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
                                 HorizontalAlignment="Center" />
-                        <TextBox Margin="0, 5, 0, 0" IsReadOnly="True"                        
+                        <TextBox Margin="0, 5, 0, 0" IsReadOnly="{Binding IsEdit}"                        
                         Text="{Binding Order.PersonalNumber}" />
                     </StackPanel>
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Client" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                                HorizontalAlignment="Center" />                        
-                        <TextBox Margin="0, 5, 0, 0" IsReadOnly="True"                    
-                        Text="{Binding Order.Client}" />
-                    </StackPanel>
+                                HorizontalAlignment="Center" />
+                        <ComboBox Margin="0, 5, 0, 0" ItemsSource="{Binding Clients}" SelectedIndex="{Binding SelectedClient}" IsReadOnly="{Binding IsEdit}"/>
+                        </StackPanel>
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Car" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
                                 HorizontalAlignment="Center" />
-                        <TextBox Margin="0, 5, 0, 0" IsReadOnly="True"                    
-                        Text="{Binding Order.Car}" />
+                        <ComboBox Margin="0, 5, 0, 0" ItemsSource="{Binding Cars}" SelectedIndex="{Binding SelectedCar}" IsReadOnly="{Binding IsEdit}"/>
                     </StackPanel>
                     <StackPanel Margin="0,5">
                         <TextBlock Text="Repair Zone" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
@@ -79,76 +77,82 @@
                         <ComboBox Margin="0, 5, 0, 0" ItemsSource="{Binding Statuses}" SelectedIndex="{Binding SelectedStatus}" />
                     </StackPanel>
                         <GroupBox Header="Masters" Margin="0,7">
-                            <DataGrid
-                                Name="dg"                                
-                                AutoGenerateColumns="False"
-                                CanUserAddRows="True"
-                                IsSynchronizedWithCurrentItem="True"
-                                ItemsSource="{Binding Order.Masters}"
-                                MinHeight="70"
-                                >
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn
-                                        Binding="{Binding Name}"
-                                        Header="Name"
-                                        IsReadOnly="True" />
-                                    <DataGridTextColumn
-                                        Binding="{Binding Position}"
-                                        Header="Position"
-                                        IsReadOnly="True" />
-                                </DataGrid.Columns>
-                            </DataGrid>
+                            <ScrollViewer>
+                                <DataGrid
+                                    Name="dg"                                
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="True"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    ItemsSource="{Binding Order.Masters}"
+                                    MinHeight="70"
+                                    >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn
+                                            Binding="{Binding Name}"
+                                            Header="Name"
+                                            IsReadOnly="True" />
+                                        <DataGridTextColumn
+                                            Binding="{Binding Position}"
+                                            Header="Position"
+                                            IsReadOnly="True" />
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </ScrollViewer>
                         </GroupBox>
                     </StackPanel>
                 <StackPanel Grid.Column="1" Margin="5,0">
                     <StackPanel Margin="0,5">                        
                         <GroupBox Header="Works" Margin="0,7">
-                            <DataGrid                                
-                                AutoGenerateColumns="False"
-                                CanUserAddRows="True"
-                                IsSynchronizedWithCurrentItem="True"
-                                ItemsSource="{Binding Order.Works}"
-                                MinHeight="70"
-                                >
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn
-                                        Binding="{Binding Name}"
-                                        Header="Name"
-                                        IsReadOnly="True" />                                    
-                                    <DataGridTextColumn
-                                        Binding="{Binding Price}"
-                                        Header="Price"
-                                        IsReadOnly="True" />                                    
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </GroupBox>
+                                <ScrollViewer>
+                                    <DataGrid                                
+                                        AutoGenerateColumns="False"
+                                        CanUserAddRows="True"
+                                        IsSynchronizedWithCurrentItem="True"
+                                        ItemsSource="{Binding Order.Works}"
+                                        MinHeight="70"
+                                        >
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn
+                                                Binding="{Binding Name}"
+                                                Header="Name"
+                                                IsReadOnly="True" />                                    
+                                            <DataGridTextColumn
+                                                Binding="{Binding Price}"
+                                                Header="Price"
+                                                IsReadOnly="True" />                                    
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </ScrollViewer>
+                            </GroupBox>
                             <GroupBox Header="Activities" Margin="0,7">
-                                <DataGrid                                
-                                AutoGenerateColumns="False"
-                                CanUserAddRows="False"
-                                IsSynchronizedWithCurrentItem="True"
-                                ItemsSource="{Binding Order.Activities}"
-                                MinHeight="70"
-                                >
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn
-                                        Binding="{Binding StartTime}"
-                                        Header="Start Time"
-                                        IsReadOnly="True" />
-                                        <DataGridTextColumn
-                                        Binding="{Binding Time}"
-                                        Header="Time"
-                                        IsReadOnly="True" />
-                                        <DataGridTextColumn
-                                        Binding="{Binding Status}"
-                                        Header="Status"
-                                        IsReadOnly="True" />
-                                        <DataGridTextColumn
-                                        Binding="{Binding User}"
-                                        Header="User"
-                                        IsReadOnly="True" />
-                                    </DataGrid.Columns>
-                                </DataGrid>
+                                <ScrollViewer>
+                                    <DataGrid                                
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    ItemsSource="{Binding Order.Activities}"
+                                    MinHeight="70"
+                                    >
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn
+                                            Binding="{Binding StartTime}"
+                                            Header="Start Time"
+                                            IsReadOnly="True" />
+                                            <DataGridTextColumn
+                                            Binding="{Binding Time}"
+                                            Header="Time"
+                                            IsReadOnly="True" />
+                                            <DataGridTextColumn
+                                            Binding="{Binding Status}"
+                                            Header="Status"
+                                            IsReadOnly="True" />
+                                            <DataGridTextColumn
+                                            Binding="{Binding User}"
+                                            Header="User"
+                                            IsReadOnly="True" />
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </ScrollViewer>
                             </GroupBox>
                             <StackPanel Margin="0,5">
                                 <TextBlock Text="Total Price" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
