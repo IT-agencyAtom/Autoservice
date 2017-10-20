@@ -38,5 +38,11 @@ namespace Autoservice.DAL.Services
         void AddOrder(Order order);
         void UpdateClient(Client client);
         void DeleteOrder(Order selectedOrder);
+        void UpdateCar(Car car);
+        void AddCar(Car car);
+        void DeleteCar(Car selectedCar);
+        void UpdateMaster(Master master);
+        void AddMaster(Master master);
+        void DeleteMaster(Master selectedMaster);
     }
 }

@@ -13,8 +13,8 @@ namespace Autoservice.Dialogs.Managers
 {
     public class AddOrderManager : PanelViewModelBase
     {
-        private int _selectedStatus;
-        private int _selectedMethod;
+        private int _selectedStatus=-1;
+        private int _selectedMethod=-1;
         private Client _selectedClient;
         private Car _selectedCar;
         public Action OnExit { get; set; }
@@ -81,7 +81,7 @@ namespace Autoservice.Dialogs.Managers
             }
         }
 
-        public bool IsEdit => _isEdit;
+        public bool IsNew => !_isEdit;
         //Комманды
         public RelayCommand Save { get; private set; }
 
@@ -99,10 +99,9 @@ namespace Autoservice.Dialogs.Managers
             initialize();
 
             Order = order;
-            SelectedMethod = (int)Order.PaymentMethod;
+            SelectedMethod = (int?)Order.PaymentMethod??-1;
             SelectedStatus = (int)Order.Status;
-            SelectedClient = Order.Client;
-            SelectedCar = Order.Car;
+           
             RaisePropertyChanged("SelectedStatus");
             RaisePropertyChanged("SelectedMethod");
             Title = "Edit Order";
@@ -110,6 +109,7 @@ namespace Autoservice.Dialogs.Managers
 
         public void initializeAdd()
         {
+            _isEdit = false;
             initialize();
 
             Order = new Order();
@@ -173,6 +173,11 @@ namespace Autoservice.Dialogs.Managers
             var service = Get<IGeneralService>();
             Clients = new ObservableCollection<Client>(await Task.Run(() => service.GetAllClients()));
             Cars = new ObservableCollection<Car>(await Task.Run(() => service.GetAllCars()));
+            if (_isEdit)
+            {
+                SelectedClient = Clients.First(x => x.Id == Order.Client.Id);
+                SelectedCar = Cars.First(x => x.Id == Order.Car.Id);
+            }
             RaisePropertyChanged("Clients");
             RaisePropertyChanged("Cars");
             SetIsBusy(false);

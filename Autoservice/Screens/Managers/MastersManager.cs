@@ -8,7 +8,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
+using Autoservice.Dialogs;
+using Autoservice.Dialogs.Managers;
+using GalaSoft.MvvmLight.Command;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Autoservice.Screens.Managers
 {
@@ -54,11 +60,33 @@ namespace Autoservice.Screens.Managers
             return master.Name.ToLower().Contains(MastersFilterString)||
                 master.Position.ToLower().Contains(MastersFilterString);
         }
+        public RelayCommand MouseDoubleClickCommand { get; set; }
 
         public MastersManager()
         {
             Panel = new PanelManager
             {
+                LeftButtons = new ObservableCollection<PanelButtonManager>
+                {
+                    new PanelButtonManager
+                    {
+                        OnButtonAction = o => AddHandler(),
+                        ButtonIcon = "appbar_add",
+                        ButtonText = "Add"
+                    },
+                    new PanelButtonManager
+                    {
+                        OnButtonAction = o => EditHandler(),
+                        ButtonIcon = "appbar_edit",
+                        ButtonText = "Edit"
+                    },
+                    new PanelButtonManager
+                    {
+                        OnButtonAction = o => DeleteHandler(),
+                        ButtonIcon = "appbar_delete",
+                        ButtonText = "Delete"
+                    }
+                },
                 MiddleButtons = new ObservableCollection<PanelButtonManager>
                 {
                     new PanelButtonManager
@@ -67,15 +95,101 @@ namespace Autoservice.Screens.Managers
                         ButtonIcon = "appbar_refresh",
                         ButtonText = "Refresh"
                     }
-                },
-
-                RightButtons = new ObservableCollection<PanelButtonManager>
-                {
-
                 }
             };
+            MouseDoubleClickCommand = new RelayCommand(EditHandler);
+        }
+        private async void AddHandler()
+        {
+            SetIsBusy(true);
+
+            var addManager = new AddMasterManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => addManager.initializeAdd());
+
+            var addDialog = new AddMasterDialog(addManager);
+
+            addDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+
+                if (addManager.WasChanged)
+                {
+                    await Task.Run(() => addManager.Save2DB());
+
+                    Refresh();
+                }
+
+                SetIsBusy(false);
+            };
+
+            addDialog.Show();
         }
 
+        private async void EditHandler()
+        {
+            if (SelectedMaster == null)
+                return;
+
+            SetIsBusy(true);
+
+            var addManager = new AddMasterManager() { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => addManager.initializeEdit(SelectedMaster));
+
+            var addDialog = new AddMasterDialog(addManager);
+
+            addDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+
+                if (addManager.WasChanged)
+                {
+                    await Task.Run(() => addManager.Save2DB());
+
+                    Refresh();
+                }
+
+                SetIsBusy(false);
+            };
+            addDialog.Show();
+        }
+
+        private async void DeleteHandler()
+        {
+            if (SelectedMaster == null)
+                return;
+
+            var deleteDialogSettings = new MetroDialogSettings
+            {
+                AffirmativeButtonText = "Yes",
+                NegativeButtonText = "No",
+                FirstAuxiliaryButtonText = "Cancel"
+            };
+
+            var metroWindow = Application.Current.MainWindow as MetroWindow;
+            if (metroWindow == null)
+                return;
+
+            SetIsBusy(true);
+
+            var result =
+                await
+                    metroWindow.ShowMessageAsync("Confirm Master delete",
+                        $"Are you sure to delete Master {SelectedMaster.Name}",
+                        MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, deleteDialogSettings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                var relevantAdsService = Get<IGeneralService>();
+                relevantAdsService.DeleteMaster(SelectedMaster);
+
+                await
+                    metroWindow.ShowMessageAsync("Success", $"Master {SelectedMaster.Name} was deleted");
+
+                Refresh();
+            }
+
+            SetIsBusy(false);
+        }
         public async override void Refresh()
         {
             SetIsBusy(true);

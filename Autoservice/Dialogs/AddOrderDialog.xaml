@@ -1,24 +1,24 @@
 ﻿<controls:MetroWindow
+    x:Class="Autoservice.Dialogs.AddOrderDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:command="http://www.galasoft.ch/mvvmlight"
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-    xmlns:managers1="clr-namespace:ConstaSoft.Core.Controls.Managers;assembly=ConstaSoft.Core"
     xmlns:controls1="clr-namespace:ConstaSoft.Core.Controls;assembly=ConstaSoft.Core"
-    mc:Ignorable="d"
-    x:Class="Autoservice.Dialogs.AddOrderDialog"
-    WindowStartupLocation="CenterScreen"
-    ShowMinButton="False"
-    ShowMaxRestoreButton="False"
-    ResizeMode="NoResize"
-    GlowBrush="{DynamicResource AccentColorBrush}"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:managers1="clr-namespace:ConstaSoft.Core.Controls.Managers;assembly=ConstaSoft.Core"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="{Binding Title}"
     Width="800"
-    Height="600">
+    Height="600"
+    GlowBrush="{DynamicResource AccentColorBrush}"
+    ResizeMode="NoResize"
+    ShowMaxRestoreButton="False"
+    ShowMinButton="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
     <Window.Resources>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
             <controls1:Panel />
@@ -37,55 +37,89 @@
 
     <ScrollViewer>
         <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="75" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="75" />
+            </Grid.RowDefinitions>
 
-        <GroupBox Header="Order Data">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="3*"></ColumnDefinition>
-                    <ColumnDefinition Width="5*"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <StackPanel Margin="5,0">
-                    <StackPanel Margin="0,5">
-                        <TextBlock Text="Number" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                                HorizontalAlignment="Center" />
-                        <TextBox Margin="0, 5, 0, 0" IsReadOnly="{Binding IsEdit}"                        
-                        Text="{Binding Order.PersonalNumber}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,5">
-                        <TextBlock Text="Client" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                                HorizontalAlignment="Center" />
-                        <ComboBox Margin="0, 5, 0, 0" ItemsSource="{Binding Clients}" SelectedIndex="{Binding SelectedClient}" IsReadOnly="{Binding IsEdit}"/>
+            <GroupBox Header="Order Data">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="5*" />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="5,0">
+                        <StackPanel Margin="0,5">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                FontWeight="Bold"
+                                Text="Number" />
+                            <TextBox
+                                Margin="0,5,0,0"
+                                IsEnabled="{Binding IsNew}"
+                                Text="{Binding Order.PersonalNumber}" />
                         </StackPanel>
-                    <StackPanel Margin="0,5">
-                        <TextBlock Text="Car" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                                HorizontalAlignment="Center" />
-                        <ComboBox Margin="0, 5, 0, 0" ItemsSource="{Binding Cars}" SelectedIndex="{Binding SelectedCar}" IsReadOnly="{Binding IsEdit}"/>
-                    </StackPanel>
-                    <StackPanel Margin="0,5">
-                        <TextBlock Text="Repair Zone" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                                HorizontalAlignment="Center" />
-                        <TextBox Margin="0, 5, 0, 0" IsReadOnly="False"                    
-                        Text="{Binding Order.RepairZone}" />
-                    </StackPanel>
-                    <StackPanel Margin="0,5">
-                        <TextBlock Text="Status" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                                HorizontalAlignment="Center" />
-                        <ComboBox Margin="0, 5, 0, 0" ItemsSource="{Binding Statuses}" SelectedIndex="{Binding SelectedStatus}" />
-                    </StackPanel>
-                        <GroupBox Header="Masters" Margin="0,7">
+                        <StackPanel Margin="0,5">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                FontWeight="Bold"
+                                Text="Client" />
+                            <ComboBox
+                                Margin="0,5,0,0"
+                                IsEnabled="{Binding IsNew}"
+                                ItemsSource="{Binding Clients}"
+                                SelectedItem="{Binding SelectedClient}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,5">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                FontWeight="Bold"
+                                Text="Car" />
+                            <ComboBox
+                                Margin="0,5,0,0"
+                                IsEnabled="{Binding IsNew}"
+                                ItemsSource="{Binding Cars}"
+                                SelectedItem="{Binding SelectedCar}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,5">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                FontWeight="Bold"
+                                Text="Repair Zone" />
+                            <TextBox
+                                Margin="0,5,0,0"
+                                IsReadOnly="False"
+                                Text="{Binding Order.RepairZone}" />
+                        </StackPanel>
+                        <StackPanel Margin="0,5">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                FontWeight="Bold"
+                                Text="Status" />
+                            <ComboBox
+                                Margin="0,5,0,0"
+                                ItemsSource="{Binding Statuses}"
+                                SelectedIndex="{Binding SelectedStatus}" />
+                        </StackPanel>
+                        <GroupBox Margin="0,7" Header="Masters">
                             <ScrollViewer>
                                 <DataGrid
-                                    Name="dg"                                
+                                    Name="dg"
+                                    MinHeight="70"
                                     AutoGenerateColumns="False"
                                     CanUserAddRows="True"
                                     IsSynchronizedWithCurrentItem="True"
-                                    ItemsSource="{Binding Order.Masters}"
-                                    MinHeight="70"
-                                    >
+                                    ItemsSource="{Binding Order.Masters}">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn
                                             Binding="{Binding Name}"
@@ -100,86 +134,99 @@
                             </ScrollViewer>
                         </GroupBox>
                     </StackPanel>
-                <StackPanel Grid.Column="1" Margin="5,0">
-                    <StackPanel Margin="0,5">                        
-                        <GroupBox Header="Works" Margin="0,7">
+                    <StackPanel Grid.Column="1" Margin="5,0">
+                        <StackPanel Margin="0,5">
+                            <GroupBox Margin="0,7" Header="Works">
                                 <ScrollViewer>
-                                    <DataGrid                                
+                                    <DataGrid
+                                        MinHeight="70"
                                         AutoGenerateColumns="False"
                                         CanUserAddRows="True"
                                         IsSynchronizedWithCurrentItem="True"
-                                        ItemsSource="{Binding Order.Works}"
-                                        MinHeight="70"
-                                        >
+                                        ItemsSource="{Binding Order.Works}">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn
                                                 Binding="{Binding Name}"
                                                 Header="Name"
-                                                IsReadOnly="True" />                                    
+                                                IsReadOnly="True" />
                                             <DataGridTextColumn
                                                 Binding="{Binding Price}"
                                                 Header="Price"
-                                                IsReadOnly="True" />                                    
+                                                IsReadOnly="True" />
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </ScrollViewer>
                             </GroupBox>
-                            <GroupBox Header="Activities" Margin="0,7">
+                            <GroupBox Margin="0,7" Header="Activities">
                                 <ScrollViewer>
-                                    <DataGrid                                
-                                    AutoGenerateColumns="False"
-                                    CanUserAddRows="False"
-                                    IsSynchronizedWithCurrentItem="True"
-                                    ItemsSource="{Binding Order.Activities}"
-                                    MinHeight="70"
-                                    >
+                                    <DataGrid
+                                        MinHeight="70"
+                                        AutoGenerateColumns="False"
+                                        CanUserAddRows="False"
+                                        IsSynchronizedWithCurrentItem="True"
+                                        ItemsSource="{Binding Order.Activities}">
                                         <DataGrid.Columns>
                                             <DataGridTextColumn
-                                            Binding="{Binding StartTime}"
-                                            Header="Start Time"
-                                            IsReadOnly="True" />
+                                                Binding="{Binding StartTime}"
+                                                Header="Start Time"
+                                                IsReadOnly="True" />
                                             <DataGridTextColumn
-                                            Binding="{Binding Time}"
-                                            Header="Time"
-                                            IsReadOnly="True" />
+                                                Binding="{Binding Time}"
+                                                Header="Time"
+                                                IsReadOnly="True" />
                                             <DataGridTextColumn
-                                            Binding="{Binding Status}"
-                                            Header="Status"
-                                            IsReadOnly="True" />
+                                                Binding="{Binding Status}"
+                                                Header="Status"
+                                                IsReadOnly="True" />
                                             <DataGridTextColumn
-                                            Binding="{Binding User}"
-                                            Header="User"
-                                            IsReadOnly="True" />
+                                                Binding="{Binding User}"
+                                                Header="User"
+                                                IsReadOnly="True" />
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </ScrollViewer>
                             </GroupBox>
                             <StackPanel Margin="0,5">
-                                <TextBlock Text="Total Price" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                                HorizontalAlignment="Center" />
-                                <TextBox Margin="0, 5, 0, 0" IsReadOnly="False"                    
-                                Text="{Binding Order.TotalPrice}" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Text="Total Price" />
+                                <TextBox
+                                    Margin="0,5,0,0"
+                                    IsReadOnly="False"
+                                    Text="{Binding Order.TotalPrice}" />
                             </StackPanel>
                             <StackPanel Margin="0,5">
-                                <TextBlock Text="PaymentMethod" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                                HorizontalAlignment="Center" />
-                                <ComboBox Margin="0, 5, 0, 0" ItemsSource="{Binding Methods}" SelectedIndex="{Binding SelectedMethod}" />
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Text="PaymentMethod" />
+                                <ComboBox
+                                    Margin="0,5,0,0"
+                                    ItemsSource="{Binding Methods}"
+                                    SelectedIndex="{Binding SelectedMethod}" />
                             </StackPanel>
-                        </StackPanel>                    
-            </StackPanel>
-            </Grid>
-        </GroupBox>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </GroupBox>
 
-        <controls:Flyout Grid.Row="1" Position="Bottom"
-                         CloseButtonVisibility="Collapsed"
-                         TitleVisibility="Collapsed"
-                         IsPinned="True"
-                         IsOpen="True"
-                         Height="75">
-            <Grid>
-                <ContentControl Content="{Binding Panel}" />
-            </Grid>
-        </controls:Flyout>
-    </Grid>
+            <controls:Flyout
+                Grid.Row="1"
+                Height="75"
+                CloseButtonVisibility="Collapsed"
+                IsOpen="True"
+                IsPinned="True"
+                Position="Bottom"
+                TitleVisibility="Collapsed">
+                <Grid>
+                    <ContentControl Content="{Binding Panel}" />
+                </Grid>
+            </controls:Flyout>
+        </Grid>
     </ScrollViewer>
 </controls:MetroWindow>

@@ -168,12 +168,20 @@
     <Compile Include="Dialogs\AddOrderDialog.xaml.cs">
       <DependentUpon>AddOrderDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AddCarDialog.xaml.cs">
+      <DependentUpon>AddCarDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\AddMasterDialog.xaml.cs">
+      <DependentUpon>AddMasterDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddWorkDialog.xaml.cs">
       <DependentUpon>AddWorkDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\Managers\AddOrderManager.cs" />
     <Compile Include="Dialogs\Managers\AddClientManager.cs" />
     <Compile Include="Dialogs\Managers\AddUserManager.cs" />
+    <Compile Include="Dialogs\Managers\AddCarManager.cs" />
+    <Compile Include="Dialogs\Managers\AddMasterManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkManager.cs" />
     <Compile Include="Migrations\201710180748300_InitialMigration.cs" />
     <Compile Include="Migrations\201710180748300_InitialMigration.Designer.cs">
@@ -270,6 +278,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\AddOrderDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AddCarDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AddMasterDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
