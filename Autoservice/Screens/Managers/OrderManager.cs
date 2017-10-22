@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using Autoservice.ViewModel.Utils;
 
 namespace Autoservice.Screens.Managers
 {
@@ -22,10 +23,10 @@ namespace Autoservice.Screens.Managers
     {
         private string _ordersFilterString;
         private ICollectionView _ordersView { get; set; }
-
         public Order SelectedOrder { get; set; }
-
         public ObservableCollection<Order> Orders { get; set; }
+
+        private Order _newOrder;
 
         public string OrdersFilterString
         {
@@ -105,30 +106,10 @@ namespace Autoservice.Screens.Managers
         }
         private async void AddHandler()
         {
-            SetIsBusy(true);
-
-            var addManager = new AddOrderManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
-            await Task.Run(() => addManager.initializeAdd());
-
-            var addDialog = new AddOrderDialog(addManager);
-
-            addDialog.Closed += async (sender, args) =>
-            {
-                SetIsBusy(true);
-
-                if (addManager.WasChanged)
-                {
-                    await Task.Run(() => addManager.Save2DB());
-
-                    Refresh();
-                }
-
-                SetIsBusy(false);
-            };
-
-            addDialog.Show();
+            _newOrder = new Order();
+            _newOrder.PersonalNumber = RandomStrings.GetOrderNumber();
+            AddClient();
         }
-
         private async void EditHandler()
         {
             if (SelectedOrder == null)
@@ -156,7 +137,6 @@ namespace Autoservice.Screens.Managers
             };
             addDialog.Show();
         }
-
         private async void DeleteHandler()
         {
             if (SelectedOrder == null)
@@ -194,6 +174,56 @@ namespace Autoservice.Screens.Managers
 
             SetIsBusy(false);
         }
+
+        private async void AddClient()
+        {
+            SetIsBusy(true);
+            var addClientManager = new AddClientManager { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
+            await Task.Run(() => addClientManager.initializeAdd());
+            var addClientDialog = new AddClientDialog(addClientManager);
+            addClientDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+                if (addClientManager.WasChanged)
+                {
+                    await Task.Run(() => addClientManager.Save2DB());
+                    Refresh();
+                }
+                _newOrder.Client = addClientManager.Client;
+                SetIsBusy(false);
+                AddCar();
+            };
+            addClientDialog.Show();
+        }
+
+        private async void AddCar()
+        {
+            SetIsBusy(true);
+            var addCarManager = new AddCarManager() { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
+            await Task.Run(() => addCarManager.initializeAdd());
+            var addClientDialog = new AddCarDialog(addCarManager);
+            addClientDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+                if (addCarManager.WasChanged)
+                {
+                    await Task.Run(() => addCarManager.Save2DB());
+                    Refresh();
+                }
+                _newOrder.Car = addCarManager.Car;
+                SetIsBusy(false);
+                OpenNewOrderData();
+            };
+            addClientDialog.Show();
+        }
+
+        private void OpenNewOrderData()
+        {
+            SelectedOrder = _newOrder;
+            EditHandler();
+        }
+
+
         public async override void Refresh()
         {
             SetIsBusy(true);

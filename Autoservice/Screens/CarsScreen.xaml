@@ -1,14 +1,16 @@
-﻿<UserControl x:Class="Autoservice.Screens.CarsScreen"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:command="http://www.galasoft.ch/mvvmlight"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Autoservice.Screens"
-             xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+﻿<UserControl
+    x:Class="Autoservice.Screens.CarsScreen"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:local="clr-namespace:Autoservice.Screens"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="300"
+    d:DesignWidth="300"
+    mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="btv" />
     </UserControl.Resources>
@@ -22,92 +24,40 @@
             <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="7*" />
         </Grid.RowDefinitions>
-        <Grid Margin="25,2" VerticalAlignment="Bottom">
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Grid                
-                Margin="0,5,0,0"
-                HorizontalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="7*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                <TextBlock
-                    Grid.Column="0"
-                    Visibility="Hidden"
-                    Margin="0,0,5,0"
-                    FontSize="15"
-                    Text="Viewing" />
-                <ComboBox
-                    Grid.Column="1"
-                    Visibility="Hidden"
-                    Width="140"
-                    Margin="0,0,5,0"
-                    IsEditable="False"
-                    ItemsSource="{Binding DateFilterStrings}"
-                    SelectedItem="{Binding OrdersFilterDate}" />
-                <TextBlock
-                    Grid.Column="3"
-                    Margin="0,0,5,0"
-                    FontSize="15"
-                    Text="Records :" />
-                <TextBlock
-                    Grid.Column="4"
-                    Margin="0,0,25,0"
-                    FontSize="15"
-                    Text="{Binding Cars.Count}" />
-                <Rectangle
-                    Grid.Column="5"
-                    Width="25"
-                    Height="25"
-                    Margin="0,0,5,0"
-                    Fill="BlueViolet">
-                    <Rectangle.OpacityMask>
-                        <VisualBrush Visual="{StaticResource appbar_magnify_browse}" />
-                    </Rectangle.OpacityMask>
-                </Rectangle>
-                <TextBox
-                    Grid.Column="6"
-                    Width="200"
-                    Margin="5,0,0,0"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    controls:TextBoxHelper.ButtonCommand="{Binding ClearFilter}"
-                    Text="{Binding CarsFilterString, UpdateSourceTrigger=PropertyChanged}">
-                    <TextBox.Style>
-                        <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
-                            <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
-                            <Style.Triggers>
-                                <Trigger Property="controls:TextBoxHelper.HasText" Value="False">
-                                    <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="False" />
-                                    <Setter Property="controls:TextBoxHelper.Watermark" Value="Search..." />
-                                </Trigger>
-                                <Trigger Property="controls:TextBoxHelper.HasText" Value="True">
-                                    <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBox.Style>
-                </TextBox>
-            </Grid>
+        <Grid Margin="20,0" VerticalAlignment="Stretch">
+            <TextBox
+                Width="300"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center"
+                controls:TextBoxHelper.ButtonCommand="{Binding ClearFilter}"
+                Text="{Binding CarsFilterString, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.Style>
+                    <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
+                        <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
+                        <Style.Triggers>
+                            <Trigger Property="controls:TextBoxHelper.HasText" Value="False">
+                                <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="False" />
+                                <Setter Property="controls:TextBoxHelper.Watermark" Value="Search..." />
+                            </Trigger>
+                            <Trigger Property="controls:TextBoxHelper.HasText" Value="True">
+                                <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </Grid>
         <ScrollViewer Grid.Row="1" Margin="10,2">
             <GroupBox Header="Cars">
                 <DataGrid
                     Name="dg"
                     Margin="5"
-                    IsReadOnly="True"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
+                    IsReadOnly="True"
                     IsSynchronizedWithCurrentItem="True"
                     ItemsSource="{Binding Cars}"
                     RenderOptions.ClearTypeHint="Enabled"
@@ -122,26 +72,26 @@
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="2*" Header="Reg. Number" Binding="{Binding RegistrationNumber}"></DataGridTextColumn>
+                        <DataGridTextColumn
+                            Width="2*"
+                            Binding="{Binding RegistrationNumber}"
+                            Header="Reg. Number" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Brand}"
-                            Header="Brand"
-                             />
+                            Header="Brand" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Model}"
-                            Header="Model"
-                            />
+                            Header="Model" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Type}"
-                            Header="Type"
-                             />
+                            Header="Type" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Mileage}"
-                            Header="MileAge"></DataGridTextColumn>
+                            Header="MileAge" />
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
@@ -159,3 +109,4 @@
         </controls:Flyout>
     </Grid>
 </UserControl>
+

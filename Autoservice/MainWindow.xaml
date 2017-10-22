@@ -33,9 +33,6 @@
         <DataTemplate DataType="{x:Type managers11:MastersManager}">
             <screens1:MastersScreen/>
         </DataTemplate>
-        <DataTemplate DataType="{x:Type managers11:ActivityManager}">
-            <screens1:ActivityScreen />
-        </DataTemplate>
         <DataTemplate DataType="{x:Type managers11:SettingsManager}">
             <screens1:SettingsScreen />
         </DataTemplate>

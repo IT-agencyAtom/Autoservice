@@ -44,7 +44,6 @@ namespace Autoservice
         private ClientsManager _clientsManager;
         private WorksManager _worksManager;
         private MastersManager _mastersManager;
-        private ActivityManager _activitymanager;
 
         private ObservableCollection<ScreenManager> _tabScreens;
 
@@ -128,10 +127,6 @@ namespace Autoservice
             {
                 SetIsBusy = isBusy => IsBusy = isBusy
             };
-            _activitymanager = new ActivityManager
-            {
-                SetIsBusy = isBusy => IsBusy = isBusy
-            };
             ShowChangelog = new RelayCommand(() => Process.Start("Changelog.docx"));
             ShowLogs = new RelayCommand(() => Process.Start(Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), @"ConstaSoft\" + Assembly.GetExecutingAssembly().GetName().Name + @"\Logs")));
@@ -193,13 +188,6 @@ namespace Autoservice
                 ToolTip = "Masters",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Worker },
                 Tag = _mastersManager
-            });
-            TabScreens.Add(new ScreenManager
-            {
-                Label = "Activities",
-                ToolTip = "Activities",
-                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Run },
-                Tag = _activitymanager
             });
             if (UserService.Instance.IsAdmin)
             {                

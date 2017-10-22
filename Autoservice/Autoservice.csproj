@@ -222,6 +222,7 @@
       <DependentUpon>SettingsScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\Utils\Constants.cs" />
+    <Compile Include="ViewModel\Utils\RandomStrings.cs" />
     <Compile Include="ViewModel\Utils\UserService.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
   </ItemGroup>
