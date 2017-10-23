@@ -49,7 +49,7 @@ namespace Autoservice.Dialogs.Managers
 
             Client = client;
 
-            Title = "Edit Client";
+            Title = "Изменить клиента";
         }
 
         public void initializeAdd()
@@ -58,7 +58,7 @@ namespace Autoservice.Dialogs.Managers
 
             Client = new Client();
 
-            Title = "Add Client";
+            Title = "Добавить клиента";
         }
 
         private void initialize()
@@ -71,13 +71,13 @@ namespace Autoservice.Dialogs.Managers
                     {
                         OnButtonAction = (obj) => CancelHandler(),
                         ButtonIcon = "appbar_undo",
-                        ButtonText = "Cancel"
+                        ButtonText = "Отмена"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = (obj) => SaveHandler(),
                         ButtonIcon = "appbar_disk",
-                        ButtonText = "Save"
+                        ButtonText = "Сохранить"
                     }
                 }
             };            

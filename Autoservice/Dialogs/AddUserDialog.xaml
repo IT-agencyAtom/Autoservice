@@ -50,7 +50,7 @@
                 </Grid.RowDefinitions>
 
                 <StackPanel>
-                    <TextBlock Text="Login" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+                    <TextBlock Text="Пользователь" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
 
                     <TextBox Margin="0, 5, 0, 0"
@@ -59,7 +59,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Row="1">
-                    <TextBlock Text="Password" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+                    <TextBlock Text="Пароль" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
                                HorizontalAlignment="Center" />
 
                     <TextBox Margin="0, 5, 0, 0"

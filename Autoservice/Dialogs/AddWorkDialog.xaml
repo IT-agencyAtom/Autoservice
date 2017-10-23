@@ -41,17 +41,17 @@
             <RowDefinition Height="75" />
         </Grid.RowDefinitions>
 
-        <GroupBox Header="Work Data">
+        <GroupBox Header="Данные по работе">
             <StackPanel>
                 <StackPanel Margin="0,5">
-                    <TextBlock Text="Name" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+                    <TextBlock Text="Наименование" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
                             HorizontalAlignment="Center" />
                     <TextBox Margin="0, 5, 0, 0"
                     controls:TextBoxHelper.Watermark="Name"
                     Text="{Binding Work.Name}" />
                 </StackPanel>
                 <StackPanel Margin="0,5">
-                    <TextBlock Text="Price" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+                    <TextBlock Text="Цена" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
                             HorizontalAlignment="Center" />
                     <TextBox Margin="0, 5, 0, 0"
                     controls:TextBoxHelper.Watermark="Price"

@@ -21,9 +21,16 @@ namespace Autoservice.Screens.Managers
 {
     class OrderManager : PanelViewModelBase
     {
+        private Order _selectedOrder;
         private string _ordersFilterString;
         private ICollectionView _ordersView { get; set; }
-        public Order SelectedOrder { get; set; }
+        public Order SelectedOrder { get { return _selectedOrder; }
+            set
+            {
+                _selectedOrder = value;
+                RaisePropertyChanged("SelectedOrder");
+            }
+        }
         public ObservableCollection<Order> Orders { get; set; }
 
         private Order _newOrder;
@@ -77,19 +84,19 @@ namespace Autoservice.Screens.Managers
                     {
                         OnButtonAction = o => AddHandler(),
                         ButtonIcon = "appbar_add",
-                        ButtonText = "Add"
+                        ButtonText = "Добавить"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = o => EditHandler(),
                         ButtonIcon = "appbar_edit",
-                        ButtonText = "Edit"
+                        ButtonText = "Изменить"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = o => DeleteHandler(),
                         ButtonIcon = "appbar_delete",
-                        ButtonText = "Delete"
+                        ButtonText = "Удалить"
                     }
                 },
                 MiddleButtons = new ObservableCollection<PanelButtonManager>
@@ -98,7 +105,7 @@ namespace Autoservice.Screens.Managers
                     {
                         OnButtonAction = o => Refresh(),
                         ButtonIcon = "appbar_refresh",
-                        ButtonText = "Refresh"
+                        ButtonText = "Обновить"
                     }
                 }
             };
@@ -144,9 +151,9 @@ namespace Autoservice.Screens.Managers
 
             var deleteDialogSettings = new MetroDialogSettings
             {
-                AffirmativeButtonText = "Yes",
-                NegativeButtonText = "No",
-                FirstAuxiliaryButtonText = "Cancel"
+                AffirmativeButtonText = "Да",
+                NegativeButtonText = "Нет",
+                FirstAuxiliaryButtonText = "Отмена"
             };
 
             var metroWindow = Application.Current.MainWindow as MetroWindow;
@@ -157,8 +164,8 @@ namespace Autoservice.Screens.Managers
 
             var result =
                 await
-                    metroWindow.ShowMessageAsync("Confirm order delete",
-                        $"Are you sure to delete order {SelectedOrder.PersonalNumber}",
+                    metroWindow.ShowMessageAsync("Подтвердите удаление заказа",
+                        $"Вы уверен что хотите удалить заказ №{SelectedOrder.PersonalNumber}?",
                         MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, deleteDialogSettings);
 
             if (result == MessageDialogResult.Affirmative)
@@ -167,9 +174,7 @@ namespace Autoservice.Screens.Managers
                 relevantAdsService.DeleteOrder(SelectedOrder);
 
                 await
-                    metroWindow.ShowMessageAsync("Success", $"Order {SelectedOrder.PersonalNumber} was deleted");
-
-                Refresh();
+                    metroWindow.ShowMessageAsync("Успех", $"Заказ {SelectedOrder.PersonalNumber} был удалён");
             }
 
             SetIsBusy(false);
@@ -187,11 +192,11 @@ namespace Autoservice.Screens.Managers
                 if (addClientManager.WasChanged)
                 {
                     await Task.Run(() => addClientManager.Save2DB());
+                    AddCar();
                     Refresh();
                 }
                 _newOrder.Client = addClientManager.Client;
                 SetIsBusy(false);
-                AddCar();
             };
             addClientDialog.Show();
         }
@@ -209,10 +214,10 @@ namespace Autoservice.Screens.Managers
                 {
                     await Task.Run(() => addCarManager.Save2DB());
                     Refresh();
+                    OpenNewOrderData();
                 }
                 _newOrder.Car = addCarManager.Car;
                 SetIsBusy(false);
-                OpenNewOrderData();
             };
             addClientDialog.Show();
         }

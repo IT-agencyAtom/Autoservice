@@ -65,7 +65,7 @@ namespace Autoservice.Screens.Managers
                     {
                         OnButtonAction = o => Refresh(),
                         ButtonIcon = "appbar_refresh",
-                        ButtonText = "Refresh"
+                        ButtonText = "Обновить"
                     }
                 },
 

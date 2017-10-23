@@ -49,7 +49,7 @@ namespace Autoservice.Dialogs.Managers
 
             Master = master;
 
-            Title = "Edit Master";
+            Title = "Изменить мастера";
         }
 
         public void initializeAdd()
@@ -58,7 +58,7 @@ namespace Autoservice.Dialogs.Managers
 
             Master = new Master();
 
-            Title = "Add Master";
+            Title = "Добавить мастера";
         }
 
         private void initialize()
@@ -71,13 +71,13 @@ namespace Autoservice.Dialogs.Managers
                     {
                         OnButtonAction = (obj) => CancelHandler(),
                         ButtonIcon = "appbar_undo",
-                        ButtonText = "Cancel"
+                        ButtonText = "Отмена"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = (obj) => SaveHandler(),
                         ButtonIcon = "appbar_disk",
-                        ButtonText = "Save"
+                        ButtonText = "Сохранить"
                     }
                 }
             };

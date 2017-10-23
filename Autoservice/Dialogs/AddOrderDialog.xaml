@@ -42,7 +42,7 @@
                 <RowDefinition Height="75" />
             </Grid.RowDefinitions>
 
-            <GroupBox Header="Order Data">
+            <GroupBox Header="Данные заказа">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*" />
@@ -55,7 +55,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="12"
                                 FontWeight="Bold"
-                                Text="Number" />
+                                Text="Номер" />
                             <TextBox
                                 Margin="0,5,0,0"
                                 IsEnabled="{Binding IsNew}"
@@ -67,7 +67,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="12"
                                 FontWeight="Bold"
-                                Text="Client" />
+                                Text="Клиент" />
                             <ComboBox
                                 Margin="0,5,0,0"
                                 IsEnabled="{Binding IsNew}"
@@ -80,7 +80,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="12"
                                 FontWeight="Bold"
-                                Text="Car" />
+                                Text="Транспортное средство" />
                             <ComboBox
                                 Margin="0,5,0,0"
                                 IsEnabled="{Binding IsNew}"
@@ -93,7 +93,7 @@
                                 VerticalAlignment="Center"
                                 FontSize="12"
                                 FontWeight="Bold"
-                                Text="Repair Zone" />
+                                Text="Зона ремонта" />
                             <TextBox
                                 Margin="0,5,0,0"
                                 IsReadOnly="False"
@@ -105,13 +105,13 @@
                                 VerticalAlignment="Center"
                                 FontSize="12"
                                 FontWeight="Bold"
-                                Text="Status" />
+                                Text="Статус" />
                             <ComboBox
                                 Margin="0,5,0,0"
                                 ItemsSource="{Binding Statuses}"
                                 SelectedIndex="{Binding SelectedStatus}" />
                         </StackPanel>
-                        <GroupBox Margin="0,7" Header="Masters">
+                        <GroupBox Margin="0,7" Header="Мастера">
                             <ScrollViewer>
                                 <DataGrid
                                     Name="dg"
@@ -123,11 +123,11 @@
                                     <DataGrid.Columns>
                                         <DataGridTextColumn
                                             Binding="{Binding Name}"
-                                            Header="Name"
+                                            Header="ФИО"
                                             IsReadOnly="True" />
                                         <DataGridTextColumn
                                             Binding="{Binding Position}"
-                                            Header="Position"
+                                            Header="Должность"
                                             IsReadOnly="True" />
                                     </DataGrid.Columns>
                                 </DataGrid>
@@ -136,7 +136,7 @@
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="5,0">
                         <StackPanel Margin="0,5">
-                            <GroupBox Margin="0,7" Header="Works">
+                            <GroupBox Margin="0,7" Header="Работы">
                                 <ScrollViewer>
                                     <DataGrid
                                         MinHeight="70"
@@ -147,17 +147,17 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn
                                                 Binding="{Binding Name}"
-                                                Header="Name"
+                                                Header="Наменование"
                                                 IsReadOnly="True" />
                                             <DataGridTextColumn
                                                 Binding="{Binding Price}"
-                                                Header="Price"
+                                                Header="Цена"
                                                 IsReadOnly="True" />
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </ScrollViewer>
                             </GroupBox>
-                            <GroupBox Margin="0,7" Header="Activities">
+                            <GroupBox Margin="0,7" Header="Активности">
                                 <ScrollViewer>
                                     <DataGrid
                                         MinHeight="70"
@@ -168,19 +168,19 @@
                                         <DataGrid.Columns>
                                             <DataGridTextColumn
                                                 Binding="{Binding StartTime}"
-                                                Header="Start Time"
+                                                Header="Дата начала"
                                                 IsReadOnly="True" />
                                             <DataGridTextColumn
                                                 Binding="{Binding Time}"
-                                                Header="Time"
+                                                Header="Длительность"
                                                 IsReadOnly="True" />
                                             <DataGridTextColumn
                                                 Binding="{Binding Status}"
-                                                Header="Status"
+                                                Header="Статус"
                                                 IsReadOnly="True" />
                                             <DataGridTextColumn
                                                 Binding="{Binding User}"
-                                                Header="User"
+                                                Header="Пользователь"
                                                 IsReadOnly="True" />
                                         </DataGrid.Columns>
                                     </DataGrid>
@@ -192,7 +192,7 @@
                                     VerticalAlignment="Center"
                                     FontSize="12"
                                     FontWeight="Bold"
-                                    Text="Total Price" />
+                                    Text="Конечная цена заказа" />
                                 <TextBox
                                     Margin="0,5,0,0"
                                     IsReadOnly="False"
@@ -204,7 +204,7 @@
                                     VerticalAlignment="Center"
                                     FontSize="12"
                                     FontWeight="Bold"
-                                    Text="PaymentMethod" />
+                                    Text="Способ оплаты" />
                                 <ComboBox
                                     Margin="0,5,0,0"
                                     ItemsSource="{Binding Methods}"

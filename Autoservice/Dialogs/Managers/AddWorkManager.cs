@@ -49,7 +49,7 @@ namespace Autoservice.Dialogs.Managers
 
             Work = work;
 
-            Title = "Edit Work";
+            Title = "Изменить работу";
         }
 
         public void initializeAdd()
@@ -58,7 +58,7 @@ namespace Autoservice.Dialogs.Managers
 
             Work = new Work();
 
-            Title = "Add Work";
+            Title = "Добавить работу";
         }
 
         private void initialize()
@@ -71,13 +71,13 @@ namespace Autoservice.Dialogs.Managers
                     {
                         OnButtonAction = (obj) => CancelHandler(),
                         ButtonIcon = "appbar_undo",
-                        ButtonText = "Cancel"
+                        ButtonText = "Отмена"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = (obj) => SaveHandler(),
                         ButtonIcon = "appbar_disk",
-                        ButtonText = "Save"
+                        ButtonText = "Сохранить"
                     }
                 }
             };

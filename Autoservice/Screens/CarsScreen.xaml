@@ -51,7 +51,7 @@
             </TextBox>
         </Grid>
         <ScrollViewer Grid.Row="1" Margin="10,2">
-            <GroupBox Header="Cars">
+            <GroupBox Header="Транспортные средства">
                 <DataGrid
                     Name="dg"
                     Margin="5"
@@ -75,23 +75,23 @@
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding RegistrationNumber}"
-                            Header="Reg. Number" />
+                            Header="Рег. Номер" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Brand}"
-                            Header="Brand" />
+                            Header="Производитель" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Model}"
-                            Header="Model" />
+                            Header="Модель" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Type}"
-                            Header="Type" />
+                            Header="Тип" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Mileage}"
-                            Header="MileAge" />
+                            Header="Пробег" />
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>

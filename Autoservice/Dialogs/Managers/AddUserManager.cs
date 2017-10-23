@@ -46,7 +46,7 @@ namespace Autoservice.Dialogs.Managers
             }
         }
 
-        [Required(ErrorMessage = "Select User Role")]
+        [Required(ErrorMessage = "Укажите роль пользователя")]
         public string Role
         {
             get { return User.Role; }
@@ -78,7 +78,7 @@ namespace Autoservice.Dialogs.Managers
 
             User = user;
 
-            Title = "Edit User";
+            Title = "Изменить пользователя";
         }
 
         public void initializeAdd()
@@ -87,7 +87,7 @@ namespace Autoservice.Dialogs.Managers
 
             User = new User();
 
-            Title = "Add User";
+            Title = "Добавить пользователя";
         }
 
         private void initialize()
@@ -100,13 +100,13 @@ namespace Autoservice.Dialogs.Managers
                     {
                         OnButtonAction = (obj) => CancelHandler(),
                         ButtonIcon = "appbar_undo",
-                        ButtonText = "Cancel"
+                        ButtonText = "Отмена"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = (obj) => SaveHandler(),
                         ButtonIcon = "appbar_disk",
-                        ButtonText = "Save"
+                        ButtonText = "Сохранить"
                     }
                 }
             };

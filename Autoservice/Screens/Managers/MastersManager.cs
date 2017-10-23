@@ -72,19 +72,19 @@ namespace Autoservice.Screens.Managers
                     {
                         OnButtonAction = o => AddHandler(),
                         ButtonIcon = "appbar_add",
-                        ButtonText = "Add"
+                        ButtonText = "Добавить"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = o => EditHandler(),
                         ButtonIcon = "appbar_edit",
-                        ButtonText = "Edit"
+                        ButtonText = "Изменить"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = o => DeleteHandler(),
                         ButtonIcon = "appbar_delete",
-                        ButtonText = "Delete"
+                        ButtonText = "Удалить"
                     }
                 },
                 MiddleButtons = new ObservableCollection<PanelButtonManager>
@@ -93,7 +93,7 @@ namespace Autoservice.Screens.Managers
                     {
                         OnButtonAction = o => Refresh(),
                         ButtonIcon = "appbar_refresh",
-                        ButtonText = "Refresh"
+                        ButtonText = "Обновить"
                     }
                 }
             };
@@ -160,9 +160,9 @@ namespace Autoservice.Screens.Managers
 
             var deleteDialogSettings = new MetroDialogSettings
             {
-                AffirmativeButtonText = "Yes",
-                NegativeButtonText = "No",
-                FirstAuxiliaryButtonText = "Cancel"
+                AffirmativeButtonText = "Да",
+                NegativeButtonText = "Нет",
+                FirstAuxiliaryButtonText = "Отмена"
             };
 
             var metroWindow = Application.Current.MainWindow as MetroWindow;
@@ -173,8 +173,8 @@ namespace Autoservice.Screens.Managers
 
             var result =
                 await
-                    metroWindow.ShowMessageAsync("Confirm Master delete",
-                        $"Are you sure to delete Master {SelectedMaster.Name}",
+                    metroWindow.ShowMessageAsync("Подтвердите удаление мастера",
+                        $"Вы уверен что хотите удалить {SelectedMaster.Name}?",
                         MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, deleteDialogSettings);
 
             if (result == MessageDialogResult.Affirmative)
@@ -183,7 +183,7 @@ namespace Autoservice.Screens.Managers
                 relevantAdsService.DeleteMaster(SelectedMaster);
 
                 await
-                    metroWindow.ShowMessageAsync("Success", $"Master {SelectedMaster.Name} was deleted");
+                    metroWindow.ShowMessageAsync("Успех", $"Мастер {SelectedMaster.Name} был удалён");
 
                 Refresh();
             }

@@ -67,24 +67,24 @@ namespace Autoservice.Screens.Managers
             Panel = new PanelManager
             {
                 LeftButtons = new ObservableCollection<PanelButtonManager>
-                {                    
+                {
                     new PanelButtonManager
                     {
                         OnButtonAction = o => AddHandler(),
                         ButtonIcon = "appbar_add",
-                        ButtonText = "Add"
+                        ButtonText = "Добавить"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = o => EditHandler(),
                         ButtonIcon = "appbar_edit",
-                        ButtonText = "Edit"
+                        ButtonText = "Изменить"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = o => DeleteHandler(),
                         ButtonIcon = "appbar_delete",
-                        ButtonText = "Delete"
+                        ButtonText = "Удалить"
                     }
                 },
                 MiddleButtons = new ObservableCollection<PanelButtonManager>
@@ -93,7 +93,7 @@ namespace Autoservice.Screens.Managers
                     {
                         OnButtonAction = o => Refresh(),
                         ButtonIcon = "appbar_refresh",
-                        ButtonText = "Refresh"
+                        ButtonText = "Обновить"
                     }
                 }
             };
@@ -161,9 +161,9 @@ namespace Autoservice.Screens.Managers
 
             var deleteDialogSettings = new MetroDialogSettings
             {
-                AffirmativeButtonText = "Yes",
-                NegativeButtonText = "No",
-                FirstAuxiliaryButtonText = "Cancel"
+                AffirmativeButtonText = "Да",
+                NegativeButtonText = "Нет",
+                FirstAuxiliaryButtonText = "Отмена"
             };
 
             var metroWindow = Application.Current.MainWindow as MetroWindow;
@@ -174,8 +174,8 @@ namespace Autoservice.Screens.Managers
 
             var result =
                 await
-                    metroWindow.ShowMessageAsync("Confirm client delete",
-                        $"Are you sure to delete client {SelectedClient.Name}",
+                    metroWindow.ShowMessageAsync("Подтвердите удаление клиента",
+                        $"Вы уверен что хотите удалить {SelectedClient.Name}?",
                         MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, deleteDialogSettings);
 
             if (result == MessageDialogResult.Affirmative)
@@ -184,9 +184,7 @@ namespace Autoservice.Screens.Managers
                 relevantAdsService.DeleteClient(SelectedClient);
 
                 await
-                    metroWindow.ShowMessageAsync("Success", $"Client {SelectedClient.Name} was deleted");
-
-                Refresh();
+                    metroWindow.ShowMessageAsync("Успех", $"Клиент {SelectedClient.Name} был удалён");
             }
 
             SetIsBusy(false);

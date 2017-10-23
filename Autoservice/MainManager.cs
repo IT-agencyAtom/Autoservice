@@ -156,36 +156,36 @@ namespace Autoservice
 
             TabScreens.Add(new ScreenManager
             {
-                Label = "Orders",
-                ToolTip = "Orders",
+                Label = "Заказы",
+                ToolTip = "Заказы",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Tab },
                 Tag = _orderManager
             });
             TabScreens.Add(new ScreenManager
             {
-                Label = "Cars",
-                ToolTip = "Cars",
+                Label = "Транспортные средства",
+                ToolTip = "Транспортные средства",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Car },
                 Tag = _carsManager
             });
             TabScreens.Add(new ScreenManager
             {
-                Label = "Clients",
-                ToolTip = "Clients",
+                Label = "Клиенты",
+                ToolTip = "Клиенты",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.HumanGreeting },
                 Tag = _clientsManager
             });
             TabScreens.Add(new ScreenManager
             {
-                Label = "Works",
-                ToolTip = "Works",
+                Label = "Работы",
+                ToolTip = "Работы",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Wrench },
                 Tag = _worksManager
             });
             TabScreens.Add(new ScreenManager
             {
-                Label = "Masters",
-                ToolTip = "Masters",
+                Label = "Мастера",
+                ToolTip = "Мастера",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Worker },
                 Tag = _mastersManager
             });
@@ -194,8 +194,8 @@ namespace Autoservice
 
                 TabScreens.Add(new ScreenManager
                 {
-                    Label = "Settings",
-                    ToolTip = "Settings",
+                    Label = "Настройки",
+                    ToolTip = "Настройки",
                     Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Settings },
                     Tag = _settingsManager
                 });

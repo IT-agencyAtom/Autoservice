@@ -63,7 +63,7 @@ namespace Autoservice.Dialogs.Managers
             initialize();
             Car = car;
             SelectedType = (int)Car.Type;
-            Title = "Edit Car";
+            Title = "Изменить машину";
         }
 
         public void initializeAdd()
@@ -72,7 +72,7 @@ namespace Autoservice.Dialogs.Managers
 
             Car = new Car();
             
-            Title = "Add Car";
+            Title = "Добавить машину";
         }
 
         private void initialize()
@@ -85,13 +85,13 @@ namespace Autoservice.Dialogs.Managers
                     {
                         OnButtonAction = (obj) => CancelHandler(),
                         ButtonIcon = "appbar_undo",
-                        ButtonText = "Cancel"
+                        ButtonText = "Отмена"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = (obj) => SaveHandler(),
                         ButtonIcon = "appbar_disk",
-                        ButtonText = "Save"
+                        ButtonText = "Сохранить"
                     }
                 }
             };

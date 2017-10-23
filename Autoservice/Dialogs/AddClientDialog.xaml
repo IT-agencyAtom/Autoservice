@@ -41,9 +41,9 @@
             <RowDefinition Height="75" />
         </Grid.RowDefinitions>
 
-        <GroupBox Header="Client Data">
+        <GroupBox Header="Данные клиента">
             <StackPanel>
-                <TextBlock Text="Name" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+                <TextBlock Text="ФИО" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
                             HorizontalAlignment="Center" />
                 <TextBox Margin="0, 5, 0, 0"
                     controls:TextBoxHelper.Watermark="Name"

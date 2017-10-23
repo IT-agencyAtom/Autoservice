@@ -52,7 +52,7 @@
             </TextBox>
         </Grid>
         <ScrollViewer Grid.Row="1" Margin="10,2">
-            <GroupBox Header="Works">
+            <GroupBox Header="Работы">
                 <DataGrid
                     Name="dg"
                     Margin="5"
@@ -76,11 +76,11 @@
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Name}"
-                            Header="Name" />
+                            Header="Наименование" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding Price}"
-                            Header="Price" />
+                            Header="Цена" />
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>

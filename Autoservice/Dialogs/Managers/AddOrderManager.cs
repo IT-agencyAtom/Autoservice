@@ -104,7 +104,7 @@ namespace Autoservice.Dialogs.Managers
            
             RaisePropertyChanged("SelectedStatus");
             RaisePropertyChanged("SelectedMethod");
-            Title = "Edit Order";
+            Title = "Изменить заказ";
         }
 
         public void initializeAdd()
@@ -114,7 +114,7 @@ namespace Autoservice.Dialogs.Managers
 
             Order = new Order();
 
-            Title = "Add Order";
+            Title = "Добавить заказ";
         }
 
         private void initialize()
@@ -127,13 +127,13 @@ namespace Autoservice.Dialogs.Managers
                     {
                         OnButtonAction = (obj) => CancelHandler(),
                         ButtonIcon = "appbar_undo",
-                        ButtonText = "Cancel"
+                        ButtonText = "Отмена"
                     },
                     new PanelButtonManager
                     {
                         OnButtonAction = (obj) => SaveHandler(),
                         ButtonIcon = "appbar_disk",
-                        ButtonText = "Save"
+                        ButtonText = "Сохранить"
                     }
                 }
             };

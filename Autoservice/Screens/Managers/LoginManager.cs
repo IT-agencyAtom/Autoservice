@@ -47,7 +47,7 @@ namespace Autoservice.Screens.Managers
             var user = Users?.FirstOrDefault(u => u.Login == User.Login && u.Password == User.Password);
             if (user == null)
             {
-                MessageBox.Show($"Can't login. Incorrect login or password.", "LogIn error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Не удалось выполнить вход. Неправильная комбинация логина и пароля", "Ошибка входа", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
