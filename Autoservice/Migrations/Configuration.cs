@@ -19,11 +19,10 @@ namespace Autoservice.Migrations
             Client firstClient, secondClient;
             Car firstCar, secondCar;
             Work or, cu, bsp;
-            Order o2 = null;
+            Order o1=null,o2=null, o3=null;
             Master m1, m2;
-            Activity a1, a2, a3;
             User u1 = null;
-
+            Activity a1,a2,a3,a4;
             context.Users.AddOrUpdate(u => u.Login,
                u1 = new User
                {
@@ -37,35 +36,41 @@ namespace Autoservice.Migrations
                    Password = "2",
                    Role = "User"
                });
-
-
-            context.Activities.AddOrUpdate(a=>a.Status,
+            context.Activities.AddOrUpdate(a => a.UniqueString,
                 a1 = new Activity
                 {
-                    StartTime = DateTime.Now.AddDays(-7),
-                    EndTime = DateTime.Now.AddDays(-6.5),
-                    Status = ActivityStatus.Closed,
-                    Order = o2,
+                    UniqueString = "one",
+                    StartTime = DateTime.Now.AddDays(-12),
+                    EndTime = DateTime.Now.AddDays(-11),
+                    Order = o1,
+                    Status = ActivityStatus.New,
                     User = u1
                 },
                 a2 = new Activity
                 {
-                    StartTime = DateTime.Now.AddDays(-6.32),
-                    EndTime = DateTime.Now.AddDays(-6.11),
+                    UniqueString = "two",
+                    StartTime = DateTime.Now.AddDays(-11),
+                    Order = o1,
                     Status = ActivityStatus.InOperation,
-                    Order = o2,
                     User = u1
                 },
                 a3 = new Activity
                 {
-                    StartTime = DateTime.Now.AddDays(-5.51),
-                    EndTime = DateTime.Now.AddDays(-5.28),
-                    Status = ActivityStatus.New,
+                    UniqueString = "three",
+                    StartTime = DateTime.Now.AddDays(-7),
                     Order = o2,
+                    Status = ActivityStatus.New,
+                    User = u1
+                },
+                a4 = new Activity
+                {
+                    UniqueString = "four",
+                    StartTime = DateTime.Now.AddDays(-3),
+                    Order = o3,
+                    Status = ActivityStatus.New,
                     User = u1
                 }
-
-            );
+                );
             context.Masters.AddOrUpdate(m => m.Name,
                 m1 = new Master
                 {
@@ -135,20 +140,19 @@ namespace Autoservice.Migrations
                 }
                 );
             context.Orders.AddOrUpdate(o => o.PersonalNumber,
-                new Order
+                o1 = new Order
                 {
                     StartDate = DateTime.Now.AddDays(-45),
                     PersonalNumber = "a4124681cc",
                     ClientId = firstClient.Id,
                     RepairZone = "Zone X65DA",
                     CarId = firstCar.Id,
-                    Status = OrderStatus.Closed,
                     TotalPrice = 22000,
                     PaymentMethod = PaymentMethod.Cash,
                     SpareParts = new List<SparePart>(),
                     Works = new List<Work> { or, cu, bsp },
                     Masters = new List<Master> { m1, m2 },
-                    Activities = new List<Activity>() 
+                    Activities = new List<Activity> {a1,a2 }
                 },
                 o2 = new Order
                 {
@@ -157,30 +161,32 @@ namespace Autoservice.Migrations
                     ClientId = secondClient.Id,
                     RepairZone = "Zone X61DS",
                     CarId = secondCar.Id,
-                    Status = OrderStatus.Closed,
                     TotalPrice = 16550,
                     PaymentMethod = PaymentMethod.BankCard,
                     SpareParts = new List<SparePart>(),
                     Works = new List<Work>(),
                     Masters = new List<Master>(),
-                    Activities = new List<Activity> { a1, a2, a3 }
+                    Activities = new List<Activity> { a3 }
+
+
                 },
-                new Order
+                o3  = new Order
                 {
                     StartDate = DateTime.Now.AddDays(-15).AddHours(5.14),
                     PersonalNumber = "a4124667cc",
                     ClientId = firstClient.Id,
                     RepairZone = "Zone X61LS",
                     CarId = firstCar.Id,
-                    Status = OrderStatus.Closed,
                     TotalPrice = 36900,
                     PaymentMethod = PaymentMethod.Cash,
                     SpareParts = new List<SparePart>(),
                     Works = new List<Work>(),
                     Masters = new List<Master>(),
-                    Activities = new List<Activity>()
+                    Activities = new List<Activity> { a4}
                 }
-                );        
+                );
+
+
         }
     }
 }

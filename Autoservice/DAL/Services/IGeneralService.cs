@@ -44,5 +44,7 @@ namespace Autoservice.DAL.Services
         void UpdateMaster(Master master);
         void AddMaster(Master master);
         void DeleteMaster(Master selectedMaster);
+        void AddActivity(Activity activity);
+        void UpdateActivity(Activity oldActivity);
     }
 }

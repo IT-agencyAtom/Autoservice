@@ -1,4 +1,5 @@
 ﻿using Autoservice.DAL.Common.Implementation;
+using Autoservice.ViewModel.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,7 +24,10 @@ namespace Autoservice.DAL.Entities
         [ForeignKey("CarId")]
         public Car Car { get; set; }
         public List<Work> Works { get; set; }
-        public OrderStatus Status { get; set; }
+
+        [NotMapped]
+        public ActivityStatus? Status => Activities?.Last().Status;
+
         public List<Activity> Activities { get; set; }
         public int TotalPrice { get; set; }
         public PaymentMethod? PaymentMethod { get; set; }
@@ -31,7 +35,7 @@ namespace Autoservice.DAL.Entities
 
         public Order()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid();            
         }
 
     }

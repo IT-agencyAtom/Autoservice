@@ -106,10 +106,10 @@
                                 FontSize="12"
                                 FontWeight="Bold"
                                 Text="Статус" />
-                            <ComboBox
+                            <TextBlock
                                 Margin="0,5,0,0"
-                                ItemsSource="{Binding Statuses}"
-                                SelectedIndex="{Binding SelectedStatus}" />
+                                Text="{Binding Order.Status}"
+                                />
                         </StackPanel>
                         <GroupBox Margin="0,7" Header="Мастера">
                             <ScrollViewer>

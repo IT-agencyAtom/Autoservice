@@ -61,7 +61,7 @@
                         VerticalAlignment="Center"
                         FontSize="12"
                         FontWeight="Bold"
-                        Text="Рагестрационный номер" />
+                        Text="Регистрационный номер" />
                     <TextBox
                         Margin="0,5,0,0"
                         controls:TextBoxHelper.Watermark="Reg.Number."

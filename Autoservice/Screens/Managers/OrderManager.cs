@@ -28,13 +28,13 @@ namespace Autoservice.Screens.Managers
             set
             {
                 _selectedOrder = value;
+                ChangeRightButton();                
                 RaisePropertyChanged("SelectedOrder");
             }
         }
         public ObservableCollection<Order> Orders { get; set; }
-
+        private PanelButtonManager _pbm;
         private Order _newOrder;
-
         public string OrdersFilterString
         {
             get { return _ordersFilterString; }
@@ -76,6 +76,12 @@ namespace Autoservice.Screens.Managers
 
         public OrderManager()
         {
+            _pbm = new PanelButtonManager
+            {
+                OnButtonAction = o => ChangeActivity(),
+                ButtonIcon = "appbar_checkmark_pencil",
+                ButtonText = "Change"
+            };
             Panel = new PanelManager
             {
                 LeftButtons = new ObservableCollection<PanelButtonManager>
@@ -107,14 +113,51 @@ namespace Autoservice.Screens.Managers
                         ButtonIcon = "appbar_refresh",
                         ButtonText = "Обновить"
                     }
+                },                
+                RightButtons = new ObservableCollection<PanelButtonManager>
+                {
+                 _pbm 
                 }
             };
             MouseDoubleClickCommand = new RelayCommand(EditHandler);
         }
+
+        private void ChangeActivity()
+        {
+            var oldActivity =  SelectedOrder.Activities.Last();
+            oldActivity.EndTime = DateTime.Now;
+            var nextStatus = SelectedOrder.Activities.Last().GetNextStatus();
+            if (nextStatus == null)
+                return;
+            Activity activity = new Activity();
+            activity.UniqueString = RandomStrings.GetRandomString(10);
+            activity.StartTime = DateTime.Now;
+            activity.Order = SelectedOrder;
+            activity.Status = (ActivityStatus)nextStatus;
+            activity.User = UserService.Instance.CurrentUser;
+            SelectedOrder.Activities.Add(activity);
+            SaveActivity2DB(oldActivity, activity);
+            RaisePropertyChanged("SelectedOrder");
+            ChangeRightButton();
+        }
+        private void ChangeRightButton()
+        {
+            if (_selectedOrder.Activities == null)
+                return;
+            if (_selectedOrder.Activities.LastOrDefault().Status == ActivityStatus.Closed)
+                _pbm.ButtonVisibility = Visibility.Hidden;
+            else
+            {
+                _pbm.ButtonVisibility = Visibility.Visible;
+                _pbm.ButtonText = _selectedOrder.Activities.LastOrDefault().GetNextStatus().ToString();
+            }
+        }
+
+
         private async void AddHandler()
         {
             _newOrder = new Order();
-            _newOrder.PersonalNumber = RandomStrings.GetOrderNumber();
+            _newOrder.PersonalNumber = RandomStrings.GetRandomString(10);
             AddClient();
         }
         private async void EditHandler()
@@ -200,7 +243,6 @@ namespace Autoservice.Screens.Managers
             };
             addClientDialog.Show();
         }
-
         private async void AddCar()
         {
             SetIsBusy(true);
@@ -221,23 +263,31 @@ namespace Autoservice.Screens.Managers
             };
             addClientDialog.Show();
         }
-
         private void OpenNewOrderData()
         {
+            _newOrder.Activities = new List<Activity>();
+            _newOrder.Activities.Add(new Activity { StartTime = DateTime.Now, UniqueString = RandomStrings.GetRandomString(10), User = UserService.Instance.CurrentUser, Status = ActivityStatus.New, Order = _newOrder });
+
             SelectedOrder = _newOrder;
             EditHandler();
+        }        
+
+        public void SaveActivity2DB(Activity oldActivity, Activity newActivity)
+        {
+            var relevantAdsService = Get<IGeneralService>();
+            relevantAdsService.UpdateActivity(oldActivity);
+            relevantAdsService.AddActivity(newActivity);            
+            relevantAdsService.UpdateOrder(SelectedOrder);
         }
 
 
         public async override void Refresh()
         {
             SetIsBusy(true);
-
             var service = Get<IGeneralService>();
             Orders = new ObservableCollection<Order>(await Task.Run(() => service.GetAllOrders()));
-
+            _pbm.ButtonText = SelectedOrder?.Activities?.LastOrDefault()?.GetNextStatus()?.ToString() ?? "";
             RaisePropertyChanged("Orders");
-
             SetIsBusy(false);
         }
     }

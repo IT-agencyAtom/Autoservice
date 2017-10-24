@@ -1,5 +1,6 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
+using Autoservice.ViewModel.Utils;
 using ConstaSoft.Core.Controls.Managers;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -13,7 +14,6 @@ namespace Autoservice.Dialogs.Managers
 {
     public class AddOrderManager : PanelViewModelBase
     {
-        private int _selectedStatus=-1;
         private int _selectedMethod=-1;
         private Client _selectedClient;
         private Car _selectedCar;
@@ -24,19 +24,9 @@ namespace Autoservice.Dialogs.Managers
         public ObservableCollection<Client> Clients { get; private set; }
         public ObservableCollection<Car> Cars { get; private set; }
 
-        public string[] Statuses { get; private set; }
         public string[] Methods { get; private set; }
 
-        public int SelectedStatus
-        {
-            get { return _selectedStatus; }
-            set
-            {
-                _selectedStatus = value;
-                Order.Status = (OrderStatus)value;
-                RaisePropertyChanged("SelectedStatus");
-            }
-        }
+        
         public int SelectedMethod {
             get { return _selectedMethod; }
             set
@@ -100,7 +90,6 @@ namespace Autoservice.Dialogs.Managers
 
             Order = order;
             SelectedMethod = (int?)Order.PaymentMethod??-1;
-            SelectedStatus = (int)Order.Status;
            
             RaisePropertyChanged("SelectedStatus");
             RaisePropertyChanged("SelectedMethod");
@@ -113,7 +102,7 @@ namespace Autoservice.Dialogs.Managers
             initialize();
 
             Order = new Order();
-
+            Order.Activities.Add(new Activity { StartTime = DateTime.Now, UniqueString = RandomStrings.GetRandomString(10), User = UserService.Instance.CurrentUser, Status = ActivityStatus.New, Order = Order });
             Title = "Добавить заказ";
         }
 
@@ -137,7 +126,6 @@ namespace Autoservice.Dialogs.Managers
                     }
                 }
             };
-            Statuses = Enum.GetNames(typeof(OrderStatus));
             Methods = Enum.GetNames(typeof(PaymentMethod));
 
         }

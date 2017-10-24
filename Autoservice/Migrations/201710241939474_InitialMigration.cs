@@ -12,8 +12,9 @@ namespace Autoservice.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
+                        UniqueString = c.String(),
                         StartTime = c.DateTime(nullable: false),
-                        EndTime = c.DateTime(nullable: false),
+                        EndTime = c.DateTime(),
                         Status = c.Int(nullable: false),
                         Order_Id = c.Guid(),
                         User_Id = c.Guid(),
@@ -34,7 +35,6 @@ namespace Autoservice.Migrations
                         ClientId = c.Guid(nullable: false),
                         RepairZone = c.String(),
                         CarId = c.Guid(nullable: false),
-                        Status = c.Int(nullable: false),
                         TotalPrice = c.Int(nullable: false),
                         PaymentMethod = c.Int(),
                     })

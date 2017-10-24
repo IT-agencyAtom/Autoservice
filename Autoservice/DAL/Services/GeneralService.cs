@@ -231,6 +231,7 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
+
                 _orderRepository.Update(order);
 
                 scope.SaveChanges();
@@ -274,9 +275,8 @@ namespace Autoservice.DAL.Services
             using (var scope = Db.BeginWork())
             {
                 activity.Order = null;
-
+                activity.User = null;
                 _activityRepository.Add(activity);
-
                 scope.SaveChanges();
             }
         }

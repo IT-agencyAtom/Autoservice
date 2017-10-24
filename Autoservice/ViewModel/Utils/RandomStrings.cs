@@ -16,7 +16,7 @@ namespace Autoservice.ViewModel.Utils
             _rnd = new Random(DateTime.Now.Millisecond);
         }
 
-        public static string GetOrderNumber()
+        public static string GetRandomString(int length)
         {
             string res = "";
             for (int i = 0; i < OrderNumberLength; i++)
