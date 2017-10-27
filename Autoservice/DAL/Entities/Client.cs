@@ -11,10 +11,13 @@ namespace Autoservice.DAL.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set;}
+        public long Phone { get; set; }
+        public List<Car> Cars { get; set; }
 
         public Client()
         {
             Id = Guid.NewGuid();
+            Cars = new List<Car>();
         }
         public override string ToString()
         {

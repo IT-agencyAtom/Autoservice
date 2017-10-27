@@ -127,7 +127,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _clientRepository.GetAll();
+                return _clientRepository.GetAll(c=>c.Cars);
             }
         }       
 
@@ -172,6 +172,13 @@ namespace Autoservice.DAL.Services
                 return _masterRepository.GetAll();
             }
         }
+        public Master GetMasterByWork(Work work)
+        {
+            using (Db.BeginReadOnlyWork())
+            {
+                return _masterRepository.FindById(work.MasterId);
+            }
+        }
 
         public void AddMaster(Master master)
         {
@@ -211,9 +218,18 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.GetAll(o=>o.Car,o=>o.Client,o=>o.Works,o=>o.Masters,o=>o.Activities);
+                return _orderRepository.GetAll(o=>o.Car,o=>o.Client,o=>o.Works,o=>o.Activities);
+            }
+        }        
+
+        public Order GetOrderById(Guid id)
+        {
+            using (Db.BeginReadOnlyWork())
+            {
+                return _orderRepository.Get(o => o.Id == id);
             }
         }
+
 
         public void AddOrder(Order order)
         {
@@ -221,6 +237,9 @@ namespace Autoservice.DAL.Services
             {
                 order.Car = null;
                 order.Client = null;
+                order.Activities = new List<Activity>();
+                order.Works = new List<Work>();
+                order.SpareParts = new List<SparePart>();
                 _orderRepository.Add(order);
 
                 scope.SaveChanges();
@@ -231,9 +250,12 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
-
+                order.Car = null;
+                order.Client = null;
+                order.Activities = new List<Activity>();
+                order.Works = new List<Work>();
+                order.SpareParts = new List<SparePart>();
                 _orderRepository.Update(order);
-
                 scope.SaveChanges();
             }
         }
@@ -264,6 +286,8 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
+                activity.Order = null;
+                activity.User = null;
                 _activityRepository.Update(activity);
 
                 scope.SaveChanges();
@@ -285,7 +309,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _workRepository.GetAll();
+                return _workRepository.GetAll(w=>w.Master);
             }
         }
 

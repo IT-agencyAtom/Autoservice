@@ -17,6 +17,10 @@ namespace Autoservice.DAL.Entities
         public CarType Type { get; set; }
         public int Mileage { get; set; }
 
+        public Guid ClientId { get; set; }
+        [ForeignKey("ClientId")]
+        public Client Client { get; set; }
+
         [NotMapped]
         public string LocalName { get { return ToString(); } set { } }
 

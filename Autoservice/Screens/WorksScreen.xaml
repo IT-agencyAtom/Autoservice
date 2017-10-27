@@ -81,6 +81,10 @@
                             Width="2*"
                             Binding="{Binding Price}"
                             Header="Цена" />
+                        <DataGridTextColumn
+                                                Binding="{Binding Master}"
+                                                Header="Мастер"
+                                                IsReadOnly="True" />
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>

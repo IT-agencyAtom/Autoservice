@@ -48,6 +48,11 @@
                 <TextBox Margin="0, 5, 0, 0"
                     controls:TextBoxHelper.Watermark="Name"
                     Text="{Binding Client.Name}" />
+                <TextBlock Text="Телефон" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+                            HorizontalAlignment="Center" />
+                <TextBox Margin="0, 5, 0, 0"
+                    controls:TextBoxHelper.Watermark="Phone"
+                    Text="{Binding Client.Phone}" />
             </StackPanel>                
         </GroupBox>
 

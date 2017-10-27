@@ -77,6 +77,8 @@ namespace Autoservice.Dialogs.Managers
 
         public RelayCommand Cancel { get; private set; }
 
+        public RelayCommand AddWork { get; private set; }
+
         private bool _isEdit { get; set; }
 
         /// <summary>
@@ -89,6 +91,7 @@ namespace Autoservice.Dialogs.Managers
             initialize();
 
             Order = order;
+            UpdateMasters();
             SelectedMethod = (int?)Order.PaymentMethod??-1;
            
             RaisePropertyChanged("SelectedStatus");
@@ -127,8 +130,29 @@ namespace Autoservice.Dialogs.Managers
                 }
             };
             Methods = Enum.GetNames(typeof(PaymentMethod));
+            AddWork = new RelayCommand(AddNewWork);
 
         }
+
+        private async void AddNewWork()
+        {
+            SetIsBusy(true);
+            var addWorkManager = new AddWorkManager { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
+            await Task.Run(() => addWorkManager.initializeAdd());
+            var addClientDialog = new AddWorkDialog(addWorkManager);
+            addClientDialog.Closed += (sender, args) =>
+            {
+                SetIsBusy(true);
+                if (addWorkManager.WasChanged)
+                {
+                    
+                    Refresh();
+                }
+                SetIsBusy(false);
+            };
+            addClientDialog.Show();
+        }
+
         private void CancelHandler()
         {
             OnExit();
@@ -169,6 +193,16 @@ namespace Autoservice.Dialogs.Managers
             RaisePropertyChanged("Clients");
             RaisePropertyChanged("Cars");
             SetIsBusy(false);
+        }
+
+        private async void UpdateMasters()
+        {
+            var service = Get<IGeneralService>();
+            foreach (var work in Order.Works)
+            {
+                work.Master = await Task.Run(()=>service.GetMasterByWork(work));
+            }
+            RaisePropertyChanged("Order");
         }
     }
 }

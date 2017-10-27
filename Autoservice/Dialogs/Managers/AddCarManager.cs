@@ -43,7 +43,7 @@ namespace Autoservice.Dialogs.Managers
             set
             {
                 _selectedType = value;
-                Car.Type = (Car.CarType)value;
+                Car.Type = (CarType)value;
                 RaisePropertyChanged("SelectedType");
             }
         }

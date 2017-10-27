@@ -57,7 +57,7 @@ namespace Autoservice.Screens.Managers
         }
         private bool StringFilter(Client client)
         {
-            return client.Name.ToLower().Contains(ClientsFilterString);
+            return client.Name.ToLower().Contains(ClientsFilterString)||client.Phone.ToString().Contains(ClientsFilterString);
         }
 
         public RelayCommand MouseDoubleClickCommand { get; set; }
@@ -67,13 +67,7 @@ namespace Autoservice.Screens.Managers
             Panel = new PanelManager
             {
                 LeftButtons = new ObservableCollection<PanelButtonManager>
-                {
-                    new PanelButtonManager
-                    {
-                        OnButtonAction = o => AddHandler(),
-                        ButtonIcon = "appbar_add",
-                        ButtonText = "Добавить"
-                    },
+                {                    
                     new PanelButtonManager
                     {
                         OnButtonAction = o => EditHandler(),
@@ -98,33 +92,7 @@ namespace Autoservice.Screens.Managers
                 }
             };
             MouseDoubleClickCommand = new RelayCommand(EditHandler);
-        }
-
-        private async void AddHandler()
-        {
-            SetIsBusy(true);
-
-            var addManager = new AddClientManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
-            await Task.Run(() => addManager.initializeAdd());
-
-            var addDialog = new AddClientDialog(addManager);
-
-            addDialog.Closed += async (sender, args) =>
-            {
-                SetIsBusy(true);
-
-                if (addManager.WasChanged)
-                {
-                    await Task.Run(() => addManager.Save2DB());
-
-                    Refresh();
-                }
-
-                SetIsBusy(false);
-            };
-
-            addDialog.Show();
-        }
+        }        
 
         private async void EditHandler()
         {

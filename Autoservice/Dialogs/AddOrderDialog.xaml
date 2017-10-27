@@ -42,7 +42,7 @@
                 <RowDefinition Height="75" />
             </Grid.RowDefinitions>
 
-            <GroupBox Header="Данные заказа">
+            <GroupBox Header="Данные заказа" Margin="13,8,-3,2">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*" />
@@ -108,35 +108,42 @@
                                 Text="Статус" />
                             <TextBlock
                                 Margin="0,5,0,0"
+                                HorizontalAlignment="Center"
                                 Text="{Binding Order.Status}"
                                 />
+                            <StackPanel Margin="0,7">
+                                <TextBlock
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="12"
+                                    FontWeight="Bold"
+                                    Text="Конечная цена заказа" />
+                                <TextBox
+                                    Margin="0,5,0,0"
+                                    IsReadOnly="False"
+                                    Text="{Binding Order.TotalPrice}" />
+                            </StackPanel>
                         </StackPanel>
-                        <GroupBox Margin="0,7" Header="Мастера">
-                            <ScrollViewer>
-                                <DataGrid
-                                    Name="dg"
-                                    MinHeight="70"
-                                    AutoGenerateColumns="False"
-                                    CanUserAddRows="True"
-                                    IsSynchronizedWithCurrentItem="True"
-                                    ItemsSource="{Binding Order.Masters}">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn
-                                            Binding="{Binding Name}"
-                                            Header="ФИО"
-                                            IsReadOnly="True" />
-                                        <DataGridTextColumn
-                                            Binding="{Binding Position}"
-                                            Header="Должность"
-                                            IsReadOnly="True" />
-                                    </DataGrid.Columns>
-                                </DataGrid>
-                            </ScrollViewer>
-                        </GroupBox>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="5,0">
                         <StackPanel Margin="0,5">
-                            <GroupBox Margin="0,7" Header="Работы">
+                            <GroupBox Margin="0,7" Header="Работы" Height="130">
+                                <GroupBox.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBlock Text="{Binding}"></TextBlock>
+                                           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">                                            
+                                                <Button VerticalAlignment="Center" ToolTip="Add Work" Command="{Binding AddWork}" Margin="5,0,0,0">
+                                                    <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                                        <Rectangle.OpacityMask>
+                                                            <VisualBrush Visual="{StaticResource appbar_add}" />
+                                                        </Rectangle.OpacityMask>
+                                                    </Rectangle>
+                                                </Button>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GroupBox.HeaderTemplate>
                                 <ScrollViewer>
                                     <DataGrid
                                         MinHeight="70"
@@ -153,51 +160,19 @@
                                                 Binding="{Binding Price}"
                                                 Header="Цена"
                                                 IsReadOnly="True" />
+                                            <DataGridTextColumn
+                                                Binding="{Binding Master}"
+                                                Header="Мастер"
+                                                IsReadOnly="True" />
                                         </DataGrid.Columns>
                                     </DataGrid>
                                 </ScrollViewer>
                             </GroupBox>
-                            <GroupBox Margin="0,7" Header="Активности">
+                            <GroupBox Margin="0,7" Header="Причина обращения">
                                 <ScrollViewer>
-                                    <DataGrid
-                                        MinHeight="70"
-                                        AutoGenerateColumns="False"
-                                        CanUserAddRows="False"
-                                        IsSynchronizedWithCurrentItem="True"
-                                        ItemsSource="{Binding Order.Activities}">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn
-                                                Binding="{Binding StartTime}"
-                                                Header="Дата начала"
-                                                IsReadOnly="True" />
-                                            <DataGridTextColumn
-                                                Binding="{Binding Time}"
-                                                Header="Длительность"
-                                                IsReadOnly="True" />
-                                            <DataGridTextColumn
-                                                Binding="{Binding Status}"
-                                                Header="Статус"
-                                                IsReadOnly="True" />
-                                            <DataGridTextColumn
-                                                Binding="{Binding User}"
-                                                Header="Пользователь"
-                                                IsReadOnly="True" />
-                                        </DataGrid.Columns>
-                                    </DataGrid>
+                                    <TextBox Text="{Binding Order.Notes}" Height="70"></TextBox>
                                 </ScrollViewer>
-                            </GroupBox>
-                            <StackPanel Margin="0,5">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    FontWeight="Bold"
-                                    Text="Конечная цена заказа" />
-                                <TextBox
-                                    Margin="0,5,0,0"
-                                    IsReadOnly="False"
-                                    Text="{Binding Order.TotalPrice}" />
-                            </StackPanel>
+                            </GroupBox>                            
                             <StackPanel Margin="0,5">
                                 <TextBlock
                                     HorizontalAlignment="Center"

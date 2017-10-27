@@ -74,9 +74,11 @@
                     </i:Interaction.Triggers>
                     <DataGrid.Columns>
                         <DataGridTextColumn
-                            Width="2*"
+                            Width="3*"
                             Binding="{Binding Name}"
                             Header="ФИО" />
+                        <DataGridTextColumn Width="2*" Binding="{Binding Phone}" Header="Телефон">               
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>

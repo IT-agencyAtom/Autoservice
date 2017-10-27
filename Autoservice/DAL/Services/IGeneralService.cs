@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Autoservice.DAL.Entities;
 
 namespace Autoservice.DAL.Services
@@ -6,7 +7,7 @@ namespace Autoservice.DAL.Services
     /// <summary>
     /// Database application service interface.</summary>
     public interface IGeneralService
-    {       
+    {
         /// <summary>
         /// Update user.</summary>
         void UpdateUser(User user);
@@ -46,5 +47,7 @@ namespace Autoservice.DAL.Services
         void DeleteMaster(Master selectedMaster);
         void AddActivity(Activity activity);
         void UpdateActivity(Activity oldActivity);
+        Order GetOrderById(Guid id);
+        Master GetMasterByWork(Work work);
     }
 }

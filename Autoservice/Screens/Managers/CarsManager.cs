@@ -70,13 +70,7 @@ namespace Autoservice.Screens.Managers
             Panel = new PanelManager
             {
                 LeftButtons = new ObservableCollection<PanelButtonManager>
-                {
-                    new PanelButtonManager
-                    {
-                        OnButtonAction = o => AddHandler(),
-                        ButtonIcon = "appbar_add",
-                        ButtonText = "Добавить"
-                    },
+                {                    
                     new PanelButtonManager
                     {
                         OnButtonAction = o => EditHandler(),
@@ -101,32 +95,7 @@ namespace Autoservice.Screens.Managers
                 }
             };
             MouseDoubleClickCommand = new RelayCommand(EditHandler);
-        }
-        private async void AddHandler()
-        {
-            SetIsBusy(true);
-
-            var addManager = new AddCarManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
-            await Task.Run(() => addManager.initializeAdd());
-
-            var addDialog = new AddCarDialog(addManager);
-
-            addDialog.Closed += async (sender, args) =>
-            {
-                SetIsBusy(true);
-
-                if (addManager.WasChanged)
-                {
-                    await Task.Run(() => addManager.Save2DB());
-
-                    Refresh();
-                }
-
-                SetIsBusy(false);
-            };
-
-            addDialog.Show();
-        }
+        }        
 
         private async void EditHandler()
         {

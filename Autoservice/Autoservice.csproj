@@ -159,6 +159,12 @@
     <Compile Include="DAL\Services\IGeneralService.cs" />
     <Compile Include="DAL\Services\ServiceBase.cs" />
     <Compile Include="DAL\Entities\User.cs" />
+    <Compile Include="Dialogs\AddCarSelectorDialog.xaml.cs">
+      <DependentUpon>AddCarSelectorDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\AddClientSelectorDialog.xaml.cs">
+      <DependentUpon>AddClientSelectorDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddClientDialog.xaml.cs">
       <DependentUpon>AddClientDialog.xaml</DependentUpon>
     </Compile>
@@ -177,15 +183,17 @@
     <Compile Include="Dialogs\AddWorkDialog.xaml.cs">
       <DependentUpon>AddWorkDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\Managers\AddCarSelectorManager.cs" />
+    <Compile Include="Dialogs\Managers\AddClientSelectorManager.cs" />
     <Compile Include="Dialogs\Managers\AddOrderManager.cs" />
     <Compile Include="Dialogs\Managers\AddClientManager.cs" />
     <Compile Include="Dialogs\Managers\AddUserManager.cs" />
     <Compile Include="Dialogs\Managers\AddCarManager.cs" />
     <Compile Include="Dialogs\Managers\AddMasterManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkManager.cs" />
-    <Compile Include="Migrations\201710241939474_InitialMigration.cs" />
-    <Compile Include="Migrations\201710241939474_InitialMigration.Designer.cs">
-      <DependentUpon>201710241939474_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201710271737203_InitialMigration.cs" />
+    <Compile Include="Migrations\201710271737203_InitialMigration.Designer.cs">
+      <DependentUpon>201710271737203_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
@@ -244,8 +252,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201710241939474_InitialMigration.resx">
-      <DependentUpon>201710241939474_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710271737203_InitialMigration.resx">
+      <DependentUpon>201710271737203_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -270,6 +278,14 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Dialogs\AddCarSelectorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AddClientSelectorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\AddClientDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

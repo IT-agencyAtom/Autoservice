@@ -105,7 +105,7 @@
             </GroupBox>
         </ScrollViewer>
         <ScrollViewer Grid.Row="2" Margin="10,2">
-            <GroupBox Header="Активности">
+            <GroupBox Header="Действия над заказом">
                 <DataGrid                    
                     Margin="10,1"
                     AutoGenerateColumns="False"                    

@@ -15,18 +15,27 @@ namespace Autoservice.DAL.Entities
         public Guid Id { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime? EndTime { get; set; }
+
+        public Guid OrderId { get; set; }
+        [ForeignKey("OrderId")]
         public Order Order { get; set; }
 
         [NotMapped]
         public TimeSpan Time => EndTime - StartTime ?? DateTime.Now - StartTime;
-
         
         public string StringStatus => ToString();
         public ActivityStatus Status { get; set; }
+
+        public Guid UserId { get; set; }
+        [ForeignKey("UserId")]
         public User User { get; set; }
 
         private static string[] _statuses = Enum.GetNames(typeof(ActivityStatus));
-         
+        public static int CompareByStatus(Activity a1, Activity a2)
+        {
+            return a1.Status.CompareTo(a2.Status);
+        }
+
         public Activity()
         {
             Id = Guid.NewGuid();

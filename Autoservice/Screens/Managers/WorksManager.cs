@@ -67,12 +67,12 @@ namespace Autoservice.Screens.Managers
             {
                 LeftButtons = new ObservableCollection<PanelButtonManager>
                 {
-                    new PanelButtonManager
+                    /*new PanelButtonManager
                     {
                         OnButtonAction = o => AddHandler(),
                         ButtonIcon = "appbar_add",
                         ButtonText = "Добавить"
-                    },
+                    },*/
                     new PanelButtonManager
                     {
                         OnButtonAction = o => EditHandler(),
