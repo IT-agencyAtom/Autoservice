@@ -317,8 +317,9 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
-                _workRepository.Add(work);
-
+                work.Master = null;
+                work.Order = null;
+                _workRepository.Add(work);                
                 scope.SaveChanges();
             }
         }
@@ -327,8 +328,9 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
+                work.Master = null;
+                work.Order = null;
                 _workRepository.Update(work);
-
                 scope.SaveChanges();
             }
         }

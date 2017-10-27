@@ -77,7 +77,7 @@ namespace Autoservice.Dialogs.Managers
 
         public RelayCommand Cancel { get; private set; }
 
-        public RelayCommand AddWork { get; private set; }
+        public RelayCommand AddWorkCommand { get; private set; }
 
         private bool _isEdit { get; set; }
 
@@ -130,7 +130,7 @@ namespace Autoservice.Dialogs.Managers
                 }
             };
             Methods = Enum.GetNames(typeof(PaymentMethod));
-            AddWork = new RelayCommand(AddNewWork);
+            AddWorkCommand = new RelayCommand(AddNewWork);
 
         }
 
@@ -138,7 +138,7 @@ namespace Autoservice.Dialogs.Managers
         {
             SetIsBusy(true);
             var addWorkManager = new AddWorkManager { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
-            await Task.Run(() => addWorkManager.initializeAdd());
+            await Task.Run(() => addWorkManager.initializeAdd(Order));
             var addClientDialog = new AddWorkDialog(addWorkManager);
             addClientDialog.Closed += (sender, args) =>
             {

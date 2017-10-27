@@ -22,8 +22,7 @@
     <Window.Resources>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
             <controls1:Panel />
-        </DataTemplate>
-
+        </DataTemplate>        
         <BooleanToVisibilityConverter x:Key="btv" />
     </Window.Resources>
     <i:Interaction.Triggers>
@@ -132,8 +131,8 @@
                                     <DataTemplate>
                                         <Grid>
                                             <TextBlock Text="{Binding}"></TextBlock>
-                                           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">                                            
-                                                <Button VerticalAlignment="Center" ToolTip="Add Work" Command="{Binding AddWork}" Margin="5,0,0,0">
+                                           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                <Button VerticalAlignment="Center" ToolTip="Add Work" Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddWorkCommand}" Margin="5,0,0,0">
                                                     <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
                                                         <Rectangle.OpacityMask>
                                                             <VisualBrush Visual="{StaticResource appbar_add}" />

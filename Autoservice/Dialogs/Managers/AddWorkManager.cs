@@ -102,9 +102,8 @@ namespace Autoservice.Dialogs.Managers
             Validate();
             if (HasErrors)
                 return;
-
             WasChanged = true;
-
+            Save2DB();
             OnExit();
         }
 
@@ -124,6 +123,7 @@ namespace Autoservice.Dialogs.Managers
             SetIsBusy(true);
             var service = Get<IGeneralService>();
             Masters = new ObservableCollection<Master>(await Task.Run(() => service.GetAllMasters()));
+            RaisePropertyChanged("Masters");
             SetIsBusy(false);
         }
     }
