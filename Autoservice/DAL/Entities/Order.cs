@@ -14,22 +14,22 @@ namespace Autoservice.DAL.Entities
         private Order order;
 
         public Guid Id { get; set; }
-        public DateTime StartDate { get; set; }
-        public string PersonalNumber { get; set; }
 
-        public Guid ClientId { get; set; }
-        [ForeignKey("ClientId")]
-        public Client Client { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Number { get; set; }
+        public DateTime StartDate { get; set; }
+        public string PersonalNumber => $"АГ-{Number}";
+        
         public string RepairZone { get; set; }
         public List<SparePart> SpareParts { get; set; }
         public Guid CarId { get; set; }
         [ForeignKey("CarId")]
         public Car Car { get; set; }
-        public List<Work> Works { get; set; }
+        public List<OrderWork> Works { get; set; }
         public string Notes { get; set; }
 
         [NotMapped]
-        public ActivityStatus? Status => Activities?.Last().Status;
+        public ActivityStatus? Status => Activities?.LastOrDefault()?.Status;
 
         public List<Activity> Activities { get; set; }
         public int TotalPrice { get; set; }

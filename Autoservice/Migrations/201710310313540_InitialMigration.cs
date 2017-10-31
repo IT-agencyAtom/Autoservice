@@ -30,9 +30,8 @@ namespace Autoservice.Migrations
                 c => new
                     {
                         Id = c.Guid(nullable: false),
+                        Number = c.Int(nullable: false, identity: true),
                         StartDate = c.DateTime(nullable: false),
-                        PersonalNumber = c.String(),
-                        ClientId = c.Guid(nullable: false),
                         RepairZone = c.String(),
                         CarId = c.Guid(nullable: false),
                         Notes = c.String(),
@@ -40,9 +39,7 @@ namespace Autoservice.Migrations
                         PaymentMethod = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Cars", t => t.CarId, cascadeDelete: false)
-                .ForeignKey("dbo.Clients", t => t.ClientId, cascadeDelete: false)
-                .Index(t => t.ClientId)
+                .ForeignKey("dbo.Cars", t => t.CarId, cascadeDelete: true)
                 .Index(t => t.CarId);
             
             CreateTable(
@@ -67,7 +64,7 @@ namespace Autoservice.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Name = c.String(),
-                        Phone = c.Long(nullable: false),
+                        Phone = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -84,18 +81,19 @@ namespace Autoservice.Migrations
                 .Index(t => t.Order_Id);
             
             CreateTable(
-                "dbo.Works",
+                "dbo.OrderWorks",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Name = c.String(),
-                        Price = c.Single(nullable: false),
+                        WorkId = c.Guid(nullable: false),
                         MasterId = c.Guid(nullable: false),
                         OrderId = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Masters", t => t.MasterId, cascadeDelete: true)
-                .ForeignKey("dbo.Orders", t => t.OrderId, cascadeDelete: false)
+                .ForeignKey("dbo.Orders", t => t.OrderId, cascadeDelete: true)
+                .ForeignKey("dbo.Works", t => t.WorkId, cascadeDelete: true)
+                .Index(t => t.WorkId)
                 .Index(t => t.MasterId)
                 .Index(t => t.OrderId);
             
@@ -106,6 +104,16 @@ namespace Autoservice.Migrations
                         Id = c.Guid(nullable: false),
                         Name = c.String(),
                         Position = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Works",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Name = c.String(),
+                        Price = c.Single(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -125,24 +133,25 @@ namespace Autoservice.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.Activities", "UserId", "dbo.Users");
-            DropForeignKey("dbo.Works", "OrderId", "dbo.Orders");
-            DropForeignKey("dbo.Works", "MasterId", "dbo.Masters");
+            DropForeignKey("dbo.OrderWorks", "WorkId", "dbo.Works");
+            DropForeignKey("dbo.OrderWorks", "OrderId", "dbo.Orders");
+            DropForeignKey("dbo.OrderWorks", "MasterId", "dbo.Masters");
             DropForeignKey("dbo.SpareParts", "Order_Id", "dbo.Orders");
-            DropForeignKey("dbo.Orders", "ClientId", "dbo.Clients");
             DropForeignKey("dbo.Orders", "CarId", "dbo.Cars");
             DropForeignKey("dbo.Cars", "ClientId", "dbo.Clients");
             DropForeignKey("dbo.Activities", "OrderId", "dbo.Orders");
-            DropIndex("dbo.Works", new[] { "OrderId" });
-            DropIndex("dbo.Works", new[] { "MasterId" });
+            DropIndex("dbo.OrderWorks", new[] { "OrderId" });
+            DropIndex("dbo.OrderWorks", new[] { "MasterId" });
+            DropIndex("dbo.OrderWorks", new[] { "WorkId" });
             DropIndex("dbo.SpareParts", new[] { "Order_Id" });
             DropIndex("dbo.Cars", new[] { "ClientId" });
             DropIndex("dbo.Orders", new[] { "CarId" });
-            DropIndex("dbo.Orders", new[] { "ClientId" });
             DropIndex("dbo.Activities", new[] { "UserId" });
             DropIndex("dbo.Activities", new[] { "OrderId" });
             DropTable("dbo.Users");
-            DropTable("dbo.Masters");
             DropTable("dbo.Works");
+            DropTable("dbo.Masters");
+            DropTable("dbo.OrderWorks");
             DropTable("dbo.SpareParts");
             DropTable("dbo.Clients");
             DropTable("dbo.Cars");

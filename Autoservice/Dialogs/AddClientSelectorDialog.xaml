@@ -17,8 +17,8 @@
     ResizeMode="NoResize"
     GlowBrush="{DynamicResource AccentColorBrush}"
     Title="{Binding Title}"
-    Width="250"
-    Height="300">
+    Width="450"
+    Height="400">
     <Window.Resources>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
             <controls1:Panel />
@@ -42,27 +42,74 @@
         </Grid.RowDefinitions>
 
         <GroupBox Header="Поиск клиента">
-            <StackPanel>
-                <TextBlock Text="ФИО" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                            HorizontalAlignment="Center" />
-                <TextBox Margin="0, 5, 0, 0"
-                    controls:TextBoxHelper.Watermark="Name"
-                    Text="{Binding ClientName}" />
-                <TextBlock Text="Телефон" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                            HorizontalAlignment="Center" />
-                <TextBox Margin="0, 5, 0, 0"
-                    controls:TextBoxHelper.Watermark="Phone"
-                    Text="{Binding ClientPhone}" />
-                <Button Command="{Binding Find}" Margin="0,10">Поиск</Button>
-            </StackPanel>
+            <Grid>
+                <Grid.Resources>
+                    <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
+                </Grid.Resources>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition Height="7*" />
+                </Grid.RowDefinitions>
+                <Grid Margin="20,0" VerticalAlignment="Stretch">
+                    <TextBox
+                        Width="300"
+                        Margin="5,0,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        controls:TextBoxHelper.ButtonCommand="{Binding ClearFilter}"
+                        Text="{Binding ClientsFilterString, UpdateSourceTrigger=PropertyChanged}">
+                        <TextBox.Style>
+                            <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
+                                <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
+                                <Style.Triggers>
+                                    <Trigger Property="controls:TextBoxHelper.HasText" Value="False">
+                                        <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="False" />
+                                        <Setter Property="controls:TextBoxHelper.Watermark" Value="Search..." />
+                                    </Trigger>
+                                    <Trigger Property="controls:TextBoxHelper.HasText" Value="True">
+                                        <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBox.Style>
+                    </TextBox>
+                </Grid>
+                <ScrollViewer Grid.Row="1" Margin="10,2">
+                        <DataGrid
+                            Name="dg"
+                            Margin="5"
+                            AutoGenerateColumns="False"
+                            CanUserAddRows="False"
+                            IsReadOnly="True"
+                            IsSynchronizedWithCurrentItem="True"
+                            ItemsSource="{Binding Clients}"
+                            RenderOptions.ClearTypeHint="Enabled"
+                            SelectedItem="{Binding Client}"
+                            TextOptions.TextFormattingMode="Display">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <command:EventToCommand Command="{Binding SelectClient}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn
+                                    Width="3*"
+                                    Binding="{Binding Name}"
+                                    Header="ФИО" />
+                                <DataGridTextColumn Width="2*" Binding="{Binding Phone}" Header="Телефон">
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                </ScrollViewer>
+            </Grid>
         </GroupBox>
 
-        <controls:Flyout Position="Bottom"
+        <controls:Flyout Grid.Row="1" Position="Bottom"
                          CloseButtonVisibility="Collapsed"
                          TitleVisibility="Collapsed"
                          IsPinned="True"
                          IsOpen="True"
-                         Height="80" Grid.RowSpan="2">
+                         Height="80">
             <Grid>
                 <ContentControl Content="{Binding Panel}" />
             </Grid>

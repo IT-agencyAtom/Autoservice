@@ -16,7 +16,7 @@ namespace Autoservice.Migrations
 
         protected override void Seed(DAL.Common.Context.AutoServiceDBContext context)
         {
-            Guid firstClientId = Guid.Parse("6cc74d2c-012b-4bdc-bf8c-dd46c4ed2b04"), secondClientId=Guid.Parse("7a2f9aca-f47e-471f-9ab2-cb082e14e310");
+            /*Guid firstClientId = Guid.Parse("6cc74d2c-012b-4bdc-bf8c-dd46c4ed2b04"), secondClientId=Guid.Parse("7a2f9aca-f47e-471f-9ab2-cb082e14e310");
             Guid firstCarId = Guid.Parse("a938c86b-e17a-49a8-a065-e1bbe03b5736"), secondCarId = Guid.Parse("fd60a645-3e02-40f8-8007-c419eb8a6fa5");
             Guid o1Id = Guid.Parse("b3f0ab1b-da85-4020-9b4d-f56eb0b2c8ef"),o2Id=Guid.Parse("f3a310df-980e-48a8-a0b1-13e9ae553fbb"), o3Id=Guid.Parse("c1d32578-fe8e-44bc-a335-4a6f54409573");
             Guid m1Id = Guid.Parse("b3f0ab1b-da85-4020-9b4d-f56eb1b2c8ef"), m2Id = Guid.Parse("b3f0ab1b-da85-4020-9b4d-f56eb2b2c8ef");
@@ -94,30 +94,22 @@ namespace Autoservice.Migrations
                 new Work
                 {
                     Name = "Bumper Replacement",
-                    Price = 6000,
-                    MasterId = m1Id,
-                    OrderId = o1Id
+                    Price = 6000
                 },
                 new Work
                 {
                     Name = "Oil Replacement",
-                    Price = 1800,
-                    MasterId = m1Id,
-                    OrderId = o1Id
+                    Price = 1800
                 },
                 new Work
                 {
                     Name = "Checkup",
-                    Price = 4500,
-                    MasterId = m2Id,
-                    OrderId = o1Id
+                    Price = 4500
                 },
                 new Work
                 {
                     Name = "Brake Shoes Replacement",
-                    Price = 5000,
-                    MasterId = m1Id,
-                    OrderId = o1Id
+                    Price = 5000
                 }
                 );
             context.Cars.AddOrUpdate(c => c.RegistrationNumber,
@@ -159,24 +151,22 @@ namespace Autoservice.Migrations
                 {
                     Id = firstClientId,
                     Name = "Ivan Ivanov",
-                    Phone = 89001002030                    
+                    Phone = "89001002030"              
                 },
                 new Client
                 {
                     Id = secondClientId,
                     Name = "Petr Petrov",
-                    Phone = 89201003080                   
+                    Phone = "89201003080"
                 }
                 );
             
 
-            context.Orders.AddOrUpdate(o => o.PersonalNumber,
+            context.Orders.AddOrUpdate(o => o.Number,
                 new Order
                 {
                     Id = o1Id,
                     StartDate = DateTime.Now.AddDays(-45),
-                    PersonalNumber = "a4124681cc",
-                    ClientId = firstClientId,
                     RepairZone = "Zone X65DA",
                     CarId = firstCarId,
                     TotalPrice = 22000,
@@ -186,8 +176,6 @@ namespace Autoservice.Migrations
                 {
                     Id = o2Id,
                     StartDate = DateTime.Now.AddDays(-23),
-                    PersonalNumber = "a4124682cc",
-                    ClientId = secondClientId,
                     RepairZone = "Zone X61DS",
                     CarId = secondCarId,
                     TotalPrice = 16550,
@@ -197,14 +185,12 @@ namespace Autoservice.Migrations
                 {
                     Id = o3Id,
                     StartDate = DateTime.Now.AddDays(-15).AddHours(5.14),
-                    PersonalNumber = "a4124667cc",
-                    ClientId = firstClientId,
                     RepairZone = "Zone X61LS",
                     CarId = firstCarId,
                     TotalPrice = 36900,
                     PaymentMethod = PaymentMethod.Cash
                 }
-                );       
+                );       */
 
         }
     }

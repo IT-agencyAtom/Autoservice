@@ -12,7 +12,7 @@
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="{Binding Title}"
     Width="800"
-    Height="600"
+    Height="550"
     GlowBrush="{DynamicResource AccentColorBrush}"
     ResizeMode="NoResize"
     ShowMaxRestoreButton="False"
@@ -34,7 +34,6 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-    <ScrollViewer>
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -58,7 +57,7 @@
                             <TextBox
                                 Margin="0,5,0,0"
                                 IsEnabled="{Binding IsNew}"
-                                Text="{Binding Order.PersonalNumber}" />
+                                Text="{Binding Order.PersonalNumber, Mode=OneWay}" />
                         </StackPanel>
                         <StackPanel Margin="0,5">
                             <TextBlock
@@ -122,56 +121,6 @@
                                     IsReadOnly="False"
                                     Text="{Binding Order.TotalPrice}" />
                             </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="5,0">
-                        <StackPanel Margin="0,5">
-                            <GroupBox Margin="0,7" Header="Работы" Height="130">
-                                <GroupBox.HeaderTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <TextBlock Text="{Binding}"></TextBlock>
-                                           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                                <Button VerticalAlignment="Center" ToolTip="Add Work" Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddWorkCommand}" Margin="5,0,0,0">
-                                                    <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                                                        <Rectangle.OpacityMask>
-                                                            <VisualBrush Visual="{StaticResource appbar_add}" />
-                                                        </Rectangle.OpacityMask>
-                                                    </Rectangle>
-                                                </Button>
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </GroupBox.HeaderTemplate>
-                                <ScrollViewer>
-                                    <DataGrid
-                                        MinHeight="70"
-                                        AutoGenerateColumns="False"
-                                        CanUserAddRows="True"
-                                        IsSynchronizedWithCurrentItem="True"
-                                        ItemsSource="{Binding Order.Works}">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn
-                                                Binding="{Binding Name}"
-                                                Header="Наменование"
-                                                IsReadOnly="True" />
-                                            <DataGridTextColumn
-                                                Binding="{Binding Price}"
-                                                Header="Цена"
-                                                IsReadOnly="True" />
-                                            <DataGridTextColumn
-                                                Binding="{Binding Master}"
-                                                Header="Мастер"
-                                                IsReadOnly="True" />
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                </ScrollViewer>
-                            </GroupBox>
-                            <GroupBox Margin="0,7" Header="Причина обращения">
-                                <ScrollViewer>
-                                    <TextBox Text="{Binding Order.Notes}" Height="70"></TextBox>
-                                </ScrollViewer>
-                            </GroupBox>                            
                             <StackPanel Margin="0,5">
                                 <TextBlock
                                     HorizontalAlignment="Center"
@@ -186,6 +135,87 @@
                             </StackPanel>
                         </StackPanel>
                     </StackPanel>
+                    <Grid Grid.Column="1" Margin="5,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="140"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Margin="0,7" Header="Работы">
+                            <GroupBox.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding}"></TextBlock>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button VerticalAlignment="Center" ToolTip="Add Work" Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddWorkCommand}" Margin="5,0,0,0">
+                                                <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                                    <Rectangle.OpacityMask>
+                                                        <VisualBrush Visual="{StaticResource appbar_add}" />
+                                                    </Rectangle.OpacityMask>
+                                                </Rectangle>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </GroupBox.HeaderTemplate>
+                            <ScrollViewer>
+                                <DataGrid
+                                    MinHeight="70"
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    ItemsSource="{Binding OrderWorks}">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Наменование">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox Margin="0, 5, 0, 0"
+                                                                Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                                SelectedItem="{Binding Work, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                                controls:TextBoxHelper.Watermark="Выберите работу..."
+                                                                IsReadOnly="True"
+                                                                IsEditable="True"
+                                                                ItemsSource="{Binding DataContext.Works, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                MaxDropDownHeight="125"
+                                                                Text="{Binding Work.Name}" 
+                                                                DisplayMemberPath="Name"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Stretch"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn
+                                            Binding="{Binding Work.Price}"
+                                            IsReadOnly="True"
+                                            Header="Цена" />
+                                        <DataGridTemplateColumn Header="Мастер">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox Margin="0, 5, 0, 0"
+                                                                Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                                SelectedItem="{Binding Master, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                                controls:TextBoxHelper.Watermark="Выберите мастера..."
+                                                                IsReadOnly="True"
+                                                                IsEditable="True"
+                                                                ItemsSource="{Binding DataContext.Masters, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                MaxDropDownHeight="125"
+                                                                DisplayMemberPath="Name"
+                                                                Text="{Binding Master.Name}"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Stretch"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </ScrollViewer>
+                        </GroupBox>
+                        
+                        <GroupBox Grid.Row="1" Margin="0,7" Header="Причина обращения">
+                            <ScrollViewer>
+                                <TextBox Text="{Binding Order.Notes}"></TextBox>
+                            </ScrollViewer>
+                        </GroupBox>
+                    </Grid>
                 </Grid>
             </GroupBox>
 
@@ -202,5 +232,4 @@
                 </Grid>
             </controls:Flyout>
         </Grid>
-    </ScrollViewer>
 </controls:MetroWindow>

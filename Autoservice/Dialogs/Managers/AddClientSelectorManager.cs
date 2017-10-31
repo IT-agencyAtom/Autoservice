@@ -5,10 +5,12 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Data;
 
 namespace Autoservice.Dialogs.Managers
 {
@@ -17,48 +19,49 @@ namespace Autoservice.Dialogs.Managers
         public Action OnExit { get; set; }
 
         public string Title { get; set; }
-        public bool IsNewClient = false;
+        public Client Client { get; set; }
+
+        private string _clientsFilterString;
+        private ICollectionView _clientsView { get; set; }
+
         public ObservableCollection<Client> Clients { get; set; }
-        public Client Client { get { return _client; }
-            set
-            {
-                _client = value;
-                ClientName = _client.Name;
-                ClientPhone = _client.Phone.ToString();
-                RaisePropertyChanged("Client");
-            }
-        }
 
-        private Client _client;
-        private string _clientName="";
-        private string _clientPhone="";
-        private bool _clientIsFound = false;
-        public RelayCommand Find { get; private set; }
-
-        public string ClientName
+        public string ClientsFilterString
         {
-            get { return _clientName; }
+            get { return _clientsFilterString; }
             set
             {
-                if (_clientName == value)
+                if (_clientsFilterString == value)
                     return;
 
-                _clientName = value;
-                RaisePropertyChanged("ClientName");
-            }
-        }
-        public string ClientPhone
-        {
-            get { return _clientPhone; }
-            set
-            {
-                if (_clientPhone == value)
-                    return;
+                _clientsFilterString = value.ToLower();
 
-                _clientPhone = value;
-                RaisePropertyChanged("ClientPhone");
+                _clientsView = CollectionViewSource.GetDefaultView(Clients)
+                    ;
+                _clientsView.Filter = ClientsFilter;
+                _clientsView.MoveCurrentToFirst();
+
+                RaisePropertyChanged("ClientsFilterString");
+
             }
         }
+        private bool ClientsFilter(object item)
+        {
+            var client = item as Client;
+            if (client == null)
+                return false;
+            if (ClientsFilterString != null)
+                if (StringFilter(client) == false)
+                    return false;
+            return true;
+        }
+        private bool StringFilter(Client client)
+        {
+            return client.Name.ToLower().Contains(ClientsFilterString) || client.Phone.ToString().Contains(ClientsFilterString);
+        }
+
+        public RelayCommand SelectClient { get; private set; }
+        
         //Комманды
         //public RelayCommand Save { get; private set; }
 
@@ -103,8 +106,18 @@ namespace Autoservice.Dialogs.Managers
                     }
                 }
             };
-            Find = new RelayCommand(Filter);         
+
+            SelectClient = new RelayCommand(SelectClientHandler);
         }
+
+        private void SelectClientHandler()
+        {
+            if (Client == null)
+                return;
+
+            NavigateNext();
+        }
+
         private void CancelHandler()
         {
             OnExit();
@@ -121,48 +134,27 @@ namespace Autoservice.Dialogs.Managers
                 SetIsBusy(true);
                 if (addClientManager.WasChanged)
                 {
+                    var autoService = Get<IGeneralService>();
+                    autoService.AddClient(addClientManager.Client);
+
                     Client = addClientManager.Client;
-                    _clientIsFound = true;
-                    IsNewClient = true;
-                    NavigateNext();                    
-                    Refresh();
+                    NavigateNext();
                 }
                 SetIsBusy(false);
             };
             addClientDialog.Show();
         }
         private void NavigateNext()
-        {            
-            if (!_clientIsFound)
+        {
+            if (Client == null)
                 return;
+
             Validate();
-            if (Client==null)
-                return;
+            
             WasChanged = true;
             OnExit();
         }
-        private void Filter()
-        {
-            List<Client> filterResult = Clients.Where(c => c.Name.ToLower().Contains(ClientName) && c.Phone.ToString().Contains(ClientPhone)).ToList();
-            if (filterResult.Count > 1)
-            {
-                _clientIsFound = false;
-                MessageBox.Show("Недостаточно данных для поиска");
-            }
-            else if (filterResult.Count == 0)
-            {
-                _clientIsFound = false;
-                MessageBox.Show("Клиент не найден");
-            }
-            else
-            {
-                MessageBox.Show("Клиент найден");
-                _clientIsFound = true;
-                Client = filterResult[0];
-                IsNewClient = false;                
-            }
-
-        }
+        
         public override async void Refresh()
         {
             SetIsBusy(true);

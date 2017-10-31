@@ -48,6 +48,5 @@ namespace Autoservice.DAL.Services
         void AddActivity(Activity activity);
         void UpdateActivity(Activity oldActivity);
         Order GetOrderById(Guid id);
-        Master GetMasterByWork(Work work);
     }
 }

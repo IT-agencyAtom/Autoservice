@@ -81,7 +81,7 @@
                             Header="Номер" />
                         <DataGridTextColumn
                             Width="3*"
-                            Binding="{Binding Client}"
+                            Binding="{Binding Car.Client}"
                             Header="Клиент" />
                         <DataGridTextColumn
                             Width="2*"

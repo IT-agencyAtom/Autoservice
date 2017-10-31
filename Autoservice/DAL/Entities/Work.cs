@@ -13,14 +13,6 @@ namespace Autoservice.DAL.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public float Price { get; set; }
-        public Guid MasterId { get; set; }
-        [ForeignKey("MasterId")]
-        public Master Master { get; set; }
-        public Guid OrderId { get; set; }
-        [ForeignKey("OrderId")]
-        public Order Order { get; set; }
-
-
 
         public Work()
         {

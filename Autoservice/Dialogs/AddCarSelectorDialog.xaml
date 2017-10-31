@@ -18,7 +18,7 @@
     GlowBrush="{DynamicResource AccentColorBrush}"
     Title="{Binding Title}"
     Width="250"
-    Height="250">
+    Height="200">
     <Window.Resources>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
             <controls1:Panel />
@@ -41,11 +41,8 @@
             <RowDefinition Height="75" />
         </Grid.RowDefinitions>
 
-        <GroupBox Header="Выбор из базы">
-            <StackPanel>
-                <ComboBox ItemsSource="{Binding Cars}" SelectedItem="{Binding SelectedCar}" Margin="0,10" ></ComboBox>
-                <Button Command="{Binding Find}" Margin="0,10">Поиск</Button>
-            </StackPanel>
+        <GroupBox Header="Выберите ТС">
+            <ComboBox ItemsSource="{Binding Cars}" SelectedItem="{Binding Car}" Margin="0,10" />
         </GroupBox>
 
         <controls:Flyout Position="Bottom"

@@ -172,13 +172,6 @@ namespace Autoservice.DAL.Services
                 return _masterRepository.GetAll();
             }
         }
-        public Master GetMasterByWork(Work work)
-        {
-            using (Db.BeginReadOnlyWork())
-            {
-                return _masterRepository.FindById(work.MasterId);
-            }
-        }
 
         public void AddMaster(Master master)
         {
@@ -218,7 +211,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.GetAll(o=>o.Car,o=>o.Client,o=>o.Works,o=>o.Activities);
+                return _orderRepository.GetAll(o=>o.Car.Client,o=>o.Works,o=>o.Activities);
             }
         }        
 
@@ -226,7 +219,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.Get(o => o.Id == id);
+                return _orderRepository.Get(o => o.Id == id, i => i.Car.Client, i => i.Works);
             }
         }
 
@@ -236,9 +229,8 @@ namespace Autoservice.DAL.Services
             using (var scope = Db.BeginWork())
             {
                 order.Car = null;
-                order.Client = null;
                 order.Activities = new List<Activity>();
-                order.Works = new List<Work>();
+                order.Works = new List<OrderWork>();
                 order.SpareParts = new List<SparePart>();
                 _orderRepository.Add(order);
 
@@ -251,10 +243,6 @@ namespace Autoservice.DAL.Services
             using (var scope = Db.BeginWork())
             {
                 order.Car = null;
-                order.Client = null;
-                order.Activities = new List<Activity>();
-                order.Works = new List<Work>();
-                order.SpareParts = new List<SparePart>();
                 _orderRepository.Update(order);
                 scope.SaveChanges();
             }
@@ -309,7 +297,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _workRepository.GetAll(w=>w.Master);
+                return _workRepository.GetAll();
             }
         }
 
@@ -317,8 +305,6 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
-                work.Master = null;
-                work.Order = null;
                 _workRepository.Add(work);                
                 scope.SaveChanges();
             }
@@ -328,8 +314,6 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
-                work.Master = null;
-                work.Order = null;
                 _workRepository.Update(work);
                 scope.SaveChanges();
             }

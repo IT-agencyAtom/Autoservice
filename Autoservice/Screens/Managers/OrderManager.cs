@@ -67,16 +67,10 @@ namespace Autoservice.Screens.Managers
         private bool StringFilter(Order order)
         {
             return order.PersonalNumber.ToLower().Contains(OrdersFilterString) ||
-                   order.Client.ToString().ToLower().Contains(OrdersFilterString) ||
-                   order.RepairZone.ToLower().Contains(OrdersFilterString) ||
-                   order.Car.ToString().ToLower().Contains(OrdersFilterString) ||
-                   order.Status.ToString().ToLower().Contains(OrdersFilterString);
+                   order.Car.Client.Name.ToLower().Contains(OrdersFilterString) ||
+                   order.Car.Client.Phone.ToLower().Contains(OrdersFilterString) ||
+                   order.Car.ToString().ToLower().Contains(OrdersFilterString);
         }
-
-
-        private bool _isNewClient;
-        private bool _isNewCar;
-
 
         public RelayCommand MouseDoubleClickCommand { get; set; }
 
@@ -164,7 +158,6 @@ namespace Autoservice.Screens.Managers
         {
             _newOrder = new Order();
             _newOrder.StartDate = DateTime.Now;
-            _newOrder.PersonalNumber = RandomStrings.GetRandomString(10);
             AddClient();
         }
         private async void EditHandler()
@@ -230,6 +223,7 @@ namespace Autoservice.Screens.Managers
             SetIsBusy(false);
         }
 
+        private Client _client;
         private async void AddClient()
         {
             SetIsBusy(true);
@@ -241,9 +235,7 @@ namespace Autoservice.Screens.Managers
                 SetIsBusy(true);
                 if (addClientManager.WasChanged)
                 {
-                    _newOrder.ClientId = addClientManager.Client.Id;
-                    _newOrder.Client = addClientManager.Client;
-                    _isNewClient = addClientManager.IsNewClient;
+                    _client = addClientManager.Client;
                     AddCar();
                     Refresh();
                 }
@@ -255,17 +247,15 @@ namespace Autoservice.Screens.Managers
         {
             SetIsBusy(true);
             var addCarManager = new AddCarSelectorManager() { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
-            await Task.Run(() => addCarManager.initialize(_newOrder.Client));
+            addCarManager.initialize(_client);
             var addClientDialog = new AddCarSelectorDialog(addCarManager);
             addClientDialog.Closed += (sender, args) =>
             {
                 SetIsBusy(true);
                 if (addCarManager.WasChanged)
                 {
-                    _newOrder.Car = addCarManager.SelectedCar;
-                    _newOrder.CarId = addCarManager.SelectedCar.Id;
-                    
-                    _isNewCar = addCarManager.IsNewCar;
+                    _newOrder.Car = addCarManager.Car;
+                    _newOrder.CarId = addCarManager.Car.Id;
                     Refresh();
                     Save2DB();
                 }
@@ -276,11 +266,8 @@ namespace Autoservice.Screens.Managers
         private void Save2DB()
         {
             var relevantAdsService = Get<IGeneralService>();
-            if (_isNewClient)
-                relevantAdsService.AddClient(_newOrder.Client);          
-            if(_isNewCar)
-                relevantAdsService.AddCar(_newOrder.Car);
             relevantAdsService.AddOrder(_newOrder);
+
             var activity = new Activity
             {
                 StartTime = DateTime.Now,

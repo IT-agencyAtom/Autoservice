@@ -18,7 +18,7 @@
     GlowBrush="{DynamicResource AccentColorBrush}"
     Title="{Binding Title}"
     Width="200"
-    Height="350">
+    Height="280">
     <Window.Resources>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
             <controls1:Panel />
@@ -56,9 +56,6 @@
                     <TextBox Margin="0, 5, 0, 0"
                     controls:TextBoxHelper.Watermark="Price"
                     Text="{Binding Work.Price}" />
-                    <TextBlock Text="Мастер" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                            HorizontalAlignment="Center"></TextBlock>
-                    <ComboBox ItemsSource="{Binding Masters}" SelectedItem="{Binding SelectedMaster}"></ComboBox>
                 </StackPanel>
             </StackPanel>
         </GroupBox>

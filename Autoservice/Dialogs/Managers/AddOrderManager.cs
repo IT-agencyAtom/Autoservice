@@ -23,6 +23,10 @@ namespace Autoservice.Dialogs.Managers
 
         public ObservableCollection<Client> Clients { get; private set; }
         public ObservableCollection<Car> Cars { get; private set; }
+        public ObservableCollection<Master> Masters { get; private set; }
+        public ObservableCollection<Work> Works { get; private set; }
+        public ObservableCollection<OrderWork> OrderWorks { get; private set; }
+        
 
         public string[] Methods { get; private set; }
 
@@ -41,7 +45,6 @@ namespace Autoservice.Dialogs.Managers
             set
             {
                 _selectedClient = value;
-                Order.Client = value;
                 RaisePropertyChanged("SelectedClient");
             }
         }
@@ -90,8 +93,8 @@ namespace Autoservice.Dialogs.Managers
 
             initialize();
 
-            Order = order;
-            UpdateMasters();
+            var service = Get<IGeneralService>();
+            Order = service.GetOrderById(order.Id);
             SelectedMethod = (int?)Order.PaymentMethod??-1;
            
             RaisePropertyChanged("SelectedStatus");
@@ -136,7 +139,10 @@ namespace Autoservice.Dialogs.Managers
 
         private async void AddNewWork()
         {
-            SetIsBusy(true);
+            OrderWorks.Add(new OrderWork {OrderId = Order.Id});
+
+            RaisePropertyChanged("OrderWorks");
+            /*SetIsBusy(true);
             var addWorkManager = new AddWorkManager { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
             await Task.Run(() => addWorkManager.initializeAdd(Order));
             var addClientDialog = new AddWorkDialog(addWorkManager);
@@ -150,7 +156,7 @@ namespace Autoservice.Dialogs.Managers
                 }
                 SetIsBusy(false);
             };
-            addClientDialog.Show();
+            addClientDialog.Show();*/
         }
 
         private void CancelHandler()
@@ -173,6 +179,8 @@ namespace Autoservice.Dialogs.Managers
         {
             var relevantAdsService = Get<IGeneralService>();
 
+            Order.Works = OrderWorks.ToList();
+
             if (_isEdit)
                 relevantAdsService.UpdateOrder(Order);
             else
@@ -185,24 +193,19 @@ namespace Autoservice.Dialogs.Managers
             var service = Get<IGeneralService>();
             Clients = new ObservableCollection<Client>(await Task.Run(() => service.GetAllClients()));
             Cars = new ObservableCollection<Car>(await Task.Run(() => service.GetAllCars()));
+            Masters = new ObservableCollection<Master>(await Task.Run(() => service.GetAllMasters()));
+            Works = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks()));
+
+            OrderWorks = new ObservableCollection<OrderWork>(Order.Works);
+
             if (_isEdit)
             {
-                SelectedClient = Clients.First(x => x.Id == Order.Client.Id);
-                SelectedCar = Cars.First(x => x.Id == Order.Car.Id);
+                SelectedClient = Clients.First(x => x.Id == Order.Car.ClientId);
+                SelectedCar = Cars.First(x => x.Id == Order.CarId);
             }
             RaisePropertyChanged("Clients");
             RaisePropertyChanged("Cars");
             SetIsBusy(false);
-        }
-
-        private async void UpdateMasters()
-        {
-            var service = Get<IGeneralService>();
-            foreach (var work in Order.Works)
-            {
-                work.Master = await Task.Run(()=>service.GetMasterByWork(work));
-            }
-            RaisePropertyChanged("Order");
         }
     }
 }

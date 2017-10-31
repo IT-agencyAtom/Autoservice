@@ -14,10 +14,8 @@ namespace Autoservice.Dialogs.Managers
     public class AddWorkManager : PanelViewModelBase
     {
         public Action OnExit { get; set; }
-        private Master _selectedMaster;
         public string Title { get; set; }
-        public ObservableCollection<Master> Masters { get; set; }
-        public Master SelectedMaster { get { return _selectedMaster; } set { _selectedMaster = value;Work.Master = value; } }
+        
         private Work _work;
 
         public Work Work
@@ -32,8 +30,7 @@ namespace Autoservice.Dialogs.Managers
                 RaisePropertyChanged("Work");
             }
         }
-
-        private Order _order;
+        
         //Комманды
         public RelayCommand Save { get; private set; }
 
@@ -50,7 +47,6 @@ namespace Autoservice.Dialogs.Managers
             _isEdit = true;
 
             initialize();
-            SelectedMaster = work.Master;
             Work = work;
 
             Title = "Изменить работу";
@@ -61,14 +57,6 @@ namespace Autoservice.Dialogs.Managers
             initialize();
             Work = new Work();
             Title = "Добавить работу";
-        }
-
-        public void initializeAdd(Order order)
-        {
-            initialize();
-            Work = new Work();
-            Title = "Добавить работу";
-            _order = order;
         }
 
         private void initialize()
@@ -110,8 +98,6 @@ namespace Autoservice.Dialogs.Managers
         public void Save2DB()
         {
             var relevantAdsService = Get<IGeneralService>();
-            Work.MasterId = SelectedMaster.Id;
-            Work.OrderId = _order.Id;
             if (_isEdit)
                 relevantAdsService.UpdateWork(Work);
             else
@@ -120,10 +106,6 @@ namespace Autoservice.Dialogs.Managers
 
         public override async void Refresh()
         {
-            SetIsBusy(true);
-            var service = Get<IGeneralService>();
-            Masters = new ObservableCollection<Master>(await Task.Run(() => service.GetAllMasters()));
-            RaisePropertyChanged("Masters");
             SetIsBusy(false);
         }
     }

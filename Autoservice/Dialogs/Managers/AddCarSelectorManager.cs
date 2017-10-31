@@ -17,13 +17,12 @@ namespace Autoservice.Dialogs.Managers
         public Action OnExit { get; set; }
         private Client _client;
         public string Title { get; set; }
-        public bool IsNewCar = false;
         public List<Car> Cars { get; set; }
-        public Car SelectedCar { get { return _car; }
+        public Car Car
+        { get { return _car; }
             set
             {
-                _car = value;
-                IsNewCar = false;    
+                _car = value; 
                 RaisePropertyChanged("Car");
             }
         }
@@ -76,6 +75,9 @@ namespace Autoservice.Dialogs.Managers
             };
             Cars = client.Cars;
             _client = client;
+
+            if (Cars.Count == 0)
+                AddNewCar();
         }
         private void CancelHandler()
         {
@@ -92,22 +94,26 @@ namespace Autoservice.Dialogs.Managers
             {
                 SetIsBusy(true);
                 if (addCarManager.WasChanged)
-                {                    
-                    SelectedCar = addCarManager.Car;
-                    SelectedCar.ClientId = _client.Id;
-                    IsNewCar = true;                  
-                    NavigateNext();                    
-                    Refresh();
+                {
+                    Car = addCarManager.Car;
+                    Car.ClientId = _client.Id;
+
+                    var relevantAdsService = Get<IGeneralService>();
+                    relevantAdsService.AddCar(Car);
+
+                    NavigateNext();
                 }
                 SetIsBusy(false);
             };
             addCarDialog.Show();
         }
         private void NavigateNext()
-        {          
-            Validate();
-            if (SelectedCar==null)
+        {
+            if (Car == null)
                 return;
+
+            Validate();
+            
             WasChanged = true;
             OnExit();
         }       
