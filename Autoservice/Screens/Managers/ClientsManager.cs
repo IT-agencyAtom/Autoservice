@@ -154,7 +154,7 @@ namespace Autoservice.Screens.Managers
                 await
                     metroWindow.ShowMessageAsync("Успех", $"Клиент {SelectedClient.Name} был удалён");
             }
-
+            Refresh();
             SetIsBusy(false);
         }
 

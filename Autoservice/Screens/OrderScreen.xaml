@@ -97,7 +97,7 @@
                             Header="Т/С" />
                         <DataGridTextColumn
                             Width="2*"
-                            Binding="{Binding Status}"
+                            Binding="{Binding StringStatus}"
                             Header="Статус заказа"
                             IsReadOnly="True" />
                     </DataGrid.Columns>
@@ -115,7 +115,7 @@
                         <DataGridTextColumn Width="2*" Header="Начало" Binding="{Binding StartTime}"></DataGridTextColumn>
                         <DataGridTextColumn Width="2*" Header="Длительность" Binding="{Binding Time}"></DataGridTextColumn>
                         <DataGridTextColumn Width="2*" Header="Пользователь" Binding="{Binding User.Login}"></DataGridTextColumn>
-                        <DataGridTextColumn Width="2*" Header="Статус" Binding="{Binding Status}"></DataGridTextColumn>
+                        <DataGridTextColumn Width="2*" Header="Статус" Binding="{Binding StringStatus}"></DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>                
             </GroupBox>

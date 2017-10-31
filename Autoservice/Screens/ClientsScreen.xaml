@@ -79,6 +79,8 @@
                             Header="ФИО" />
                         <DataGridTextColumn Width="2*" Binding="{Binding Phone}" Header="Телефон">               
                         </DataGridTextColumn>
+                        <DataGridTextColumn Width="1*" Binding="{Binding Discount}" Header="Скидка (%)">
+                        </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>

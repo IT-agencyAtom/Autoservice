@@ -65,6 +65,7 @@ namespace Autoservice.Migrations
                         Id = c.Guid(nullable: false),
                         Name = c.String(),
                         Phone = c.String(),
+                        Discount = c.Int(nullable: false,defaultValue: 0),
                     })
                 .PrimaryKey(t => t.Id);
             

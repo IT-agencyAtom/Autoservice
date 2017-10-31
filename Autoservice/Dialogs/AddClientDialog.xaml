@@ -53,6 +53,12 @@
                 <TextBox Margin="0, 5, 0, 0"
                     controls:TextBoxHelper.Watermark="Phone"
                     Text="{Binding Client.Phone}" />
+                <TextBlock Text="Скидка" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+                            HorizontalAlignment="Center" />
+                <TextBox Margin="0, 5, 0, 0"
+                    controls:TextBoxHelper.Watermark="Phone"
+                    Text="{Binding Client.Discount}" />
+
             </StackPanel>                
         </GroupBox>
 

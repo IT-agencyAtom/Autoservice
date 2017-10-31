@@ -17,6 +17,7 @@ namespace Autoservice.Dialogs.Managers
         private int _selectedMethod=-1;
         private Client _selectedClient;
         private Car _selectedCar;
+
         public Action OnExit { get; set; }
 
         public string Title { get; set; }
@@ -58,7 +59,7 @@ namespace Autoservice.Dialogs.Managers
         }
 
 
-
+        private bool _workAdded = false;
         private Order _order;
 
         public Order Order
@@ -94,9 +95,8 @@ namespace Autoservice.Dialogs.Managers
             initialize();
 
             var service = Get<IGeneralService>();
-            Order = service.GetOrderById(order.Id);
-            SelectedMethod = (int?)Order.PaymentMethod??-1;
-           
+            Order = order;
+            SelectedMethod = (int?)Order.PaymentMethod??-1;           
             RaisePropertyChanged("SelectedStatus");
             RaisePropertyChanged("SelectedMethod");
             Title = "Изменить заказ";
@@ -139,8 +139,8 @@ namespace Autoservice.Dialogs.Managers
 
         private async void AddNewWork()
         {
+            _workAdded = true;
             OrderWorks.Add(new OrderWork {OrderId = Order.Id});
-
             RaisePropertyChanged("OrderWorks");
             /*SetIsBusy(true);
             var addWorkManager = new AddWorkManager { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
@@ -178,8 +178,12 @@ namespace Autoservice.Dialogs.Managers
         public void Save2DB()
         {
             var relevantAdsService = Get<IGeneralService>();
-
-            Order.Works = OrderWorks.ToList();
+           
+            var works = OrderWorks.ToList();
+            works.ForEach(x => x.MasterId = x.Master.Id);
+            works.ForEach(x => x.WorkId = x.Work.Id);
+            works.ForEach(x => x.OrderId = Order.Id);
+            Order.Works = works;
 
             if (_isEdit)
                 relevantAdsService.UpdateOrder(Order);
@@ -195,7 +199,6 @@ namespace Autoservice.Dialogs.Managers
             Cars = new ObservableCollection<Car>(await Task.Run(() => service.GetAllCars()));
             Masters = new ObservableCollection<Master>(await Task.Run(() => service.GetAllMasters()));
             Works = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks()));
-
             OrderWorks = new ObservableCollection<OrderWork>(Order.Works);
 
             if (_isEdit)

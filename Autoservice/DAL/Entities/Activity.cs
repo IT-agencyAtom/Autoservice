@@ -2,6 +2,7 @@
 using Autoservice.ViewModel.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace Autoservice.DAL.Entities
         [NotMapped]
         public TimeSpan Time => EndTime - StartTime ?? DateTime.Now - StartTime;
         
-        public string StringStatus => ToString();
+        public string StringStatus => Status.ToDescriptionString();
         public ActivityStatus Status { get; set; }
 
         public Guid UserId { get; set; }
@@ -33,7 +34,7 @@ namespace Autoservice.DAL.Entities
         private static string[] _statuses = Enum.GetNames(typeof(ActivityStatus));
         public static int CompareByStatus(Activity a1, Activity a2)
         {
-            return a1.Status.CompareTo(a2.Status);
+            return a1.StartTime.CompareTo(a2.StartTime);
         }
 
         public Activity()
@@ -44,6 +45,10 @@ namespace Autoservice.DAL.Entities
 
         public ActivityStatus? GetNextStatus()
         {
+            if (Status == ActivityStatus.InOperation)
+                return ActivityStatus.Closed;
+            if (Status == ActivityStatus.InExpectationOfSpareParts)
+                return ActivityStatus.InOperation;
             if (_statuses.Length - 1 <= (int)Status)
                 return null;
             return (ActivityStatus)((int)Status + 1);
@@ -53,6 +58,13 @@ namespace Autoservice.DAL.Entities
     }
     public enum ActivityStatus
     {
-        New,InOperation,Closed
+        [Description("Новый")]
+        New,
+        [Description("В работе")]
+        InOperation,
+        [Description("В ожидании запчастей")]
+        InExpectationOfSpareParts,
+        [Description("Закрыт")]
+        Closed
     }
 }

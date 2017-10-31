@@ -28,12 +28,13 @@ namespace Autoservice.Screens.Managers
             set
             {
                 _selectedOrder = value;
-                ChangeRightButton();
+                ChangeRightButtons();
                 RaisePropertyChanged("SelectedOrder");
             }
         }
         public ObservableCollection<Order> Orders { get; set; }
         private PanelButtonManager _pbm;
+        private PanelButtonManager _inExpectationpbm { get; set; }
         private Order _newOrder;
         public string OrdersFilterString
         {
@@ -82,6 +83,13 @@ namespace Autoservice.Screens.Managers
                 ButtonIcon = "appbar_checkmark_pencil",
                 ButtonText = "Change"
             };
+            _inExpectationpbm = new PanelButtonManager
+            {
+                OnButtonAction = o => ChangeActivityExpactaition(),
+                ButtonIcon = "appbar_timer",
+                ButtonText = "В ожидании запчастей",
+                ButtonVisibility = Visibility.Hidden
+            };
             Panel = new PanelManager
             {
                 LeftButtons = new ObservableCollection<PanelButtonManager>
@@ -116,10 +124,27 @@ namespace Autoservice.Screens.Managers
                 },
                 RightButtons = new ObservableCollection<PanelButtonManager>
                 {
+                 _inExpectationpbm,
                  _pbm
                 }
             };
             MouseDoubleClickCommand = new RelayCommand(EditHandler);
+        }
+
+        private void ChangeActivityExpactaition()
+        {
+            var oldActivity = SelectedOrder.Activities.Last();
+            oldActivity.EndTime = DateTime.Now;
+            var nextStatus = (oldActivity.Status == ActivityStatus.InOperation) ? ActivityStatus.InExpectationOfSpareParts : ActivityStatus.InOperation; 
+            Activity activity = new Activity();
+            activity.UniqueString = RandomStrings.GetRandomString(10);
+            activity.StartTime = DateTime.Now;
+            activity.OrderId = SelectedOrder.Id;
+            activity.Status = nextStatus;
+            activity.UserId = UserService.Instance.CurrentUser.Id;
+            SelectedOrder.Activities.Add(activity);
+            SaveActivity2DB(oldActivity, activity);
+            ChangeRightButtons();
         }
 
         private async void ChangeActivity()
@@ -138,10 +163,10 @@ namespace Autoservice.Screens.Managers
             activity.UserId = UserService.Instance.CurrentUser.Id;
             SelectedOrder.Activities.Add(activity);
             SaveActivity2DB(oldActivity, activity);
-            ChangeRightButton();
+            ChangeRightButtons();
 
         }
-        private void ChangeRightButton()
+        private void ChangeRightButtons()
         {
             if (_selectedOrder.Activities.Count == 0 || 
                 _selectedOrder.Activities == null || 
@@ -150,7 +175,14 @@ namespace Autoservice.Screens.Managers
             else
             {
                 _pbm.ButtonVisibility = Visibility.Visible;
-                _pbm.ButtonText = _selectedOrder.Activities.LastOrDefault().GetNextStatus().ToString();
+                _pbm.ButtonText = _selectedOrder.Activities.LastOrDefault().GetNextStatus().ToDescriptionString();
+                if (_selectedOrder.Activities.LastOrDefault().Status == ActivityStatus.InOperation)
+                {
+                    _inExpectationpbm.ButtonVisibility = Visibility.Visible;
+                }
+                else
+                    _inExpectationpbm.ButtonVisibility = Visibility.Hidden;
+
             }
         }
 
@@ -187,6 +219,7 @@ namespace Autoservice.Screens.Managers
             };
             addDialog.Show();
         }
+        
         private async void DeleteHandler()
         {
             if (SelectedOrder == null)
@@ -258,6 +291,7 @@ namespace Autoservice.Screens.Managers
                     _newOrder.CarId = addCarManager.Car.Id;
                     Refresh();
                     Save2DB();
+                    SelectedOrder = _newOrder;
                 }
                 SetIsBusy(false);
             };
@@ -277,9 +311,8 @@ namespace Autoservice.Screens.Managers
                 OrderId = _newOrder.Id
             };
             relevantAdsService.AddActivity(activity);
-            SelectedOrder = _newOrder;
-            EditHandler();
-        }
+            Refresh();        
+        }            
 
         public void SaveActivity2DB(Activity oldActivity, Activity newActivity)
         {
@@ -294,9 +327,12 @@ namespace Autoservice.Screens.Managers
             SetIsBusy(true);
             var service = Get<IGeneralService>();
             Orders = new ObservableCollection<Order>(await Task.Run(() => service.GetAllOrders()));
+            var Users = new ObservableCollection<User>(await Task.Run(() => service.GetAllUsers()));
+
             foreach (var order in Orders)
             {
                 order.Activities.Sort(Activity.CompareByStatus);
+                order.Activities.ForEach(a => a.User = Users.First(u => u.Id == a.UserId));
             }
             _pbm.ButtonText = SelectedOrder?.Activities?.LastOrDefault()?.GetNextStatus()?.ToString() ?? "";
             RaisePropertyChanged("Orders");

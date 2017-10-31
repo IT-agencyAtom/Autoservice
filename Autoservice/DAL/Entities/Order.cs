@@ -31,6 +31,9 @@ namespace Autoservice.DAL.Entities
         [NotMapped]
         public ActivityStatus? Status => Activities?.LastOrDefault()?.Status;
 
+        [NotMapped]
+        public string StringStatus => Status?.ToDescriptionString()??"";
+
         public List<Activity> Activities { get; set; }
         public int TotalPrice { get; set; }
         public PaymentMethod? PaymentMethod { get; set; }
@@ -41,11 +44,7 @@ namespace Autoservice.DAL.Entities
             Id = Guid.NewGuid();
             Activities = new List<Activity>();
         }
-    }
-    public enum OrderStatus
-    {
-        New,InMaster,Closed
-    }
+    }   
     public enum PaymentMethod
     {
         Cash,BankCard,BankTransfer

@@ -192,9 +192,9 @@
     <Compile Include="Dialogs\Managers\AddCarManager.cs" />
     <Compile Include="Dialogs\Managers\AddMasterManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkManager.cs" />
-    <Compile Include="Migrations\201710310313540_InitialMigration.cs" />
-    <Compile Include="Migrations\201710310313540_InitialMigration.Designer.cs">
-      <DependentUpon>201710310313540_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201710312110513_InitialMigration.cs" />
+    <Compile Include="Migrations\201710312110513_InitialMigration.Designer.cs">
+      <DependentUpon>201710312110513_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
@@ -231,6 +231,7 @@
       <DependentUpon>SettingsScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\Utils\Constants.cs" />
+    <Compile Include="ViewModel\Utils\EnumExtender.cs" />
     <Compile Include="ViewModel\Utils\RandomStrings.cs" />
     <Compile Include="ViewModel\Utils\UserService.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -253,8 +254,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201710310313540_InitialMigration.resx">
-      <DependentUpon>201710310313540_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201710312110513_InitialMigration.resx">
+      <DependentUpon>201710312110513_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

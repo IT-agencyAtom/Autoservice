@@ -35,7 +35,7 @@ namespace Autoservice
         
         public RelayCommand ShowLogs { get; private set; }
         public RelayCommand ShowChangelog { get; private set; }
-
+        
         
         private SettingsManager _settingsManager;
         private LoginManager _loginManager;
@@ -313,7 +313,15 @@ namespace Autoservice
 
             _logger.Info(""); _logger.Info(""); _logger.Info("");
         }
+        public void RestartOrderScreen()
+        {
+            _orderManager = new OrderManager
+            {
+                SetIsBusy = isBusy => IsBusy = isBusy
+            };
+        }
     }
+    
 
     public class SelectedItemToContentConverter : IMultiValueConverter
     {

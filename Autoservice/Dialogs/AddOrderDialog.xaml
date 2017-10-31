@@ -104,11 +104,11 @@
                                 FontSize="12"
                                 FontWeight="Bold"
                                 Text="Статус" />
-                            <TextBlock
-                                Margin="0,5,0,0"
-                                HorizontalAlignment="Center"
-                                Text="{Binding Order.Status}"
-                                />
+                        <TextBlock 
+                            Margin="0,5,0,0"
+                            FontSize="12"
+                            FontWeight="Regular"
+                            Text ="{Binding Order.StringStatus}" />
                             <StackPanel Margin="0,7">
                                 <TextBlock
                                     HorizontalAlignment="Center"
