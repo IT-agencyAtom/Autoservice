@@ -12,7 +12,7 @@ namespace Autoservice.DAL.Common.Context
 #if DEBUG
         public AutoServiceDBContext() : base("name=LocalConnection") {
 #else
-        public RelevantAdsDBContext() : base("name=ProductionConnection") {
+        public AutoServiceDBContext() : base("name=ProductionConnection") {
 #endif
         }
 
@@ -29,5 +29,6 @@ namespace Autoservice.DAL.Common.Context
         public DbSet<Order> Orders { get; set; }
         public DbSet<SparePart> SpareParts { get; set; }
         public DbSet<Work> Works { get; set; }
+        public DbSet<OrderWork> OrderWorks { get; set; }
     }
 }

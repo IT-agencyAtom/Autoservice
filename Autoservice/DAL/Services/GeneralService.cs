@@ -5,6 +5,7 @@ using Autoservice.DAL.Common.Interfaces;
 using Autoservice.DAL.Entities;
 using Autoservice.DAL.Repositories.Interfaces;
 using System;
+using System.Linq;
 
 namespace Autoservice.DAL.Services
 {
@@ -19,13 +20,15 @@ namespace Autoservice.DAL.Services
         private readonly IOrderRepository _orderRepository;
         private readonly ISparePartRepository _sparePartRepository;
         private readonly IUserRepository _userRepository;
-        private readonly IWorkRepository _workRepository;        
+        private readonly IWorkRepository _workRepository;
+        private readonly IOrderWorkRepository _orderWorkRepository;
 
         protected Logger _logger;
 
         public GeneralService(
             IDbWorker dbWorker,IActivityRepository activityRepository,ICarRepository carRepository,IClientRepository clientRepository,IMasterRepository masterRepository,            
-            IOrderRepository orderRepository,ISparePartRepository sparePartRepository, IUserRepository userRepository, IWorkRepository workRepository)
+            IOrderRepository orderRepository,ISparePartRepository sparePartRepository, IUserRepository userRepository, IWorkRepository workRepository,
+            IOrderWorkRepository orderWorkRepository)
             : base(dbWorker)
         {
             _activityRepository = activityRepository;
@@ -35,7 +38,8 @@ namespace Autoservice.DAL.Services
             _orderRepository = orderRepository;
             _sparePartRepository = sparePartRepository;                        
             _userRepository = userRepository;
-            _workRepository = workRepository;           
+            _workRepository = workRepository;
+            _orderWorkRepository = orderWorkRepository;
         }       
       
 
@@ -211,7 +215,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.GetAll(o=>o.Car.Client,o=>o.Works,o=>o.Activities);
+                return _orderRepository.GetAll(o=>o.Car.Client,o=>o.Works.Select(w => w.Master), o => o.Works.Select(w => w.Work), o=>o.Activities);
             }
         }        
 
@@ -226,13 +230,19 @@ namespace Autoservice.DAL.Services
 
         public void AddOrder(Order order)
         {
+            order.TotalPrice = order.Works.Sum(w => w.Price);
             using (var scope = Db.BeginWork())
             {
                 order.Car = null;
-                order.Activities = new List<Activity>();
-                order.Works = new List<OrderWork>();
-                order.SpareParts = new List<SparePart>();
                 _orderRepository.Add(order);
+
+                _orderWorkRepository.DeleteWorks(order);
+
+                foreach (var work in order.Works)
+                {
+                    work.OrderId = order.Id;
+                    _orderWorkRepository.SaveWork(work);
+                }
 
                 scope.SaveChanges();
             }
@@ -240,10 +250,26 @@ namespace Autoservice.DAL.Services
 
         public void UpdateOrder(Order order)
         {
+            order.TotalPrice = order.Works.Sum(w => w.Price);
             using (var scope = Db.BeginWork())
             {
-                order.Car = null;
-                _orderRepository.Update(order);
+                _orderWorkRepository.DeleteWorks(order);
+
+                foreach (var work in order.Works.Where(w => w.Work != null && w.Master != null))
+                {
+                    work.OrderId = order.Id;
+                    _orderWorkRepository.SaveWork(work);
+                }
+
+                var baseOrder = _orderRepository.Get(o => o.Id == order.Id);
+                if (baseOrder == null)
+                    return;
+
+                baseOrder.TotalPrice = order.Works.Sum(w => w.Price);
+                baseOrder.Notes = order.Notes;
+                baseOrder.PaymentMethod = order.PaymentMethod;
+                baseOrder.RepairZone = order.RepairZone;
+
                 scope.SaveChanges();
             }
         }

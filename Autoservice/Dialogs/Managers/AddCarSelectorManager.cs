@@ -78,6 +78,8 @@ namespace Autoservice.Dialogs.Managers
 
             if (Cars.Count == 0)
                 AddNewCar();
+            else
+                Car = Cars.FirstOrDefault();
         }
         private void CancelHandler()
         {

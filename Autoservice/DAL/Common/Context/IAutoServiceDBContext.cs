@@ -15,5 +15,6 @@ namespace Autoservice.DAL.Common.Context
         DbSet<Order> Orders { get; set; }
         DbSet<SparePart> SpareParts { get; set; }
         DbSet<Work> Works { get; set; }
+        DbSet<OrderWork> OrderWorks { get; set; }
     }
 }

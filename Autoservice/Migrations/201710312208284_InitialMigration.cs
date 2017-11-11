@@ -35,7 +35,7 @@ namespace Autoservice.Migrations
                         RepairZone = c.String(),
                         CarId = c.Guid(nullable: false),
                         Notes = c.String(),
-                        TotalPrice = c.Int(nullable: false),
+                        TotalPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
                         PaymentMethod = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -65,7 +65,7 @@ namespace Autoservice.Migrations
                         Id = c.Guid(nullable: false),
                         Name = c.String(),
                         Phone = c.String(),
-                        Discount = c.Int(nullable: false,defaultValue: 0),
+                        Discount = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -89,6 +89,7 @@ namespace Autoservice.Migrations
                         WorkId = c.Guid(nullable: false),
                         MasterId = c.Guid(nullable: false),
                         OrderId = c.Guid(nullable: false),
+                        Price = c.Decimal(nullable: false, precision: 18, scale: 2),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Masters", t => t.MasterId, cascadeDelete: true)
@@ -114,7 +115,7 @@ namespace Autoservice.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Name = c.String(),
-                        Price = c.Single(nullable: false),
+                        Price = c.Decimal(nullable: false, precision: 18, scale: 2),
                     })
                 .PrimaryKey(t => t.Id);
             

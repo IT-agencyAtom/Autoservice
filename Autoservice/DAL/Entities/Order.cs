@@ -35,13 +35,15 @@ namespace Autoservice.DAL.Entities
         public string StringStatus => Status?.ToDescriptionString()??"";
 
         public List<Activity> Activities { get; set; }
-        public int TotalPrice { get; set; }
+        public decimal TotalPrice { get; set; }
         public PaymentMethod? PaymentMethod { get; set; }
 
 
         public Order()
         {
             Id = Guid.NewGuid();
+            Works = new List<OrderWork>();
+            SpareParts = new List<SparePart>();
             Activities = new List<Activity>();
         }
     }   

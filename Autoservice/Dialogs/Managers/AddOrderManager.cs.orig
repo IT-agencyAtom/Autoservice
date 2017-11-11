@@ -6,11 +6,9 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using GalaSoft.MvvmLight;
 
 namespace Autoservice.Dialogs.Managers
 {
@@ -28,16 +26,12 @@ namespace Autoservice.Dialogs.Managers
         public ObservableCollection<Car> Cars { get; private set; }
         public ObservableCollection<Master> Masters { get; private set; }
         public ObservableCollection<Work> Works { get; private set; }
-        public ObservableCollection<OrderWorkModel> OrderWorks { get; private set; }
+        public ObservableCollection<OrderWork> OrderWorks { get; private set; }
         
 
         public string[] Methods { get; private set; }
 
-        public decimal TotalPrice
-        {
-            get { return OrderWorks.Sum(ow => ow.Price) - (SelectedClient?.Discount * OrderWorks.Sum(ow => ow.Price) / 100).GetValueOrDefault(); }
-        }
-
+        
         public int SelectedMethod {
             get { return _selectedMethod; }
             set
@@ -52,8 +46,7 @@ namespace Autoservice.Dialogs.Managers
             set
             {
                 _selectedClient = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged("TotalPrice");
+                RaisePropertyChanged("SelectedClient");
             }
         }
         public Car SelectedCar { get { return _selectedCar; }
@@ -101,12 +94,8 @@ namespace Autoservice.Dialogs.Managers
 
             initialize();
 
-            //var service = Get<IGeneralService>();
+            var service = Get<IGeneralService>();
             Order = order;
-            OrderWorks = new ObservableCollection<OrderWorkModel>(order.Works.Select(w => new OrderWorkModel(w)));
-            foreach (var orderWork in OrderWorks)
-                orderWork.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-            
             SelectedMethod = (int?)Order.PaymentMethod??-1;           
             RaisePropertyChanged("SelectedStatus");
             RaisePropertyChanged("SelectedMethod");
@@ -150,11 +139,14 @@ namespace Autoservice.Dialogs.Managers
 
         private async void AddNewWork()
         {
-            var newWork = new OrderWorkModel {OrderId = Order.Id, IsNew = true};
-            newWork.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-            OrderWorks.Add(newWork);
+<<<<<<< working copy
+            OrderWorks.Add(new OrderWork {OrderId = Order.Id, IsNew = true});
+
+=======
+            _workAdded = true;
+            OrderWorks.Add(new OrderWork {OrderId = Order.Id});
+>>>>>>> destination
             RaisePropertyChanged("OrderWorks");
-            
             /*SetIsBusy(true);
             var addWorkManager = new AddWorkManager { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
             await Task.Run(() => addWorkManager.initializeAdd(Order));
@@ -191,9 +183,12 @@ namespace Autoservice.Dialogs.Managers
         public void Save2DB()
         {
             var relevantAdsService = Get<IGeneralService>();
-
-            Order.Works = OrderWorks.Select(w => new OrderWork(w)).ToList();
-            Order.TotalPrice = OrderWorks.Sum(ow => ow.Price) - SelectedClient.Discount * OrderWorks.Sum(ow => ow.Price) / 100;
+           
+            var works = OrderWorks.ToList();
+            works.ForEach(x => x.MasterId = x.Master.Id);
+            works.ForEach(x => x.WorkId = x.Work.Id);
+            works.ForEach(x => x.OrderId = Order.Id);
+            Order.Works = works;
 
             if (_isEdit)
                 relevantAdsService.UpdateOrder(Order);
@@ -209,6 +204,7 @@ namespace Autoservice.Dialogs.Managers
             Cars = new ObservableCollection<Car>(await Task.Run(() => service.GetAllCars()));
             Masters = new ObservableCollection<Master>(await Task.Run(() => service.GetAllMasters()));
             Works = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks()));
+            OrderWorks = new ObservableCollection<OrderWork>(Order.Works);
 
             if (_isEdit)
             {
@@ -218,66 +214,6 @@ namespace Autoservice.Dialogs.Managers
             RaisePropertyChanged("Clients");
             RaisePropertyChanged("Cars");
             SetIsBusy(false);
-        }
-    }
-
-    public class OrderWorkModel : ViewModelBase
-    {
-        public Guid Id { get; set; }
-        public Guid WorkId { get; set; }
-        private Work _work { get; set; }
-
-        public Work Work
-        {
-            get { return _work; }
-            set
-            {
-                if (_work?.Id != value?.Id)
-                {
-                    _work = value;
-
-                    if(_work != null)
-                        Price = _work.Price;
-                }
-            }
-        }
-        public Guid MasterId { get; set; }
-        public Master Master { get; set; }
-        public Guid OrderId { get; set; }
-        public Order Order { get; set; }
-
-        private decimal _price;
-        public decimal Price
-        {
-            get { return _price; }
-            set
-            {
-                _price = value;
-
-                RaisePropertyChanged();
-                RaisePropertyChanged("TotalPrice");
-            }
-        }
-
-        public bool IsNew { get; set; }
-
-        public OrderWorkModel()
-        {
-            Id = Guid.NewGuid();
-            IsNew = false;
-        }
-
-        public OrderWorkModel(OrderWork work)
-        {
-            Id = work.Id;
-            WorkId = work.WorkId;
-            Work = work.Work;
-            MasterId = work.MasterId;
-            Master = work.Master;
-            OrderId = work.OrderId;
-            Order = work.Order;
-            Price = work.Price;
-            IsNew = work.IsNew;
         }
     }
 }

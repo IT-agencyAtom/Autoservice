@@ -270,7 +270,6 @@ namespace Autoservice.Screens.Managers
                 {
                     _client = addClientManager.Client;
                     AddCar();
-                    Refresh();
                 }
                 SetIsBusy(false);
             };
@@ -289,9 +288,9 @@ namespace Autoservice.Screens.Managers
                 {
                     _newOrder.Car = addCarManager.Car;
                     _newOrder.CarId = addCarManager.Car.Id;
-                    Refresh();
                     Save2DB();
-                    SelectedOrder = _newOrder;
+                    SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
+                    EditHandler();
                 }
                 SetIsBusy(false);
             };
@@ -322,12 +321,12 @@ namespace Autoservice.Screens.Managers
             relevantAdsService.AddActivity(newActivity);
             Refresh();
         }
-        public async override void Refresh()
+        public override async void Refresh()
         {
             SetIsBusy(true);
             var service = Get<IGeneralService>();
-            Orders = new ObservableCollection<Order>(await Task.Run(() => service.GetAllOrders()));
-            var Users = new ObservableCollection<User>(await Task.Run(() => service.GetAllUsers()));
+            Orders = new ObservableCollection<Order>(service.GetAllOrders());
+            var Users = new ObservableCollection<User>(service.GetAllUsers());
 
             foreach (var order in Orders)
             {
