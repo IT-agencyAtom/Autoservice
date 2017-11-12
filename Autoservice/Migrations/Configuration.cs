@@ -16,10 +16,11 @@ namespace Autoservice.Migrations
 
         protected override void Seed(DAL.Common.Context.AutoServiceDBContext context)
         {
-            /*Guid firstClientId = Guid.Parse("6cc74d2c-012b-4bdc-bf8c-dd46c4ed2b04"), secondClientId=Guid.Parse("7a2f9aca-f47e-471f-9ab2-cb082e14e310");
+           /* Guid firstClientId = Guid.Parse("6cc74d2c-012b-4bdc-bf8c-dd46c4ed2b04"), secondClientId=Guid.Parse("7a2f9aca-f47e-471f-9ab2-cb082e14e310");
             Guid firstCarId = Guid.Parse("a938c86b-e17a-49a8-a065-e1bbe03b5736"), secondCarId = Guid.Parse("fd60a645-3e02-40f8-8007-c419eb8a6fa5");
             Guid o1Id = Guid.Parse("b3f0ab1b-da85-4020-9b4d-f56eb0b2c8ef"),o2Id=Guid.Parse("f3a310df-980e-48a8-a0b1-13e9ae553fbb"), o3Id=Guid.Parse("c1d32578-fe8e-44bc-a335-4a6f54409573");
             Guid m1Id = Guid.Parse("b3f0ab1b-da85-4020-9b4d-f56eb1b2c8ef"), m2Id = Guid.Parse("b3f0ab1b-da85-4020-9b4d-f56eb2b2c8ef");
+            Work w1, w2, w3,w4,w5;
             User u1 = null;
             context.Users.AddOrUpdate(u => u.Login,
                u1 = new User
@@ -91,25 +92,30 @@ namespace Autoservice.Migrations
                 );
 
             context.Works.AddOrUpdate(w => w.Name,
-                new Work
+                w1 = new Work
                 {
                     Name = "Замена бампера",
                     Price = 6000
                 },
-                new Work
+                w2 = new Work
                 {
                     Name = "Замена масла",
                     Price = 1800
                 },
-                new Work
+                w3 = new Work
                 {
                     Name = "Проверка двигателя",
                     Price = 4500
                 },
-                new Work
+                w4 = new Work
                 {
                     Name = "Проверка генератора",
                     Price = 5000
+                },
+                w5 = new Work
+                {
+                    Name = "Замена колёс",
+                    Price = 7000
                 }
                 );
             context.Cars.AddOrUpdate(c => c.RegistrationNumber,
@@ -191,8 +197,30 @@ namespace Autoservice.Migrations
                     TotalPrice = 36900,
                     PaymentMethod = PaymentMethod.Cash
                 }
-                );     */  
-
+                );
+            context.WorkTemplates.AddOrUpdate(w => w.Name,
+                new WorkTemplate
+                {
+                    Name = "Полная диагностика",
+                    Works = new List<Work> {w2,w3,w4 }
+                },
+                new WorkTemplate
+                {
+                    Name = "Сезонная замена шин",
+                    Works = new List<Work> { w5}
+                },
+                new WorkTemplate
+                {
+                    Name = "Ремонт генератора",
+                    Works = new List<Work>
+                    {
+                        new Work{ Name = "Разборка автомобиля", Price = 1000 },
+                        new Work{ Name = "Снятие генератора", Price = 600 },
+                        new Work{ Name = "Починка генератора", Price = 1200 },
+                        new Work{ Name = "Сборка автомобиля", Price = 1000 }
+                    }
+                }
+                );*/
         }
     }
 }

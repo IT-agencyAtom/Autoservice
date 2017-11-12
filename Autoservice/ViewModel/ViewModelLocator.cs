@@ -70,6 +70,7 @@ namespace Autoservice.ViewModel
             builder.RegisterType<WorkRepository<TContext>>().As<IWorkRepository>().InstancePerDependency();
             builder.RegisterType<UserRepository<TContext>>().As<IUserRepository>().InstancePerDependency();
             builder.RegisterType<OrderWorkRepository<TContext>>().As<IOrderWorkRepository>().InstancePerDependency();
+            builder.RegisterType<WorkTemplateRepository<TContext>>().As<IWorkTemplateRepository>().InstancePerDependency();
         }
 
         public static void Cleanup()

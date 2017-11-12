@@ -47,7 +47,7 @@ namespace Autoservice.Screens.Managers
         }
         private bool WorksFilter(object item)
         {
-            var work = item as Master;
+            var work = item as Work;
             if (work == null)
                 return false;
             if (WorksFilterString != null)
@@ -55,7 +55,7 @@ namespace Autoservice.Screens.Managers
                     return false;
             return true;
         }
-        private bool StringFilter(Master work)
+        private bool StringFilter(Work work)
         {
             return work.Name.ToLower().Contains(WorksFilterString);
         }

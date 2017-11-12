@@ -3,7 +3,7 @@ namespace Autoservice.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialMigration : DbMigration
+    public partial class InitialMigraton : DbMigration
     {
         public override void Up()
         {
@@ -116,8 +116,11 @@ namespace Autoservice.Migrations
                         Id = c.Guid(nullable: false),
                         Name = c.String(),
                         Price = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        WorkTemplate_Id = c.Guid(),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.WorkTemplates", t => t.WorkTemplate_Id)
+                .Index(t => t.WorkTemplate_Id);
             
             CreateTable(
                 "dbo.Users",
@@ -130,10 +133,20 @@ namespace Autoservice.Migrations
                     })
                 .PrimaryKey(t => t.Id);
             
+            CreateTable(
+                "dbo.WorkTemplates",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
         }
         
         public override void Down()
         {
+            DropForeignKey("dbo.Works", "WorkTemplate_Id", "dbo.WorkTemplates");
             DropForeignKey("dbo.Activities", "UserId", "dbo.Users");
             DropForeignKey("dbo.OrderWorks", "WorkId", "dbo.Works");
             DropForeignKey("dbo.OrderWorks", "OrderId", "dbo.Orders");
@@ -142,6 +155,7 @@ namespace Autoservice.Migrations
             DropForeignKey("dbo.Orders", "CarId", "dbo.Cars");
             DropForeignKey("dbo.Cars", "ClientId", "dbo.Clients");
             DropForeignKey("dbo.Activities", "OrderId", "dbo.Orders");
+            DropIndex("dbo.Works", new[] { "WorkTemplate_Id" });
             DropIndex("dbo.OrderWorks", new[] { "OrderId" });
             DropIndex("dbo.OrderWorks", new[] { "MasterId" });
             DropIndex("dbo.OrderWorks", new[] { "WorkId" });
@@ -150,6 +164,7 @@ namespace Autoservice.Migrations
             DropIndex("dbo.Orders", new[] { "CarId" });
             DropIndex("dbo.Activities", new[] { "UserId" });
             DropIndex("dbo.Activities", new[] { "OrderId" });
+            DropTable("dbo.WorkTemplates");
             DropTable("dbo.Users");
             DropTable("dbo.Works");
             DropTable("dbo.Masters");

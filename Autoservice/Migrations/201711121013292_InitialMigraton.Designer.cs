@@ -7,13 +7,13 @@ namespace Autoservice.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialMigration : IMigrationMetadata
+    public sealed partial class InitialMigraton : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialMigraton));
         
         string IMigrationMetadata.Id
         {
-            get { return "201710312208284_InitialMigration"; }
+            get { return "201711121013292_InitialMigraton"; }
         }
         
         string IMigrationMetadata.Source

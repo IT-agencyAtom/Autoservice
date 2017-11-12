@@ -29,7 +29,7 @@ namespace Autoservice.DAL.Services
         List<Car> GetAllCars();
         List<Work> GetAllWorks();
         List<Master> GetAllMasters();
-        List<Activity> GetAllActivities();        
+        List<WorkTemplate> GetAllWorkTemplates();        
         void AddClient(Client client);
         void DeleteClient(Client selectedClient);
         void UpdateWork(Work work);
@@ -48,5 +48,6 @@ namespace Autoservice.DAL.Services
         void AddActivity(Activity activity);
         void UpdateActivity(Activity oldActivity);
         Order GetOrderById(Guid id);
+        List<Activity> GetAllActivities();
     }
 }

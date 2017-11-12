@@ -22,13 +22,14 @@ namespace Autoservice.DAL.Services
         private readonly IUserRepository _userRepository;
         private readonly IWorkRepository _workRepository;
         private readonly IOrderWorkRepository _orderWorkRepository;
+        private readonly IWorkTemplateRepository _workTemplateRepository;
 
         protected Logger _logger;
 
         public GeneralService(
             IDbWorker dbWorker,IActivityRepository activityRepository,ICarRepository carRepository,IClientRepository clientRepository,IMasterRepository masterRepository,            
             IOrderRepository orderRepository,ISparePartRepository sparePartRepository, IUserRepository userRepository, IWorkRepository workRepository,
-            IOrderWorkRepository orderWorkRepository)
+            IOrderWorkRepository orderWorkRepository,IWorkTemplateRepository workTemplateRepository)
             : base(dbWorker)
         {
             _activityRepository = activityRepository;
@@ -40,6 +41,7 @@ namespace Autoservice.DAL.Services
             _userRepository = userRepository;
             _workRepository = workRepository;
             _orderWorkRepository = orderWorkRepository;
+            _workTemplateRepository = workTemplateRepository;
         }       
       
 
@@ -319,6 +321,48 @@ namespace Autoservice.DAL.Services
             }
         }
 
+        public List<WorkTemplate> GetAllWorkTemplates()
+        {
+            using (Db.BeginReadOnlyWork())
+            {
+                return _workTemplateRepository.GetAll(w=>w.Works);
+            }
+        }
+
+        public void AddWorkTemplate(WorkTemplate workTemplate)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                _workTemplateRepository.Add(workTemplate);
+                scope.SaveChanges();
+            }
+        }
+
+        public void UpdateWorkTemplate(WorkTemplate workTemplate)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                _workTemplateRepository.Update(workTemplate);
+                scope.SaveChanges();
+            }
+        }
+
+        public void DeleteWorkTemplate(WorkTemplate workTemplate)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                var baseWork = _workTemplateRepository.Get(w => w.Id == workTemplate.Id);
+                if (baseWork != null)
+                {
+                    _workTemplateRepository.Delete(baseWork);
+                    scope.SaveChanges();
+                }
+            }
+        }
+
+
+
+
         public List<Work> GetAllWorks()
         {
             using (Db.BeginReadOnlyWork())
@@ -405,7 +449,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _activityRepository.GetAll(a => a.Order,a=>a.User);
+                return _activityRepository.GetAll(a=>a.Order,a=>a.User);
             }
         }
     }
