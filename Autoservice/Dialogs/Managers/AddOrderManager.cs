@@ -28,10 +28,11 @@ namespace Autoservice.Dialogs.Managers
         public ObservableCollection<Car> Cars { get; private set; }
         public ObservableCollection<Master> Masters { get; private set; }
         public ObservableCollection<Work> Works { get; private set; }
+        public ObservableCollection<SparePart> SpareParts { get; private set; }
         public ObservableCollection<OrderWorkModel> OrderWorks { get; private set; }
         
-
         public string[] Methods { get; private set; }
+        public string[] Sources { get; private set; }
 
         public decimal TotalPrice
         {
@@ -47,7 +48,7 @@ namespace Autoservice.Dialogs.Managers
                 RaisePropertyChanged("SelectedMethod");
             }
         }
-
+       
         public Client SelectedClient { get { return _selectedClient; }
             set
             {
@@ -89,6 +90,7 @@ namespace Autoservice.Dialogs.Managers
         public RelayCommand Cancel { get; private set; }
 
         public RelayCommand AddWorkCommand { get; private set; }
+        public RelayCommand AddSparePartCommand { get; private set; }
 
         private bool _isEdit { get; set; }
 
@@ -106,7 +108,6 @@ namespace Autoservice.Dialogs.Managers
             OrderWorks = new ObservableCollection<OrderWorkModel>(order.Works.Select(w => new OrderWorkModel(w)));
             foreach (var orderWork in OrderWorks)
                 orderWork.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-            
             SelectedMethod = (int?)Order.PaymentMethod??-1;           
             RaisePropertyChanged("SelectedStatus");
             RaisePropertyChanged("SelectedMethod");
@@ -144,8 +145,18 @@ namespace Autoservice.Dialogs.Managers
                 }
             };
             Methods = Enum.GetNames(typeof(PaymentMethod));
+            Sources = Enum.GetNames(typeof(SparePartSource));
             AddWorkCommand = new RelayCommand(AddNewWork);
+            AddSparePartCommand = new RelayCommand(AddNewSparePart);
 
+        }
+
+        private void AddNewSparePart()
+        {
+            var newSparePart = new OrderSparePart { OrderId = Order.Id };
+            //newSparePart.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
+            Order.SpareParts.Add(newSparePart);
+            RaisePropertyChanged("Order");
         }
 
         private async void AddNewWork()
@@ -209,6 +220,7 @@ namespace Autoservice.Dialogs.Managers
             Cars = new ObservableCollection<Car>(await Task.Run(() => service.GetAllCars()));
             Masters = new ObservableCollection<Master>(await Task.Run(() => service.GetAllMasters()));
             Works = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks()));
+            SpareParts = new ObservableCollection<SparePart>(await Task.Run(() => service.GetAllSpareParts()));
 
             if (_isEdit)
             {
@@ -219,6 +231,7 @@ namespace Autoservice.Dialogs.Managers
             RaisePropertyChanged("Cars");
             RaisePropertyChanged("Works");
             RaisePropertyChanged("Masters");
+            RaisePropertyChanged("SpareParts");
             SetIsBusy(false);
         }
     }

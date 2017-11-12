@@ -11,8 +11,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="{Binding Title}"
-    Width="800"
-    Height="550"
+    Width="900"
+    Height="650"
     GlowBrush="{DynamicResource AccentColorBrush}"
     ResizeMode="NoResize"
     ShowMaxRestoreButton="False"
@@ -36,7 +36,8 @@
 
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition />
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="1*"/>
                 <RowDefinition Height="75" />
             </Grid.RowDefinitions>
 
@@ -138,7 +139,7 @@
                     <Grid Grid.Column="1" Margin="5,0">
                         <Grid.RowDefinitions>
                             <RowDefinition />
-                            <RowDefinition Height="140"/>
+                            <RowDefinition />
                         </Grid.RowDefinitions>
                         <GroupBox Margin="0,7" Header="Работы">
                             <GroupBox.HeaderTemplate>
@@ -208,18 +209,84 @@
                                 </DataGrid>
                             </ScrollViewer>
                         </GroupBox>
-                        
-                        <GroupBox Grid.Row="1" Margin="0,7" Header="Причина обращения">
-                            <ScrollViewer>
-                                <TextBox Text="{Binding Order.Notes}"></TextBox>
-                            </ScrollViewer>
-                        </GroupBox>
-                    </Grid>
-                </Grid>
-            </GroupBox>
+                        <GroupBox Margin="0,7" Header="Запчасти" Grid.Row ="1">
+                        <GroupBox.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding}"></TextBlock>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button VerticalAlignment="Center" ToolTip="Add SpareParts" Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddSparePartCommand}" Margin="5,0,0,0">
+                                            <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Visual="{StaticResource appbar_add}" />
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GroupBox.HeaderTemplate>
+                        <ScrollViewer>
+                            <DataGrid
+                                    MinHeight="70"
+                                    AutoGenerateColumns="False"
+                                    CanUserAddRows="False"
+                                    IsSynchronizedWithCurrentItem="True"
+                                    ItemsSource="{Binding Order.SpareParts}">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Header="Наменование">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox Margin="0, 5, 0, 0"
+                                                                Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                                SelectedItem="{Binding SparePart, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                                controls:TextBoxHelper.Watermark="Выберите запчасть..."
+                                                                IsReadOnly="True"
+                                                                IsEditable="True"
+                                                                ItemsSource="{Binding DataContext.SpareParts, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                MaxDropDownHeight="125"
+                                                                Text="{Binding SparePart.Name}" 
+                                                                DisplayMemberPath="Name"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Stretch"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn
+                                            Binding="{Binding Number}"
+                                            Header="Количество" />
+                                    <DataGridTemplateColumn Header="Источник">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox Margin="0, 5, 0, 0"
+                                                                Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                                SelectedItem="{Binding IntSource, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                                controls:TextBoxHelper.Watermark="Выберите источник запчастей..."
+                                                                IsReadOnly="True"
+                                                                IsEditable="True"
+                                                                ItemsSource="{Binding DataContext.Sources, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                MaxDropDownHeight="125"
+                                                                DisplayMemberPath="Name"
+                                                                VerticalAlignment="Center"
+                                                                HorizontalAlignment="Stretch"/>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
+                    </GroupBox>
 
-            <controls:Flyout
-                Grid.Row="1"
+                </Grid>
+                </Grid>                
+            </GroupBox>
+        <GroupBox Grid.Row="1" Margin="5,10" Header="Примечания к заказу">
+            <ScrollViewer>
+                <TextBox Text="{Binding Order.Notes}"></TextBox>
+            </ScrollViewer>
+        </GroupBox>
+        <controls:Flyout
+                Grid.Row="2"
                 Height="75"
                 CloseButtonVisibility="Collapsed"
                 IsOpen="True"

@@ -21,7 +21,7 @@ namespace Autoservice.DAL.Entities
         public string PersonalNumber => $"АГ-{Number}";
         
         public string RepairZone { get; set; }
-        public List<SparePart> SpareParts { get; set; }
+        public List<OrderSparePart> SpareParts { get; set; }
         public Guid CarId { get; set; }
         [ForeignKey("CarId")]
         public Car Car { get; set; }
@@ -43,7 +43,7 @@ namespace Autoservice.DAL.Entities
         {
             Id = Guid.NewGuid();
             Works = new List<OrderWork>();
-            SpareParts = new List<SparePart>();
+            SpareParts = new List<OrderSparePart>();
             Activities = new List<Activity>();
         }
     }   

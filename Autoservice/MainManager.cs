@@ -45,6 +45,7 @@ namespace Autoservice
         private WorksManager _worksManager;
         private MastersManager _mastersManager;
         private WorkTemplateManager _workTemplateManager;
+        private WarehouseManager _warehouseManager;
 
         private ObservableCollection<ScreenManager> _tabScreens;
 
@@ -132,6 +133,10 @@ namespace Autoservice
             {
                 SetIsBusy = isBusy => IsBusy = isBusy
             };
+            _warehouseManager = new WarehouseManager
+            {
+                SetIsBusy = isBusy => IsBusy = isBusy
+            };
             ShowChangelog = new RelayCommand(() => Process.Start("Changelog.docx"));
             ShowLogs = new RelayCommand(() => Process.Start(Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), @"ConstaSoft\" + Assembly.GetExecutingAssembly().GetName().Name + @"\Logs")));
@@ -200,6 +205,13 @@ namespace Autoservice
                 ToolTip = "Шаблоны",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Tablet },
                 Tag = _workTemplateManager
+            });
+            TabScreens.Add(new ScreenManager
+            {
+                Label = "Склад",
+                ToolTip = "Список запчастей",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.CarBattery },
+                Tag = _warehouseManager
             });
             if (UserService.Instance.IsAdmin)
             {                

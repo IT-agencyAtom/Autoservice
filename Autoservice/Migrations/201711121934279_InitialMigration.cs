@@ -3,7 +3,7 @@ namespace Autoservice.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialMigraton : DbMigration
+    public partial class InitialMigration : DbMigration
     {
         public override void Up()
         {
@@ -70,16 +70,30 @@ namespace Autoservice.Migrations
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
+                "dbo.OrderSpareParts",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        OrderId = c.Guid(nullable: false),
+                        SparePartId = c.Guid(nullable: false),
+                        Number = c.Int(nullable: false),
+                        Source = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Orders", t => t.OrderId, cascadeDelete: true)
+                .ForeignKey("dbo.SpareParts", t => t.SparePartId, cascadeDelete: true)
+                .Index(t => t.OrderId)
+                .Index(t => t.SparePartId);
+            
+            CreateTable(
                 "dbo.SpareParts",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
                         Name = c.String(),
-                        Order_Id = c.Guid(),
+                        Number = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Orders", t => t.Order_Id)
-                .Index(t => t.Order_Id);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.OrderWorks",
@@ -151,7 +165,8 @@ namespace Autoservice.Migrations
             DropForeignKey("dbo.OrderWorks", "WorkId", "dbo.Works");
             DropForeignKey("dbo.OrderWorks", "OrderId", "dbo.Orders");
             DropForeignKey("dbo.OrderWorks", "MasterId", "dbo.Masters");
-            DropForeignKey("dbo.SpareParts", "Order_Id", "dbo.Orders");
+            DropForeignKey("dbo.OrderSpareParts", "SparePartId", "dbo.SpareParts");
+            DropForeignKey("dbo.OrderSpareParts", "OrderId", "dbo.Orders");
             DropForeignKey("dbo.Orders", "CarId", "dbo.Cars");
             DropForeignKey("dbo.Cars", "ClientId", "dbo.Clients");
             DropForeignKey("dbo.Activities", "OrderId", "dbo.Orders");
@@ -159,7 +174,8 @@ namespace Autoservice.Migrations
             DropIndex("dbo.OrderWorks", new[] { "OrderId" });
             DropIndex("dbo.OrderWorks", new[] { "MasterId" });
             DropIndex("dbo.OrderWorks", new[] { "WorkId" });
-            DropIndex("dbo.SpareParts", new[] { "Order_Id" });
+            DropIndex("dbo.OrderSpareParts", new[] { "SparePartId" });
+            DropIndex("dbo.OrderSpareParts", new[] { "OrderId" });
             DropIndex("dbo.Cars", new[] { "ClientId" });
             DropIndex("dbo.Orders", new[] { "CarId" });
             DropIndex("dbo.Activities", new[] { "UserId" });
@@ -170,6 +186,7 @@ namespace Autoservice.Migrations
             DropTable("dbo.Masters");
             DropTable("dbo.OrderWorks");
             DropTable("dbo.SpareParts");
+            DropTable("dbo.OrderSpareParts");
             DropTable("dbo.Clients");
             DropTable("dbo.Cars");
             DropTable("dbo.Orders");

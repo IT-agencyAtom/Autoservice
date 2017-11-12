@@ -36,6 +36,9 @@
         <DataTemplate DataType="{x:Type managers11:WorkTemplateManager}">
             <screens1:WorkTemplateScreen/>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type managers11:WarehouseManager}">
+            <screens1:WarehouseScreen/>
+        </DataTemplate>
         <DataTemplate DataType="{x:Type managers11:SettingsManager}">
             <screens1:SettingsScreen />
         </DataTemplate>

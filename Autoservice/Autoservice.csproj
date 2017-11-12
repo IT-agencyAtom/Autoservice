@@ -139,12 +139,15 @@
     <Compile Include="DAL\Entities\Master.cs" />
     <Compile Include="DAL\Entities\Client.cs" />
     <Compile Include="DAL\Entities\Order.cs" />
+    <Compile Include="DAL\Entities\OrderSparePart.cs" />
     <Compile Include="DAL\Entities\SparePart.cs" />
     <Compile Include="DAL\Entities\OrderWork.cs" />
     <Compile Include="DAL\Entities\Work.cs" />
     <Compile Include="DAL\Entities\WorkTemplate.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IOrderWorkRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IWorkTemplateRepository.cs" />
+    <Compile Include="DAL\Repositories\Interfaces\IOrderSparePartRepository.cs" />
+    <Compile Include="DAL\Repositories\OrderSparePartRepository.cs" />
     <Compile Include="DAL\Repositories\OrderWorkRepository.cs" />
     <Compile Include="DAL\Repositories\WorkTemplateRepository.cs" />
     <Compile Include="DAL\Repositories\WorkRepository.cs" />
@@ -199,9 +202,9 @@
     <Compile Include="Dialogs\Managers\AddCarManager.cs" />
     <Compile Include="Dialogs\Managers\AddMasterManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkManager.cs" />
-    <Compile Include="Migrations\201711121013292_InitialMigraton.cs" />
-    <Compile Include="Migrations\201711121013292_InitialMigraton.Designer.cs">
-      <DependentUpon>201711121013292_InitialMigraton.cs</DependentUpon>
+    <Compile Include="Migrations\201711121934279_InitialMigration.cs" />
+    <Compile Include="Migrations\201711121934279_InitialMigration.Designer.cs">
+      <DependentUpon>201711121934279_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
@@ -213,10 +216,14 @@
       <DependentUpon>ActivityScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\Managers\MastersManager.cs" />
+    <Compile Include="Screens\Managers\WarehouseManager.cs" />
     <Compile Include="Screens\Managers\WorksManager.cs" />
     <Compile Include="Screens\Managers\WorkTemplateManager.cs" />
     <Compile Include="Screens\MastersScreen.xaml.cs">
       <DependentUpon>MastersScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Screens\WarehouseScreen.xaml.cs">
+      <DependentUpon>WarehouseScreen.xaml</DependentUpon>
     </Compile>
     <Compile Include="Screens\WorkTemplateScreen.xaml.cs">
       <DependentUpon>WorkTemplateScreen.xaml</DependentUpon>
@@ -265,8 +272,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201711121013292_InitialMigraton.resx">
-      <DependentUpon>201711121013292_InitialMigraton.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711121934279_InitialMigration.resx">
+      <DependentUpon>201711121934279_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -346,6 +353,10 @@
     <Page Include="Screens\MastersScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\WarehouseScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\WorkTemplateScreen.xaml">
       <Generator>MSBuild:Compile</Generator>

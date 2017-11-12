@@ -23,13 +23,14 @@ namespace Autoservice.DAL.Services
         private readonly IWorkRepository _workRepository;
         private readonly IOrderWorkRepository _orderWorkRepository;
         private readonly IWorkTemplateRepository _workTemplateRepository;
+        private readonly IOrderSparePartRepository _orderSparePartRepository;
 
         protected Logger _logger;
 
         public GeneralService(
             IDbWorker dbWorker,IActivityRepository activityRepository,ICarRepository carRepository,IClientRepository clientRepository,IMasterRepository masterRepository,            
             IOrderRepository orderRepository,ISparePartRepository sparePartRepository, IUserRepository userRepository, IWorkRepository workRepository,
-            IOrderWorkRepository orderWorkRepository,IWorkTemplateRepository workTemplateRepository)
+            IOrderWorkRepository orderWorkRepository,IWorkTemplateRepository workTemplateRepository,IOrderSparePartRepository orderSparePartRepository)
             : base(dbWorker)
         {
             _activityRepository = activityRepository;
@@ -42,6 +43,7 @@ namespace Autoservice.DAL.Services
             _workRepository = workRepository;
             _orderWorkRepository = orderWorkRepository;
             _workTemplateRepository = workTemplateRepository;
+            _orderSparePartRepository = orderSparePartRepository;
         }       
       
 

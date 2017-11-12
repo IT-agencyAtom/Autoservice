@@ -49,5 +49,6 @@ namespace Autoservice.DAL.Services
         void UpdateActivity(Activity oldActivity);
         Order GetOrderById(Guid id);
         List<Activity> GetAllActivities();
+        List<SparePart> GetAllSpareParts();
     }
 }
