@@ -217,6 +217,8 @@ namespace Autoservice.Dialogs.Managers
             }
             RaisePropertyChanged("Clients");
             RaisePropertyChanged("Cars");
+            RaisePropertyChanged("Works");
+            RaisePropertyChanged("Masters");
             SetIsBusy(false);
         }
     }

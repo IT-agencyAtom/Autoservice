@@ -18,6 +18,7 @@ namespace Autoservice.Dialogs.Managers
         private Client _client;
         public string Title { get; set; }
         public List<Car> Cars { get; set; }
+        public ObservableCollection<WorkTemplate> Templates { get; set; }
         public Car Car
         { get { return _car; }
             set
@@ -26,9 +27,18 @@ namespace Autoservice.Dialogs.Managers
                 RaisePropertyChanged("Car");
             }
         }
+        public WorkTemplate Template
+        {
+            get { return _template; }
+            set
+            {
+                _template = value;
+                RaisePropertyChanged("Template");
+            }
+        }
 
-        private Car _car;      
-      
+        private Car _car;
+        private WorkTemplate _template;
         //Комманды
         //public RelayCommand Save { get; private set; }
 
@@ -121,6 +131,10 @@ namespace Autoservice.Dialogs.Managers
         }       
         public override async void Refresh()
         {
+            SetIsBusy(true);
+            var service = Get<IGeneralService>();
+            Templates = new ObservableCollection<WorkTemplate>(await Task.Run(() => service.GetAllWorkTemplates()));
+            RaisePropertyChanged("Templates");
             SetIsBusy(false);
         }
     }

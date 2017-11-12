@@ -260,6 +260,11 @@ namespace Autoservice.DAL.Services
                 foreach (var work in order.Works.Where(w => w.Work != null && w.Master != null))
                 {
                     work.OrderId = order.Id;
+                    //test_____
+                    work.MasterId = work.Master.Id;
+                    work.WorkId = work.Work.Id;
+                    work.Order = null;
+                    //_________
                     _orderWorkRepository.SaveWork(work);
                 }
 

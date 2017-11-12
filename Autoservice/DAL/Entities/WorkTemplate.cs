@@ -28,5 +28,10 @@ namespace Autoservice.DAL.Entities
             }
             return result;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

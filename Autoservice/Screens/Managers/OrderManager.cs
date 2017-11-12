@@ -287,9 +287,26 @@ namespace Autoservice.Screens.Managers
                 if (addCarManager.WasChanged)
                 {
                     _newOrder.Car = addCarManager.Car;
-                    _newOrder.CarId = addCarManager.Car.Id;
+                    _newOrder.CarId = addCarManager.Car.Id;                   
                     Save2DB();
                     SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
+                    if (addCarManager.Template != null)
+                    {
+                        var works = addCarManager.Template.Works;
+                        SelectedOrder.Works = new List<OrderWork>();
+                        foreach (var work in works)
+                        {
+                            SelectedOrder.Works.Add(new OrderWork
+                            {
+                                IsNew = true,
+                                Order = SelectedOrder,
+                                OrderId = SelectedOrder.Id,
+                                Price = work.Price,
+                                Work = work,
+                                WorkId = work.Id
+                            });
+                        }
+                    }
                     EditHandler();
                 }
                 SetIsBusy(false);
