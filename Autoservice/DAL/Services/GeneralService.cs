@@ -219,7 +219,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.GetAll(o=>o.Car.Client,o=>o.Works.Select(w => w.Master), o => o.Works.Select(w => w.Work), o=>o.Activities);
+                return _orderRepository.GetAll(o=>o.Car.Client,o=>o.Works.Select(w => w.Master), o => o.Works.Select(w => w.Work), o=>o.Activities,o=>o.SpareParts.Select(s=>s.SparePart));
             }
         }        
 
@@ -227,7 +227,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.Get(o => o.Id == id, i => i.Car.Client, i => i.Works);
+                return _orderRepository.Get(o => o.Id == id, i => i.Car.Client, i => i.Works,i=>i.SpareParts);
             }
         }
 
@@ -258,6 +258,7 @@ namespace Autoservice.DAL.Services
             using (var scope = Db.BeginWork())
             {
                 _orderWorkRepository.DeleteWorks(order);
+                _orderSparePartRepository.DeleteSpareParts(order);
 
                 foreach (var work in order.Works.Where(w => w.Work != null && w.Master != null))
                 {
@@ -268,6 +269,13 @@ namespace Autoservice.DAL.Services
                     work.Order = null;
                     //_________
                     _orderWorkRepository.SaveWork(work);
+                }
+                foreach (var sparePart in order.SpareParts.Where(s=>s.SparePart!=null && s.Number!=0))
+                {
+                    sparePart.OrderId = order.Id;
+                    sparePart.Order = null;
+
+                    _orderSparePartRepository.SaveSparePart(sparePart);
                 }
 
                 var baseOrder = _orderRepository.Get(o => o.Id == order.Id);

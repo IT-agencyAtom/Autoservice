@@ -2,6 +2,7 @@
 using Autoservice.ViewModel.Utils;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -49,6 +50,11 @@ namespace Autoservice.DAL.Entities
     }   
     public enum PaymentMethod
     {
-        Cash,BankCard,BankTransfer
+        [Description("Наличные")]
+        Cash,
+        [Description("Банковская карта")]
+        BankCard,
+        [Description("Банковский перевод")]
+        BankTransfer
     }
 }

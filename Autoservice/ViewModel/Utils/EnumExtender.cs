@@ -16,5 +16,16 @@ public static class EnumExtender
             var attributes = (DescriptionAttribute[])fieldInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
             return (attributes.Length > 0) ? attributes[0].Description : enumerate.ToString();
         }
+
+        public static string[] GetAllDescriptions (Type type)
+        {
+            var values = Enum.GetValues(type);
+            List<string> strings = new List<string>();
+            foreach (var value in values)
+            {
+                strings.Add((value as Enum).ToDescriptionString());
+            }
+            return strings.ToArray();
+        }
     }
 }

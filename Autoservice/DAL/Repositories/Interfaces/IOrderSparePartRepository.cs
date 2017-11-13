@@ -5,5 +5,7 @@ namespace Autoservice.DAL.Repositories.Interfaces
 {
     public interface IOrderSparePartRepository : IEntityRepository<OrderSparePart>
     {
+        void DeleteSpareParts(Order order);
+        void SaveSparePart(OrderSparePart sparePart);
     }
 }

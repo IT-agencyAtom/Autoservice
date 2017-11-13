@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
+using Autoservice.ViewModel.Utils;
 
 namespace Autoservice.Dialogs.Managers
 {
@@ -30,6 +31,7 @@ namespace Autoservice.Dialogs.Managers
         public ObservableCollection<Work> Works { get; private set; }
         public ObservableCollection<SparePart> SpareParts { get; private set; }
         public ObservableCollection<OrderWorkModel> OrderWorks { get; private set; }
+        public ObservableCollection<OrderSparePartModel> OrderSpareParts { get; private set; }
         
         public string[] Methods { get; private set; }
         public string[] Sources { get; private set; }
@@ -108,6 +110,12 @@ namespace Autoservice.Dialogs.Managers
             OrderWorks = new ObservableCollection<OrderWorkModel>(order.Works.Select(w => new OrderWorkModel(w)));
             foreach (var orderWork in OrderWorks)
                 orderWork.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
+            OrderSpareParts = new ObservableCollection<OrderSparePartModel>(order.SpareParts.Select(s => new OrderSparePartModel(s)));
+            foreach (var orderSparePart in OrderSpareParts)
+            {
+                orderSparePart.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
+            }
+
             SelectedMethod = (int?)Order.PaymentMethod??-1;           
             RaisePropertyChanged("SelectedStatus");
             RaisePropertyChanged("SelectedMethod");
@@ -141,11 +149,11 @@ namespace Autoservice.Dialogs.Managers
                         OnButtonAction = (obj) => SaveHandler(),
                         ButtonIcon = "appbar_disk",
                         ButtonText = "Сохранить"
-                    }
+                    }   
                 }
             };
-            Methods = Enum.GetNames(typeof(PaymentMethod));
-            Sources = Enum.GetNames(typeof(SparePartSource));
+            Methods = EnumExtender.GetAllDescriptions(typeof(PaymentMethod));
+            Sources = EnumExtender.GetAllDescriptions(typeof(SparePartSource));
             AddWorkCommand = new RelayCommand(AddNewWork);
             AddSparePartCommand = new RelayCommand(AddNewSparePart);
 
@@ -153,10 +161,10 @@ namespace Autoservice.Dialogs.Managers
 
         private void AddNewSparePart()
         {
-            var newSparePart = new OrderSparePart { OrderId = Order.Id };
-            //newSparePart.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-            Order.SpareParts.Add(newSparePart);
-            RaisePropertyChanged("Order");
+            var newSparePart = new OrderSparePartModel { OrderId = Order.Id, IsNew=true };
+            newSparePart.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
+            OrderSpareParts.Add(newSparePart);
+            RaisePropertyChanged("OrderSpareParts");
         }
 
         private async void AddNewWork()
@@ -206,6 +214,7 @@ namespace Autoservice.Dialogs.Managers
             Order.Works = OrderWorks.Select(w => new OrderWork(w)).ToList();
             Order.TotalPrice = OrderWorks.Sum(ow => ow.Price) - SelectedClient.Discount * OrderWorks.Sum(ow => ow.Price) / 100;
 
+            Order.SpareParts = OrderSpareParts.Select(w => new OrderSparePart(w)).ToList();
             if (_isEdit)
                 relevantAdsService.UpdateOrder(Order);
             else
@@ -294,5 +303,43 @@ namespace Autoservice.Dialogs.Managers
             Price = work.Price;
             IsNew = work.IsNew;
         }
+    }
+
+    public class OrderSparePartModel: ViewModelBase
+    {
+        public Guid Id { get; set; }
+        public Guid OrderId { get; set; }
+        public Order Order { get; set; }
+        public Guid SparePartId { get; set; }
+        public SparePart SparePart { get; set; }
+        public int Number { get; set; }
+        
+        public int Source { get; set; }
+        public string StringSource { get {return _strings[Source]; } set {} }
+        public bool IsNew { get; set; }
+        private static string[] _strings;
+
+        static OrderSparePartModel()
+        {
+            _strings = EnumExtender.GetAllDescriptions(typeof(SparePartSource));          
+        }
+        public OrderSparePartModel()
+        {
+            Id = Guid.NewGuid();
+            IsNew = false;
+        }
+        public OrderSparePartModel(OrderSparePart orderSparePart)
+        {
+            Id = orderSparePart.Id;
+            OrderId = orderSparePart.OrderId;
+            Order = orderSparePart.Order;
+            SparePartId = orderSparePart.SparePartId;
+            SparePart = orderSparePart.SparePart;
+            Number = orderSparePart.Number;
+            Source = (int)orderSparePart.Source;
+            StringSource = _strings[Source];
+            IsNew = orderSparePart.IsNew;
+        }
+
     }
 }

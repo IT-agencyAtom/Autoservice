@@ -160,48 +160,125 @@
                             </GroupBox.HeaderTemplate>
                             <ScrollViewer>
                                 <DataGrid
-                                    MinHeight="70"
-                                    AutoGenerateColumns="False"
-                                    CanUserAddRows="False"
-                                    IsSynchronizedWithCurrentItem="True"
-                                    ItemsSource="{Binding OrderWorks}">
+                                        MinHeight="70"
+                                        AutoGenerateColumns="False"
+                                        CanUserAddRows="False"
+                                        IsSynchronizedWithCurrentItem="True"
+                                        ItemsSource="{Binding OrderWorks}">
                                     <DataGrid.Columns>
-                                        <DataGridTemplateColumn Header="Наменование">
+                                        <DataGridTemplateColumn Header="Наменование" Width="2*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <ComboBox Margin="0, 5, 0, 0"
-                                                                Style="{DynamicResource VirtualisedMetroComboBox}"
-                                                                SelectedItem="{Binding Work, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                                                                controls:TextBoxHelper.Watermark="Выберите работу..."
-                                                                IsReadOnly="True"
-                                                                IsEditable="True"
-                                                                ItemsSource="{Binding DataContext.Works, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                MaxDropDownHeight="125"
-                                                                Text="{Binding Work.Name}" 
-                                                                DisplayMemberPath="Name"
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Stretch"/>
+                                                                    Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                                    SelectedItem="{Binding Work, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                                    controls:TextBoxHelper.Watermark="Выберите работу..."
+                                                                    IsReadOnly="True"
+                                                                    IsEditable="True"
+                                                                    ItemsSource="{Binding DataContext.Works, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                    MaxDropDownHeight="125"
+                                                                    Text="{Binding Work.Name}" 
+                                                                    DisplayMemberPath="Name"
+                                                                    VerticalAlignment="Center"
+                                                                    HorizontalAlignment="Stretch"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
                                         <DataGridTextColumn
-                                            Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                            Header="Цена" />
-                                        <DataGridTemplateColumn Header="Мастер">
+                                                Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Header="Цена" />
+                                        <DataGridTemplateColumn Header="Мастер" Width="2*">
                                             <DataGridTemplateColumn.CellTemplate>
                                                 <DataTemplate>
                                                     <ComboBox Margin="0, 5, 0, 0"
-                                                                Style="{DynamicResource VirtualisedMetroComboBox}"
-                                                                SelectedItem="{Binding Master, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                                                                controls:TextBoxHelper.Watermark="Выберите мастера..."
-                                                                IsReadOnly="True"
-                                                                IsEditable="True"
-                                                                ItemsSource="{Binding DataContext.Masters, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                MaxDropDownHeight="125"
-                                                                DisplayMemberPath="Name"
-                                                                Text="{Binding Master.Name}"
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Stretch"/>
+                                                                    Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                                    SelectedItem="{Binding Master, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                                    controls:TextBoxHelper.Watermark="Выберите мастера..."
+                                                                    IsReadOnly="True"
+                                                                    IsEditable="True"
+                                                                    ItemsSource="{Binding DataContext.Masters, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                    MaxDropDownHeight="125"
+                                                                    DisplayMemberPath="Name"
+                                                                    Text="{Binding Master.Name}"
+                                                                    VerticalAlignment="Center"
+                                                                    HorizontalAlignment="Stretch"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Процент">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBox Text="50" VerticalAlignment="Bottom" MinWidth="50"></TextBox>
+                                                    <TextBlock Text="%" FontFamily="Bold" VerticalAlignment="Bottom" FontSize="20"></TextBlock>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                                </DataGrid>
+                            </ScrollViewer>
+                        </GroupBox>
+                        <GroupBox Margin="0,7" Header="Запчасти" Grid.Row ="1">
+                            <GroupBox.HeaderTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <TextBlock Text="{Binding}"></TextBlock>
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                            <Button VerticalAlignment="Center" ToolTip="Add SpareParts" Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddSparePartCommand}" Margin="5,0,0,0">
+                                                <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                                    <Rectangle.OpacityMask>
+                                                        <VisualBrush Visual="{StaticResource appbar_add}" />
+                                                    </Rectangle.OpacityMask>
+                                                </Rectangle>
+                                            </Button>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </GroupBox.HeaderTemplate>
+                            <ScrollViewer>
+                                <DataGrid
+                                        MinHeight="70"
+                                        AutoGenerateColumns="False"
+                                        CanUserAddRows="False"
+                                        IsSynchronizedWithCurrentItem="True"
+                                        ItemsSource="{Binding OrderSpareParts}">
+                                    <DataGrid.Columns>
+                                        <DataGridTemplateColumn Header="Наменование" Width="2*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox Margin="0, 5, 0, 0"
+                                                                    Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                                    SelectedItem="{Binding SparePart, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                                    controls:TextBoxHelper.Watermark="Выберите запчасть..."
+                                                                    IsReadOnly="True"
+                                                                    IsEditable="True"
+                                                                    ItemsSource="{Binding DataContext.SpareParts, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                    Text="{Binding SparePart.Name}"                                                               
+                                                                    MaxDropDownHeight="125"                                                                 
+                                                                    DisplayMemberPath="Name"
+                                                                    VerticalAlignment="Center"
+                                                                    HorizontalAlignment="Stretch"/>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                        <DataGridTextColumn
+                                                Binding="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Header="Количество" />
+                                        <DataGridTemplateColumn Header="Источник" Width="2*">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox Margin="0, 5, 0, 0"
+                                                                    Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                                    SelectedIndex="{Binding Source,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                                    controls:TextBoxHelper.Watermark="Выберите источник запчастей..."
+                                                                    IsReadOnly="True"
+                                                                    IsEditable="True"
+                                                                    ItemsSource="{Binding DataContext.Sources, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                                    MaxDropDownHeight="125"
+                                                                    Text="{Binding StringSource}"
+                                                                    VerticalAlignment="Center"
+                                                                    HorizontalAlignment="Stretch"/>
                                                 </DataTemplate>
                                             </DataGridTemplateColumn.CellTemplate>
                                         </DataGridTemplateColumn>
@@ -209,75 +286,7 @@
                                 </DataGrid>
                             </ScrollViewer>
                         </GroupBox>
-                        <GroupBox Margin="0,7" Header="Запчасти" Grid.Row ="1">
-                        <GroupBox.HeaderTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <TextBlock Text="{Binding}"></TextBlock>
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                        <Button VerticalAlignment="Center" ToolTip="Add SpareParts" Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddSparePartCommand}" Margin="5,0,0,0">
-                                            <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                                                <Rectangle.OpacityMask>
-                                                    <VisualBrush Visual="{StaticResource appbar_add}" />
-                                                </Rectangle.OpacityMask>
-                                            </Rectangle>
-                                        </Button>
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </GroupBox.HeaderTemplate>
-                        <ScrollViewer>
-                            <DataGrid
-                                    MinHeight="70"
-                                    AutoGenerateColumns="False"
-                                    CanUserAddRows="False"
-                                    IsSynchronizedWithCurrentItem="True"
-                                    ItemsSource="{Binding Order.SpareParts}">
-                                <DataGrid.Columns>
-                                    <DataGridTemplateColumn Header="Наменование">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ComboBox Margin="0, 5, 0, 0"
-                                                                Style="{DynamicResource VirtualisedMetroComboBox}"
-                                                                SelectedItem="{Binding SparePart, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                                                                controls:TextBoxHelper.Watermark="Выберите запчасть..."
-                                                                IsReadOnly="True"
-                                                                IsEditable="True"
-                                                                ItemsSource="{Binding DataContext.SpareParts, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                MaxDropDownHeight="125"
-                                                                Text="{Binding SparePart.Name}" 
-                                                                DisplayMemberPath="Name"
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Stretch"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                    <DataGridTextColumn
-                                            Binding="{Binding Number}"
-                                            Header="Количество" />
-                                    <DataGridTemplateColumn Header="Источник">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <ComboBox Margin="0, 5, 0, 0"
-                                                                Style="{DynamicResource VirtualisedMetroComboBox}"
-                                                                SelectedItem="{Binding IntSource, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                                                                controls:TextBoxHelper.Watermark="Выберите источник запчастей..."
-                                                                IsReadOnly="True"
-                                                                IsEditable="True"
-                                                                ItemsSource="{Binding DataContext.Sources, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                MaxDropDownHeight="125"
-                                                                DisplayMemberPath="Name"
-                                                                VerticalAlignment="Center"
-                                                                HorizontalAlignment="Stretch"/>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </ScrollViewer>
-                    </GroupBox>
-
-                </Grid>
+                    </Grid>
                 </Grid>                
             </GroupBox>
         <GroupBox Grid.Row="1" Margin="5,10" Header="Примечания к заказу">

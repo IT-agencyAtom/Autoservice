@@ -15,5 +15,25 @@ namespace Autoservice.DAL.Repositories
         {
 
         }
+
+        public void DeleteSpareParts(Order order)
+        {
+            var baseOrder = Context.Orders.SingleOrDefault(o => o.Id == order.Id);
+
+            baseOrder?.SpareParts.Where(baseSparePart => order.SpareParts.All(sparePart => sparePart.Id != baseSparePart.Id)).ToList().ForEach(deleted=>Context.OrderSpareParts.Remove(deleted));
+        }
+
+        public void SaveSparePart(OrderSparePart sparePart)
+        {
+            var baseOrderSparePart = sparePart.IsNew ? sparePart : Context.OrderSpareParts.Single(ow => ow.Id == sparePart.Id);
+
+            if (baseOrderSparePart.SparePart != null)
+            {
+                baseOrderSparePart.SparePartId = sparePart.SparePart.Id;
+                baseOrderSparePart.SparePart = null;
+            }
+            if (sparePart.IsNew)
+                Add(baseOrderSparePart);
+        }
     }
 }
