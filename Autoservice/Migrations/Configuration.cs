@@ -167,9 +167,26 @@ namespace Autoservice.Migrations
                     Phone = "89201003080"
                 }
                 );
-            
+
 
             context.Orders.AddOrUpdate(o => o.Number,
+                new Order
+                {
+                    Id = Guid.NewGuid(),
+                    StartDate = DateTime.Now.AddDays(-47),
+                    RepairZone = "Бокс 6",
+                    CarId = firstCarId,
+                    PaymentMethod = PaymentMethod.Cash
+                },
+                new Order
+                {
+                    Id = Guid.NewGuid(),
+                    StartDate = DateTime.Now.AddDays(-8),
+                    PreOrderDateTime = DateTime.Now.AddDays(-10.7),
+                    RepairZone = "Бокс 8",
+                    CarId = secondCarId,
+                    PaymentMethod = PaymentMethod.Cash
+                },
                 new Order
                 {
                     Id = o1Id,
@@ -177,11 +194,12 @@ namespace Autoservice.Migrations
                     RepairZone = "Бокс 1",
                     CarId = firstCarId,
                     TotalPrice = 22000,
-                    PaymentMethod = PaymentMethod.Cash                  
+                    PaymentMethod = PaymentMethod.Cash
                 },
                 new Order
                 {
                     Id = o2Id,
+                    PreOrderDateTime = DateTime.Now.AddDays(-26.5),
                     StartDate = DateTime.Now.AddDays(-23),
                     RepairZone = "Бокс 2",
                     CarId = secondCarId,

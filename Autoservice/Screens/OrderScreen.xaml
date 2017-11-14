@@ -58,6 +58,7 @@
             <GroupBox Header="Заказы">
                 <DataGrid                    
                     Margin="5"
+                    LoadingRow="DataGrid_LoadingRow"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
                     IsReadOnly="True"
@@ -76,13 +77,17 @@
                     </i:Interaction.Triggers>
                     <DataGrid.Columns>
                         <DataGridTextColumn
-                            Width="2*"
+                            Width="1*"
                             Binding="{Binding PersonalNumber}"
                             Header="Номер" />
                         <DataGridTextColumn
-                            Width="3*"
+                            Width="2*"
                             Binding="{Binding Car.Client}"
                             Header="Клиент" />
+                        <DataGridTextColumn
+                            Width="2*"
+                            Binding="{Binding PreOrderDateTime}"
+                            Header="Дата заказа" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding StartDate}"
@@ -96,7 +101,7 @@
                             Binding="{Binding Car}"
                             Header="Т/С" />
                         <DataGridTextColumn
-                            Width="2*"
+                            Width="1*"
                             Binding="{Binding StringStatus}"
                             Header="Статус заказа"
                             IsReadOnly="True" />

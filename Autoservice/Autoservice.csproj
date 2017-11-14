@@ -202,9 +202,9 @@
     <Compile Include="Dialogs\Managers\AddCarManager.cs" />
     <Compile Include="Dialogs\Managers\AddMasterManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkManager.cs" />
-    <Compile Include="Migrations\201711121934279_InitialMigration.cs" />
-    <Compile Include="Migrations\201711121934279_InitialMigration.Designer.cs">
-      <DependentUpon>201711121934279_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201711141147585_InitialMigration.cs" />
+    <Compile Include="Migrations\201711141147585_InitialMigration.Designer.cs">
+      <DependentUpon>201711141147585_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
@@ -272,8 +272,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201711121934279_InitialMigration.resx">
-      <DependentUpon>201711121934279_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711141147585_InitialMigration.resx">
+      <DependentUpon>201711141147585_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

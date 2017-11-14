@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using Autoservice.ViewModel.Utils;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Autoservice.Screens.Managers
 {
@@ -72,8 +74,11 @@ namespace Autoservice.Screens.Managers
                    order.Car.Client.Phone.ToLower().Contains(OrdersFilterString) ||
                    order.Car.ToString().ToLower().Contains(OrdersFilterString);
         }
+       
+
 
         public RelayCommand MouseDoubleClickCommand { get; set; }
+        
 
         public OrderManager()
         {
@@ -342,7 +347,10 @@ namespace Autoservice.Screens.Managers
         {
             SetIsBusy(true);
             var service = Get<IGeneralService>();
-            Orders = new ObservableCollection<Order>(service.GetAllOrders());
+            var notSortedOrders = service.GetAllOrders();
+            notSortedOrders.Sort(Order.CompareByPreOrderStartDate);
+            Orders = new ObservableCollection<Order>(notSortedOrders);
+            
             var Users = new ObservableCollection<User>(service.GetAllUsers());
 
             foreach (var order in Orders)

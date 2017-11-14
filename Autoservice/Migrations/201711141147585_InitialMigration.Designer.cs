@@ -13,7 +13,7 @@ namespace Autoservice.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201711121934279_InitialMigration"; }
+            get { return "201711141147585_InitialMigration"; }
         }
         
         string IMigrationMetadata.Source

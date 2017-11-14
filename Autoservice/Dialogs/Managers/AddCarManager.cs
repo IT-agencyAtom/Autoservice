@@ -1,5 +1,6 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
+using Autoservice.ViewModel.Utils;
 using ConstaSoft.Core.Controls.Managers;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -95,7 +96,7 @@ namespace Autoservice.Dialogs.Managers
                     }
                 }
             };
-            Types = Enum.GetNames(typeof(CarType));
+            Types = EnumExtender.GetAllDescriptions(typeof(CarType));
         }
         private void CancelHandler()
         {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Autoservice.DAL.Entities;
+using Autoservice.Screens.Managers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,17 @@ namespace Autoservice.Screens
         public OrderScreen()
         {
             InitializeComponent();
+        }
+
+        private SolidColorBrush redColor = new SolidColorBrush(Colors.SandyBrown);
+        private SolidColorBrush whiteColor = new SolidColorBrush(Colors.Gray);
+        private void DataGrid_LoadingRow(object sender, DataGridRowEventArgs e)
+        {
+            Order order = (Order)e.Row.DataContext;
+            if (order.PreOrderDateTime != null)
+                e.Row.Background = redColor;
+            else
+                e.Row.Background = whiteColor;
         }
     }
 }

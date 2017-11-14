@@ -18,9 +18,11 @@ namespace Autoservice.DAL.Entities
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Number { get; set; }
+
+        public DateTime? PreOrderDateTime { get; set; }
+
         public DateTime StartDate { get; set; }
         public string PersonalNumber => $"АГ-{Number}";
-        
         public string RepairZone { get; set; }
         public List<OrderSparePart> SpareParts { get; set; }
         public Guid CarId { get; set; }
@@ -46,6 +48,21 @@ namespace Autoservice.DAL.Entities
             Works = new List<OrderWork>();
             SpareParts = new List<OrderSparePart>();
             Activities = new List<Activity>();
+        }
+
+        public static int CompareByPreOrderStartDate(Order o1, Order o2)
+        {
+            var pTime1 = o1.PreOrderDateTime;
+            var pTime2 = o2.PreOrderDateTime;
+            if (pTime1 == null && pTime2 != null)
+                return 1;
+            if (pTime1 != null && pTime2 == null)
+                return -1;
+            if (pTime1 != null && pTime2 != null)
+            {
+                return -((DateTime)pTime1).CompareTo((DateTime)pTime2);
+            }
+            return -o1.StartDate.CompareTo(o2.StartDate);
         }
     }   
     public enum PaymentMethod

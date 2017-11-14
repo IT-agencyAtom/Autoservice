@@ -1,6 +1,7 @@
 ﻿using Autoservice.DAL.Common.Implementation;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -31,7 +32,12 @@ namespace Autoservice.DAL.Entities
         
         public enum CarType
         {
-            Automobile,Motocycle
+            [Description("Автомобиль")]
+            Automobile,
+            [Description("Мотоцикл")]
+            Motocycle,
+            [Description("Спецтехника")] 
+            SpecialTransport
         }
         public override string ToString()
         {

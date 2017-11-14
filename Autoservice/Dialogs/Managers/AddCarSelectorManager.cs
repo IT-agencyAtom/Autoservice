@@ -63,7 +63,7 @@ namespace Autoservice.Dialogs.Managers
                     {
                         OnButtonAction = (obj) => AddNewCar(),
                         ButtonIcon = "appbar_user_add",
-                        ButtonText = "Добавить новую"                        
+                        ButtonText = "Добавить ТС"                        
                     }
                 },
 

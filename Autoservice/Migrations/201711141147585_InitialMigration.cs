@@ -31,6 +31,7 @@ namespace Autoservice.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Number = c.Int(nullable: false, identity: true),
+                        PreOrderDateTime = c.DateTime(),
                         StartDate = c.DateTime(nullable: false),
                         RepairZone = c.String(),
                         CarId = c.Guid(nullable: false),
