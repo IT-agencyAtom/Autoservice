@@ -100,12 +100,12 @@ namespace Autoservice.Dialogs.Managers
 
         public void Save2DB()
         {
-            var relevantAdsService = Get<IGeneralService>();
+            var generalService = Get<IGeneralService>();
 
             if (_isEdit)
-                relevantAdsService.UpdateClient(Client);
+                generalService.UpdateClient(Client);
             else
-                relevantAdsService.AddClient(Client);
+                generalService.AddClient(Client);
         }
 
         public override void Refresh()

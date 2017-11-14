@@ -209,16 +209,16 @@ namespace Autoservice.Dialogs.Managers
 
         public void Save2DB()
         {
-            var relevantAdsService = Get<IGeneralService>();
+            var generalService = Get<IGeneralService>();
 
             Order.Works = OrderWorks.Select(w => new OrderWork(w)).ToList();
             Order.TotalPrice = OrderWorks.Sum(ow => ow.Price) - SelectedClient.Discount * OrderWorks.Sum(ow => ow.Price) / 100;
 
             Order.SpareParts = OrderSpareParts.Select(w => new OrderSparePart(w)).ToList();
             if (_isEdit)
-                relevantAdsService.UpdateOrder(Order);
+                generalService.UpdateOrder(Order);
             else
-                relevantAdsService.AddOrder(Order);
+                generalService.AddOrder(Order);
         }
 
         public async override void Refresh()

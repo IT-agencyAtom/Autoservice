@@ -11,54 +11,54 @@ using System.Threading.Tasks;
 
 namespace Autoservice.Dialogs.Managers
 {
-    public class AddWorkManager : PanelViewModelBase
+    public class AddSparePartManager : PanelViewModelBase
     {
         public Action OnExit { get; set; }
-        public string Title { get; set; }
-        
-        private Work _work;
 
-        public Work Work
+        public string Title { get; set; }
+
+        private SparePart _sparePart;
+
+        public SparePart SparePart
         {
-            get { return _work; }
+            get { return _sparePart; }
             set
             {
-                if (_work == value)
+                if (_sparePart == value)
                     return;
 
-                _work = value;
-                RaisePropertyChanged("Work");
+                _sparePart = value;
+                RaisePropertyChanged("sparePart");
             }
         }
-        public string Price { get; set; }
-
-
         //Комманды
         public RelayCommand Save { get; private set; }
 
         public RelayCommand Cancel { get; private set; }
-
 
         private bool _isEdit { get; set; }
 
         /// <summary>
         ///     Initializes a new instance of the SettingsScreen class.
         /// </summary>
-        public void initializeEdit(Work work)
+        public void initializeEdit(SparePart sparePart)
         {
             _isEdit = true;
 
             initialize();
-            Work = work;
 
-            Title = "Изменить работу";
+            SparePart = sparePart;
+
+            Title = "Изменить запчасть";
         }
 
         public void initializeAdd()
         {
             initialize();
-            Work = new Work();
-            Title = "Добавить работу";
+
+            SparePart = new SparePart();
+
+            Title = "Добавить запчасть";
         }
 
         private void initialize()
@@ -90,7 +90,6 @@ namespace Autoservice.Dialogs.Managers
         private void SaveHandler()
         {
             Validate();
-            
             if (HasErrors)
                 return;
             WasChanged = true;
@@ -100,13 +99,14 @@ namespace Autoservice.Dialogs.Managers
         public void Save2DB()
         {
             var generalService = Get<IGeneralService>();
+
             if (_isEdit)
-                generalService.UpdateWork(Work);
+                generalService.UpdateSparePart(SparePart);
             else
-                generalService.AddWork(Work);
+                generalService.AddSparePart(SparePart);
         }
 
-        public override async void Refresh()
+        public override void Refresh()
         {
             SetIsBusy(false);
         }

@@ -356,7 +356,7 @@ namespace Autoservice.DAL.Services
         public void UpdateWorkTemplate(WorkTemplate workTemplate)
         {
             using (var scope = Db.BeginWork())
-            {
+            {               
                 _workTemplateRepository.Update(workTemplate);
                 scope.SaveChanges();
             }

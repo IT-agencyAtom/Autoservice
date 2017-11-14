@@ -196,8 +196,8 @@ namespace Autoservice.Screens.Managers
 
             if (result == MessageDialogResult.Affirmative)
             {
-                var relevantAdsService = Get<IGeneralService>();
-                relevantAdsService.DeleteUser(SelectedUser);
+                var generalService = Get<IGeneralService>();
+                generalService.DeleteUser(SelectedUser);
 
                 await
                     metroWindow.ShowMessageAsync("Success", $"User {SelectedUser.Login} was deleted");

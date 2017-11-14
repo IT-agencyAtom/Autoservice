@@ -110,8 +110,8 @@ namespace Autoservice.Dialogs.Managers
                     Car = addCarManager.Car;
                     Car.ClientId = _client.Id;
 
-                    var relevantAdsService = Get<IGeneralService>();
-                    relevantAdsService.AddCar(Car);
+                    var generalService = Get<IGeneralService>();
+                    generalService.AddCar(Car);
 
                     NavigateNext();
                 }

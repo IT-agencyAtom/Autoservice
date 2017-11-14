@@ -50,5 +50,11 @@ namespace Autoservice.DAL.Services
         Order GetOrderById(Guid id);
         List<Activity> GetAllActivities();
         List<SparePart> GetAllSpareParts();
+        void UpdateSparePart(SparePart sparePart);
+        void AddSparePart(SparePart sparePart);
+        void DeleteSparePart(SparePart selectedSparePart);
+        void UpdateWorkTemplate(WorkTemplate workTemplate);
+        void AddWorkTemplate(WorkTemplate workTemplate);
+        void DeleteWorkTemplate(WorkTemplate selectedWork);
     }
 }

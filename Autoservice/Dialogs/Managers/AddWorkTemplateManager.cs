@@ -1,6 +1,7 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
 using ConstaSoft.Core.Controls.Managers;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
@@ -11,23 +12,23 @@ using System.Threading.Tasks;
 
 namespace Autoservice.Dialogs.Managers
 {
-    public class AddWorkManager : PanelViewModelBase
+    public class AddWorkTemplateManager : PanelViewModelBase
     {
         public Action OnExit { get; set; }
         public string Title { get; set; }
         
-        private Work _work;
-
-        public Work Work
+        private WorkTemplate _workTemplate;
+        public List<WorkModel> Works { get; set; }
+        public WorkTemplate WorkTemplate
         {
-            get { return _work; }
+            get { return _workTemplate; }
             set
             {
-                if (_work == value)
+                if (_workTemplate == value)
                     return;
 
-                _work = value;
-                RaisePropertyChanged("Work");
+                _workTemplate = value;
+                RaisePropertyChanged("WorkTemplate");
             }
         }
         public string Price { get; set; }
@@ -37,28 +38,27 @@ namespace Autoservice.Dialogs.Managers
         public RelayCommand Save { get; private set; }
 
         public RelayCommand Cancel { get; private set; }
-
-
+       
         private bool _isEdit { get; set; }
 
         /// <summary>
         ///     Initializes a new instance of the SettingsScreen class.
         /// </summary>
-        public void initializeEdit(Work work)
+        public void initializeEdit(WorkTemplate workTemplate)
         {
             _isEdit = true;
 
             initialize();
-            Work = work;
+            WorkTemplate = workTemplate;
 
-            Title = "Изменить работу";
+            Title = "Изменить шаблон";
         }
 
         public void initializeAdd()
         {
             initialize();
-            Work = new Work();
-            Title = "Добавить работу";
+            WorkTemplate = new WorkTemplate();
+            Title = "Добавить шаблон";
         }
 
         private void initialize()
@@ -81,7 +81,9 @@ namespace Autoservice.Dialogs.Managers
                     }
                 }
             };
+            Works = new List<WorkModel>();
         }
+
         private void CancelHandler()
         {
             OnExit();
@@ -100,15 +102,48 @@ namespace Autoservice.Dialogs.Managers
         public void Save2DB()
         {
             var generalService = Get<IGeneralService>();
+
+            WorkTemplate.Works = Works.Where(s=>s.IsChecked==true).Select(w => new Work(w)).ToList();
+
             if (_isEdit)
-                generalService.UpdateWork(Work);
+                generalService.UpdateWorkTemplate(WorkTemplate);
             else
-                generalService.AddWork(Work);
+                generalService.AddWorkTemplate(WorkTemplate);
         }
 
         public override async void Refresh()
         {
+            SetIsBusy(true);
+            var service = Get<IGeneralService>();
+            var allWorks = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks())).ToList();
+            Works.AddRange(allWorks.Select(w => new WorkModel(w)));
+            foreach (var work in WorkTemplate.Works)
+            {
+                Works.First(w => w.Id == work.Id).IsChecked = true;
+            }
+            RaisePropertyChanged("Works");
             SetIsBusy(false);
         }
+    }
+    public class WorkModel : ViewModelBase
+    {
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public bool IsChecked { get; set; }     
+        
+        public WorkModel()
+        {
+            Id = Guid.NewGuid();
+            IsChecked = false;
+        }
+        public WorkModel(Work work)
+        {
+            Id = work.Id;
+            Name = work.Name;
+            Price = work.Price;
+            IsChecked = false;
+        }
+
     }
 }

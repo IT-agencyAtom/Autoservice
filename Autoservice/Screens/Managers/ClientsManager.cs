@@ -148,8 +148,8 @@ namespace Autoservice.Screens.Managers
 
             if (result == MessageDialogResult.Affirmative)
             {
-                var relevantAdsService = Get<IGeneralService>();
-                relevantAdsService.DeleteClient(SelectedClient);
+                var generalService = Get<IGeneralService>();
+                generalService.DeleteClient(SelectedClient);
 
                 await
                     metroWindow.ShowMessageAsync("Успех", $"Клиент {SelectedClient.Name} был удалён");

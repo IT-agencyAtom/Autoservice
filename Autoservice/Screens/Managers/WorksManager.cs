@@ -23,6 +23,7 @@ namespace Autoservice.Screens.Managers
         private string _worksFilterString;
         private ICollectionView _worksView { get; set; }
 
+
         public ObservableCollection<Work> Works { get; set; }
         public Work SelectedWork { get; set; }
 
@@ -67,12 +68,12 @@ namespace Autoservice.Screens.Managers
             {
                 LeftButtons = new ObservableCollection<PanelButtonManager>
                 {
-                    /*new PanelButtonManager
+                    new PanelButtonManager
                     {
                         OnButtonAction = o => AddHandler(),
                         ButtonIcon = "appbar_add",
                         ButtonText = "Добавить"
-                    },*/
+                    },
                     new PanelButtonManager
                     {
                         OnButtonAction = o => EditHandler(),
@@ -115,7 +116,7 @@ namespace Autoservice.Screens.Managers
                 if (addManager.WasChanged)
                 {
                     await Task.Run(() => addManager.Save2DB());
-
+                    
                     Refresh();
                 }
 
@@ -179,8 +180,8 @@ namespace Autoservice.Screens.Managers
 
             if (result == MessageDialogResult.Affirmative)
             {
-                var relevantAdsService = Get<IGeneralService>();
-                relevantAdsService.DeleteWork(SelectedWork);
+                var generalService = Get<IGeneralService>();
+                generalService.DeleteWork(SelectedWork);
 
                 await
                     metroWindow.ShowMessageAsync("Успех", $"Работа {SelectedWork.Name} была удалена");

@@ -179,8 +179,8 @@ namespace Autoservice.Screens.Managers
 
             if (result == MessageDialogResult.Affirmative)
             {
-                var relevantAdsService = Get<IGeneralService>();
-                relevantAdsService.DeleteMaster(SelectedMaster);
+                var generalService = Get<IGeneralService>();
+                generalService.DeleteMaster(SelectedMaster);
 
                 await
                     metroWindow.ShowMessageAsync("Успех", $"Мастер {SelectedMaster.Name} был удалён");

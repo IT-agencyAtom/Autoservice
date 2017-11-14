@@ -1,7 +1,11 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
+using Autoservice.Dialogs;
+using Autoservice.Dialogs.Managers;
 using ConstaSoft.Core.Controls.Managers;
 using GalaSoft.MvvmLight.Command;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,6 +13,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 
 namespace Autoservice.Screens.Managers
@@ -20,7 +25,7 @@ namespace Autoservice.Screens.Managers
         private ICollectionView _templateView { get; set; }
 
         public ObservableCollection<WorkTemplate> Templates { get; set; }
-        public Work SelectedTemplate { get; set; }
+        public WorkTemplate SelectedTemplate { get; set; }
 
         public string TemplateFilterString
         {
@@ -96,15 +101,96 @@ namespace Autoservice.Screens.Managers
 
         private async void AddHandler()
         {
+            SetIsBusy(true);
+
+            var addManager = new AddWorkTemplateManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => addManager.initializeAdd());
+
+            var addDialog = new AddWorkTemplateDialog(addManager);
+
+            addDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+
+                if (addManager.WasChanged)
+                {
+                    await Task.Run(() => addManager.Save2DB());
+
+                    Refresh();
+                }
+
+                SetIsBusy(false);
+            };
+
+            addDialog.Show();
         }
 
         private async void EditHandler()
         {
+            if (SelectedTemplate == null)
+                return;
+
+            SetIsBusy(true);
+
+            var addManager = new AddWorkTemplateManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => addManager.initializeEdit(SelectedTemplate));
+
+            var addDialog = new AddWorkTemplateDialog(addManager);
+
+            addDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+
+                if (addManager.WasChanged)
+                {
+                    await Task.Run(() => addManager.Save2DB());
+
+                    Refresh();
+                }
+
+                SetIsBusy(false);
+            };
+            addDialog.Show();
         }
 
         private async void DeleteHandler()
         {
+            if (SelectedTemplate == null)
+                return;
+
+            var deleteDialogSettings = new MetroDialogSettings
+            {
+                AffirmativeButtonText = "Да",
+                NegativeButtonText = "Нет",
+                FirstAuxiliaryButtonText = "Отмена"
+            };
+
+            var metroWindow = Application.Current.MainWindow as MetroWindow;
+            if (metroWindow == null)
+                return;
+
+            SetIsBusy(true);
+
+            var result =
+                await
+                    metroWindow.ShowMessageAsync("Подтвердите удаление шаблона",
+                        $"Вы уверены что хотите удалить {SelectedTemplate.Name}?",
+                        MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, deleteDialogSettings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                var generalService = Get<IGeneralService>();
+                generalService.DeleteWorkTemplate(SelectedTemplate);
+
+                await
+                    metroWindow.ShowMessageAsync("Успех", $"Шаблон {SelectedTemplate.Name} был удалена");
+
+                Refresh();
+            }
+
+            SetIsBusy(false);
         }
+
 
         public async override void Refresh()
         {

@@ -251,8 +251,8 @@ namespace Autoservice.Screens.Managers
 
             if (result == MessageDialogResult.Affirmative)
             {
-                var relevantAdsService = Get<IGeneralService>();
-                relevantAdsService.DeleteOrder(SelectedOrder);
+                var generalService = Get<IGeneralService>();
+                generalService.DeleteOrder(SelectedOrder);
 
                 await
                     metroWindow.ShowMessageAsync("Успех", $"Заказ {SelectedOrder.PersonalNumber} был удалён");
@@ -320,8 +320,8 @@ namespace Autoservice.Screens.Managers
         }
         private void Save2DB()
         {
-            var relevantAdsService = Get<IGeneralService>();
-            relevantAdsService.AddOrder(_newOrder);
+            var generalService = Get<IGeneralService>();
+            generalService.AddOrder(_newOrder);
 
             var activity = new Activity
             {
@@ -331,16 +331,16 @@ namespace Autoservice.Screens.Managers
                 Status = ActivityStatus.New,
                 OrderId = _newOrder.Id
             };
-            relevantAdsService.AddActivity(activity);
+            generalService.AddActivity(activity);
             Refresh();        
         }            
 
         public void SaveActivity2DB(Activity oldActivity, Activity newActivity)
         {
-            var relevantAdsService = Get<IGeneralService>();            
-            relevantAdsService.UpdateOrder(SelectedOrder);
-            relevantAdsService.UpdateActivity(oldActivity);
-            relevantAdsService.AddActivity(newActivity);
+            var generalService = Get<IGeneralService>();            
+            generalService.UpdateOrder(SelectedOrder);
+            generalService.UpdateActivity(oldActivity);
+            generalService.AddActivity(newActivity);
             Refresh();
         }
         public override async void Refresh()

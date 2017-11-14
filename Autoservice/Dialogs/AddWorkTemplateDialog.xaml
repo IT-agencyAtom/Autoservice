@@ -10,15 +10,15 @@
     xmlns:managers1="clr-namespace:ConstaSoft.Core.Controls.Managers;assembly=ConstaSoft.Core"
     xmlns:controls1="clr-namespace:ConstaSoft.Core.Controls;assembly=ConstaSoft.Core"
     mc:Ignorable="d"
-    x:Class="Autoservice.Dialogs.AddWorkDialog"
+    x:Class="Autoservice.Dialogs.AddWorkTemplateDialog"
     WindowStartupLocation="CenterScreen"
     ShowMinButton="False"
     ShowMaxRestoreButton="False"
     ResizeMode="NoResize"
     GlowBrush="{DynamicResource AccentColorBrush}"
     Title="{Binding Title}"
-    Width="200"
-    Height="280">
+    Width="400"
+    Height="600">
     <Window.Resources>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
             <controls1:Panel />
@@ -34,30 +34,38 @@
             <command:EventToCommand Command="{Binding Close}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
-
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition Height="75" />
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="75"></RowDefinition>
         </Grid.RowDefinitions>
-
-        <GroupBox Header="Данные по работе">
-            <StackPanel>
-                <StackPanel Margin="0,5">
-                    <TextBlock Text="Наименование" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
+            <GroupBox Header="Данные по шаблону">
+                <StackPanel >
+                    <StackPanel Margin="10">
+                        <TextBlock Text="Наименование" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
                             HorizontalAlignment="Center" />
-                    <TextBox Margin="0, 5, 0, 0"
+                        <TextBox Margin="0, 5, 0, 0"
                     controls:TextBoxHelper.Watermark="Name"
-                    Text="{Binding Work.Name,UpdateSourceTrigger=PropertyChanged}" />
+                    Text="{Binding WorkTemplate.Name,UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <GroupBox Margin="10,5" Header="Работы" Grid.Row ="1">                   
+                    <ScrollViewer>
+                        <DataGrid
+                                        MinHeight="70"
+                                        AutoGenerateColumns="False"
+                                        CanUserAddRows="False"
+                                        IsSynchronizedWithCurrentItem="True"
+                                        ItemsSource="{Binding Works}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Width="5*" Binding="{Binding Name}" Header="Наименование">
+                                </DataGridTextColumn>
+                                <DataGridCheckBoxColumn Width="1*" Binding="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="+"></DataGridCheckBoxColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </ScrollViewer>
+                </GroupBox>
                 </StackPanel>
-                <StackPanel Margin="0,5">
-                    <TextBlock Text="Цена" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
-                            HorizontalAlignment="Center" />
-                    <TextBox Margin="0, 5, 0, 0" controls:TextBoxHelper.Watermark="Price" Text="{Binding Work.Price, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-            </StackPanel>
-        </GroupBox>
-
+            </GroupBox>        
         <controls:Flyout Grid.Row="1" Position="Bottom"
                          CloseButtonVisibility="Collapsed"
                          TitleVisibility="Collapsed"
