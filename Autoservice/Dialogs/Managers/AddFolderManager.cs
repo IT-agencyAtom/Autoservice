@@ -11,24 +11,23 @@ using System.Threading.Tasks;
 
 namespace Autoservice.Dialogs.Managers
 {
-    public class AddSparePartManager : PanelViewModelBase
+    public class AddFolderManager : PanelViewModelBase
     {
         public Action OnExit { get; set; }
-
         public string Title { get; set; }
+        
+        private SparePartsFolder _folder;
 
-        private SparePart _sparePart;
-
-        public SparePart SparePart
+        public SparePartsFolder Folder
         {
-            get { return _sparePart; }
+            get { return _folder; }
             set
             {
-                if (_sparePart == value)
+                if (_folder == value)
                     return;
 
-                _sparePart = value;
-                RaisePropertyChanged("SparePart");
+                _folder = value;
+                RaisePropertyChanged("Folder");
             }
         }
         //Комманды
@@ -36,30 +35,28 @@ namespace Autoservice.Dialogs.Managers
 
         public RelayCommand Cancel { get; private set; }
 
+
         private bool _isEdit { get; set; }
 
         /// <summary>
         ///     Initializes a new instance of the SettingsScreen class.
         /// </summary>
-        public void initializeEdit(SparePart sparePart)
+        public void initializeEdit(SparePartsFolder folder)
         {
             _isEdit = true;
 
             initialize();
-
-            SparePart = sparePart;
-
-            Title = "Изменить запчасть";
+            Folder = folder;
+            Title = "Изменить работу";
         }
 
-        public void initializeAdd(SparePartsFolder folder)
+        public void initializeAdd(SparePartsFolder parentFolder)
         {
             initialize();
-
-            SparePart = new SparePart();
-            if (folder != null)
-                SparePart.ParentId = folder.Id;
-            Title = "Добавить запчасть";
+            Folder = new SparePartsFolder();
+            if (parentFolder != null)
+                Folder.ParentId = parentFolder.Id;
+            Title = "Добавить работу";
         }
 
         private void initialize()
@@ -91,6 +88,7 @@ namespace Autoservice.Dialogs.Managers
         private void SaveHandler()
         {
             Validate();
+            
             if (HasErrors)
                 return;
             WasChanged = true;
@@ -100,14 +98,13 @@ namespace Autoservice.Dialogs.Managers
         public void Save2DB()
         {
             var generalService = Get<IGeneralService>();
-
             if (_isEdit)
-                generalService.UpdateSparePart(SparePart);
+                generalService.UpdateSparePartsFolder(Folder);
             else
-                generalService.AddSparePart(SparePart);
+                generalService.AddSparePartsFolder(Folder);
         }
 
-        public override void Refresh()
+        public override async void Refresh()
         {
             SetIsBusy(false);
         }

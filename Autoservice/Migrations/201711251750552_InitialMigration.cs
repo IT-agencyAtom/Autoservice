@@ -92,9 +92,25 @@ namespace Autoservice.Migrations
                     {
                         Id = c.Guid(nullable: false),
                         Name = c.String(),
+                        Cargo = c.String(),
                         Number = c.Int(nullable: false),
+                        ParentId = c.Guid(),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.SparePartsFolders", t => t.ParentId)
+                .Index(t => t.ParentId);
+            
+            CreateTable(
+                "dbo.SparePartsFolders",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        Name = c.String(),
+                        ParentId = c.Guid(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.SparePartsFolders", t => t.ParentId)
+                .Index(t => t.ParentId);
             
             CreateTable(
                 "dbo.OrderWorks",
@@ -167,6 +183,8 @@ namespace Autoservice.Migrations
             DropForeignKey("dbo.OrderWorks", "OrderId", "dbo.Orders");
             DropForeignKey("dbo.OrderWorks", "MasterId", "dbo.Masters");
             DropForeignKey("dbo.OrderSpareParts", "SparePartId", "dbo.SpareParts");
+            DropForeignKey("dbo.SpareParts", "ParentId", "dbo.SparePartsFolders");
+            DropForeignKey("dbo.SparePartsFolders", "ParentId", "dbo.SparePartsFolders");
             DropForeignKey("dbo.OrderSpareParts", "OrderId", "dbo.Orders");
             DropForeignKey("dbo.Orders", "CarId", "dbo.Cars");
             DropForeignKey("dbo.Cars", "ClientId", "dbo.Clients");
@@ -175,6 +193,8 @@ namespace Autoservice.Migrations
             DropIndex("dbo.OrderWorks", new[] { "OrderId" });
             DropIndex("dbo.OrderWorks", new[] { "MasterId" });
             DropIndex("dbo.OrderWorks", new[] { "WorkId" });
+            DropIndex("dbo.SparePartsFolders", new[] { "ParentId" });
+            DropIndex("dbo.SpareParts", new[] { "ParentId" });
             DropIndex("dbo.OrderSpareParts", new[] { "SparePartId" });
             DropIndex("dbo.OrderSpareParts", new[] { "OrderId" });
             DropIndex("dbo.Cars", new[] { "ClientId" });
@@ -186,6 +206,7 @@ namespace Autoservice.Migrations
             DropTable("dbo.Works");
             DropTable("dbo.Masters");
             DropTable("dbo.OrderWorks");
+            DropTable("dbo.SparePartsFolders");
             DropTable("dbo.SpareParts");
             DropTable("dbo.OrderSpareParts");
             DropTable("dbo.Clients");

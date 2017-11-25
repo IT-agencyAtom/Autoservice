@@ -7,6 +7,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:local="clr-namespace:Autoservice.Screens"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:entites="clr-namespace:Autoservice.DAL.Entities"    
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="300"
     d:DesignWidth="300"
@@ -15,9 +17,7 @@
         <BooleanToVisibilityConverter x:Key="btv" />
     </UserControl.Resources>
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded">
-            <command:EventToCommand Command="{Binding Loaded}" />
-        </i:EventTrigger>
+       
     </i:Interaction.Triggers>
     <Grid>
         <Grid.Resources>
@@ -51,40 +51,33 @@
                 </TextBox.Style>
             </TextBox>
         </Grid>
-        <ScrollViewer Grid.Row="1" Margin="10,2">
-            <GroupBox Header="Запчасти">
-                <DataGrid
-                    Name="dg"
-                    Margin="5"
-                    AutoGenerateColumns="False"
-                    CanUserAddRows="False"
-                    IsReadOnly="True"
-                    IsSynchronizedWithCurrentItem="True"
-                    ItemsSource="{Binding SpareParts}"
-                    RenderOptions.ClearTypeHint="Enabled"
-                    SelectedItem="{Binding SelectedSparePart}"
-                    TextOptions.TextFormattingMode="Display">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="CellEditEnding">
-                            <command:EventToCommand Command="{Binding EditActivityNotes}" PassEventArgsToCommand="True" />
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="MouseDoubleClick">
-                            <command:EventToCommand Command="{Binding MouseDoubleClickCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Name}"
-                            Header="Наименование" />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Number}"
-                            Header="Осталось на складе" />                        
-                    </DataGrid.Columns>
-                </DataGrid>
-            </GroupBox>
-        </ScrollViewer>
+        <GroupBox Header="Запчасти" Grid.Row="1">
+            <StackPanel>
+                <TextBlock Background="IndianRed" TextAlignment="Center" Text="Корень" Visibility="{Binding HelperVisibility}" Drop="helper_Drop" AllowDrop="True" FontSize="28" Foreground="White"></TextBlock>
+            <TreeView x:Name="treeView1" ItemsSource="{Binding Nodes}" SelectedItemChanged="treeView1_SelectedItemChanged">
+                <TreeView.Resources>
+                    <HierarchicalDataTemplate DataType="{x:Type entites:SparePartsFolder}" ItemsSource="{Binding Children}">
+                        <StackPanel Orientation="Horizontal" Drop="StackPanel_Drop" AllowDrop="True" MouseDown="StackPanel_MouseDown">
+                            <iconPacks:PackIconMaterial Kind="Folder"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Firebrick"/>
+                            <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
+                            <TextBlock Text=" [" Foreground="Blue" />
+                            <TextBlock Text="{Binding Children.Count}" Foreground="Blue" />
+                            <TextBlock Text="]" Foreground="Blue" />
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                    <DataTemplate DataType="{x:Type entites:SparePart}">
+                        <StackPanel Orientation="Horizontal" MouseDown="StackPanel_MouseDown" MouseUp="StackPanel_MouseUp">
+                            <iconPacks:PackIconMaterial Kind="Wrench"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkBlue"/>
+                            <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
+                            <TextBlock Text=" (" Foreground="Green" />
+                            <TextBlock Text="{Binding Number}" Foreground="Green" />
+                            <TextBlock Text=")" Foreground="Green" />
+                        </StackPanel>
+                    </DataTemplate>
+                </TreeView.Resources>      
+            </TreeView>
+            </StackPanel>
+        </GroupBox>
         <controls:Flyout
             Grid.Row="3"
             Height="75"

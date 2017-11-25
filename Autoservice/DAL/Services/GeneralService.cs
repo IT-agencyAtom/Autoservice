@@ -24,13 +24,14 @@ namespace Autoservice.DAL.Services
         private readonly IOrderWorkRepository _orderWorkRepository;
         private readonly IWorkTemplateRepository _workTemplateRepository;
         private readonly IOrderSparePartRepository _orderSparePartRepository;
+        private readonly ISparePartsFolderRepository _sparePartsFolderRepository;
 
         protected Logger _logger;
 
         public GeneralService(
             IDbWorker dbWorker,IActivityRepository activityRepository,ICarRepository carRepository,IClientRepository clientRepository,IMasterRepository masterRepository,            
             IOrderRepository orderRepository,ISparePartRepository sparePartRepository, IUserRepository userRepository, IWorkRepository workRepository,
-            IOrderWorkRepository orderWorkRepository,IWorkTemplateRepository workTemplateRepository,IOrderSparePartRepository orderSparePartRepository)
+            IOrderWorkRepository orderWorkRepository,IWorkTemplateRepository workTemplateRepository,IOrderSparePartRepository orderSparePartRepository,ISparePartsFolderRepository sparePartsFolderRepository)
             : base(dbWorker)
         {
             _activityRepository = activityRepository;
@@ -44,6 +45,7 @@ namespace Autoservice.DAL.Services
             _orderWorkRepository = orderWorkRepository;
             _workTemplateRepository = workTemplateRepository;
             _orderSparePartRepository = orderSparePartRepository;
+            _sparePartsFolderRepository = sparePartsFolderRepository;
         }       
       
 
@@ -418,11 +420,54 @@ namespace Autoservice.DAL.Services
             }
         }
 
+
+        public List<SparePartsFolder> GetAllSparePartsFolders()
+        {
+            using (Db.BeginReadOnlyWork())
+            {
+                var list =  _sparePartsFolderRepository.GetAll(f=>f.Parent,f=>f.Folders,f=>f.SpareParts);
+                return list;
+            }
+        }
+
+        public void AddSparePartsFolder(SparePartsFolder sparePartsFolder)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                _sparePartsFolderRepository.Add(sparePartsFolder);
+                scope.SaveChanges();
+            }
+        }
+
+        public void UpdateSparePartsFolder(SparePartsFolder sparePartsFolder)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                _sparePartsFolderRepository.Update(sparePartsFolder);
+                scope.SaveChanges();
+            }
+        }
+
+        public void DeleteSparePartsFolder(SparePartsFolder sparePartsFolder)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                var basePart = _sparePartsFolderRepository.Get(u => u.Id == sparePartsFolder.Id);
+                if (basePart != null)
+                {
+                    _sparePartsFolderRepository.Delete(basePart);
+
+                    scope.SaveChanges();
+                }
+            }
+        }
+
+
         public List<SparePart> GetAllSpareParts()
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _sparePartRepository.GetAll();
+                return _sparePartRepository.GetAll(s=>s.Parent);
             }
         }
 

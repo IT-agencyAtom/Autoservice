@@ -72,6 +72,8 @@ namespace Autoservice.ViewModel
             builder.RegisterType<OrderWorkRepository<TContext>>().As<IOrderWorkRepository>().InstancePerDependency();
             builder.RegisterType<WorkTemplateRepository<TContext>>().As<IWorkTemplateRepository>().InstancePerDependency();
             builder.RegisterType<OrderSparePartRepository<TContext>>().As<IOrderSparePartRepository>().InstancePerDependency();
+            builder.RegisterType<SparePartsFolderRepository<TContext>>().As<ISparePartsFolderRepository>().InstancePerDependency();
+
         }
 
         public static void Cleanup()

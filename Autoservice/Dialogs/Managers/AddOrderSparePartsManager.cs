@@ -1,6 +1,7 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
 using ConstaSoft.Core.Controls.Managers;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Autoservice.Dialogs.Managers
 {
-    public class AddSparePartManager : PanelViewModelBase
+    public class AddOrderSparePartsManager : PanelViewModelBase
     {
         public Action OnExit { get; set; }
 
@@ -52,13 +53,12 @@ namespace Autoservice.Dialogs.Managers
             Title = "Изменить запчасть";
         }
 
-        public void initializeAdd(SparePartsFolder folder)
+        public void initializeAdd()
         {
             initialize();
 
             SparePart = new SparePart();
-            if (folder != null)
-                SparePart.ParentId = folder.Id;
+
             Title = "Добавить запчасть";
         }
 
@@ -111,5 +111,5 @@ namespace Autoservice.Dialogs.Managers
         {
             SetIsBusy(false);
         }
-    }
+    }    
 }

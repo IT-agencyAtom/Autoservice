@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Autoservice.DAL.Entities;
+using Autoservice.Screens.Managers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,61 @@ namespace Autoservice.Screens
         public WarehouseScreen()
         {
             InitializeComponent();
+        }
+
+        private void treeView1_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            WarehouseManager wm = (WarehouseManager)DataContext;
+            if(wm!=null)
+                wm.SelectedItem = e.NewValue;
+        }
+
+        private void StackPanel_Drop(object sender, DragEventArgs e)
+        {
+            WarehouseManager wm = (WarehouseManager)DataContext;
+            if (wm == null)
+                return;
+            if (!(e.Source is TextBlock))
+                return;
+            var node = e.Data.GetData(typeof(SparePart));
+            if(node == null)
+                node = e.Data.GetData(typeof(SparePartsFolder));
+            wm.HelperVisibility = Visibility.Collapsed;
+            var folder = ((TextBlock)e.Source).DataContext as SparePartsFolder;
+            if (folder == node)
+                return;
+            wm.MoveNode((ITreeViewNode)node, folder);
+        }
+
+        private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            WarehouseManager wm = (WarehouseManager)DataContext;
+            if (wm == null)
+                return;
+            if (!(e.Source is TextBlock))
+                return;
+            wm.HelperVisibility = Visibility.Visible;            
+            DragDrop.DoDragDrop((TextBlock)e.Source,((TextBlock)e.Source).DataContext as ITreeViewNode, DragDropEffects.Move);
+        }
+
+        private void helper_Drop(object sender, DragEventArgs e)
+        {
+            WarehouseManager wm = (WarehouseManager)DataContext;
+            if (wm == null)
+                return;
+            var node = e.Data.GetData(typeof(SparePart));
+            if (node == null)
+                node = e.Data.GetData(typeof(SparePartsFolder));
+            wm.HelperVisibility = Visibility.Collapsed;
+            wm.MoveNode((ITreeViewNode)node, null);
+        }
+
+        private void StackPanel_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            WarehouseManager wm = (WarehouseManager)DataContext;
+            if (wm == null)
+                return;
+            wm.HelperVisibility = Visibility.Collapsed;
         }
     }
 }

@@ -56,5 +56,8 @@ namespace Autoservice.DAL.Services
         void UpdateWorkTemplate(WorkTemplate workTemplate);
         void AddWorkTemplate(WorkTemplate workTemplate);
         void DeleteWorkTemplate(WorkTemplate selectedWork);
+        List<SparePartsFolder> GetAllSparePartsFolders();
+        void AddSparePartsFolder(SparePartsFolder folder);
+        void UpdateSparePartsFolder(SparePartsFolder folder);
     }
 }

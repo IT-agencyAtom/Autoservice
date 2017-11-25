@@ -239,7 +239,7 @@ namespace Autoservice.Migrations
                     }
                 }
                 );
-            context.SpareParts.AddOrUpdate(s => s.Name,
+            /*context.SpareParts.AddOrUpdate(s => s.Name,
                 new SparePart
                 {
                     Name = "Дворник - ВАЗ2101",

@@ -9,21 +9,32 @@ using System.Threading.Tasks;
 
 namespace Autoservice.DAL.Entities
 {
-    public class SparePart : IEntity,ITreeViewNode
+    public class SparePartsFolder : IEntity, ITreeViewNode
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Cargo { get; set; }
-        public int Number { get; set; }
 
+        public List<SparePartsFolder> Folders { get; set; }
+        public List<SparePart> SpareParts { get; set; }
 
         public Guid? ParentId { get; set; }
         [ForeignKey("ParentId")]
         public SparePartsFolder Parent { get; set; }
 
-        public SparePart()
+        public SparePartsFolder()
         {
             Id = Guid.NewGuid();
+        }
+        [NotMapped]
+        public List<ITreeViewNode> Children
+        {
+            get
+            {
+                var list = new List<ITreeViewNode>();
+                list.AddRange(Folders);
+                list.AddRange(SpareParts);
+                return list;
+            }
         }
     }
 }

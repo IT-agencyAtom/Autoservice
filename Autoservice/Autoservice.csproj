@@ -142,13 +142,16 @@
     <Compile Include="DAL\Entities\OrderSparePart.cs" />
     <Compile Include="DAL\Entities\SparePart.cs" />
     <Compile Include="DAL\Entities\OrderWork.cs" />
+    <Compile Include="DAL\Entities\SparePartsFolder.cs" />
     <Compile Include="DAL\Entities\Work.cs" />
     <Compile Include="DAL\Entities\WorkTemplate.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IOrderWorkRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IWorkTemplateRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IOrderSparePartRepository.cs" />
+    <Compile Include="DAL\Repositories\Interfaces\ISparePartsFolderRepository.cs" />
     <Compile Include="DAL\Repositories\OrderSparePartRepository.cs" />
     <Compile Include="DAL\Repositories\OrderWorkRepository.cs" />
+    <Compile Include="DAL\Repositories\SparePartsFolderRepository.cs" />
     <Compile Include="DAL\Repositories\WorkTemplateRepository.cs" />
     <Compile Include="DAL\Repositories\WorkRepository.cs" />
     <Compile Include="DAL\Repositories\SparePartRepository.cs" />
@@ -179,6 +182,9 @@
     <Compile Include="Dialogs\AddClientDialog.xaml.cs">
       <DependentUpon>AddClientDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AddOrderSparePartsDialog.xaml.cs">
+      <DependentUpon>AddOrderSparePartsDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddSparePartDialog.xaml.cs">
       <DependentUpon>AddSparePartDialog.xaml</DependentUpon>
     </Compile>
@@ -194,6 +200,9 @@
     <Compile Include="Dialogs\AddMasterDialog.xaml.cs">
       <DependentUpon>AddMasterDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AddFolderDialog.xaml.cs">
+      <DependentUpon>AddFolderDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddWorkTemplateDialog.xaml.cs">
       <DependentUpon>AddWorkTemplateDialog.xaml</DependentUpon>
     </Compile>
@@ -202,17 +211,19 @@
     </Compile>
     <Compile Include="Dialogs\Managers\AddCarSelectorManager.cs" />
     <Compile Include="Dialogs\Managers\AddClientSelectorManager.cs" />
+    <Compile Include="Dialogs\Managers\AddOrderSparePartsManager.cs" />
     <Compile Include="Dialogs\Managers\AddSparePartManager.cs" />
     <Compile Include="Dialogs\Managers\AddOrderManager.cs" />
     <Compile Include="Dialogs\Managers\AddClientManager.cs" />
     <Compile Include="Dialogs\Managers\AddUserManager.cs" />
     <Compile Include="Dialogs\Managers\AddCarManager.cs" />
     <Compile Include="Dialogs\Managers\AddMasterManager.cs" />
+    <Compile Include="Dialogs\Managers\AddFolderManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkTemplateManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkManager.cs" />
-    <Compile Include="Migrations\201711141147585_InitialMigration.cs" />
-    <Compile Include="Migrations\201711141147585_InitialMigration.Designer.cs">
-      <DependentUpon>201711141147585_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201711251750552_InitialMigration.cs" />
+    <Compile Include="Migrations\201711251750552_InitialMigration.Designer.cs">
+      <DependentUpon>201711251750552_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
@@ -280,8 +291,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201711141147585_InitialMigration.resx">
-      <DependentUpon>201711141147585_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711251750552_InitialMigration.resx">
+      <DependentUpon>201711251750552_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -318,6 +329,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Dialogs\AddOrderSparePartsDialog.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Dialogs\AddSparePartDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -335,6 +350,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\AddMasterDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\AddFolderDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

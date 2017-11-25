@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 
 namespace Autoservice.Screens.Managers
@@ -21,10 +22,13 @@ namespace Autoservice.Screens.Managers
     class WarehouseManager : PanelViewModelBase
     {
         private string _sparePartFilterString;
+        private object _selectedItem;
+        private Visibility helperVisibility;
         private ICollectionView _sparePartView { get; set; }
-
+        public object SelectedItem { get { return _selectedItem; } set { _selectedItem = value; RaisePropertyChanged("SelectedItem"); } }
         public ObservableCollection<SparePart> SpareParts { get; set; }
-        public SparePart SelectedSparePart { get; set; }
+        public List<ITreeViewNode> Nodes { get; set; }
+        public Visibility HelperVisibility { get { return helperVisibility; } set { helperVisibility = value;RaisePropertyChanged("HelperVisibility"); } }
 
         public string SparePartFilterString
         {
@@ -61,6 +65,8 @@ namespace Autoservice.Screens.Managers
         }
         public RelayCommand MouseDoubleClickCommand { get; set; }
 
+
+
         public WarehouseManager()
         {
             Panel = new PanelManager
@@ -69,13 +75,19 @@ namespace Autoservice.Screens.Managers
                 {
                     new PanelButtonManager
                     {
-                        OnButtonAction = o => AddHandler(),
+                        OnButtonAction = o => AddSparePartHandler(),
                         ButtonIcon = "appbar_add",
-                        ButtonText = "Добавить"
+                        ButtonText = "Добавить запчасть"
                     },
                     new PanelButtonManager
                     {
-                        OnButtonAction = o => EditHandler(),
+                        OnButtonAction = o => AddFolderHandlerAsync(),
+                        ButtonIcon = "appbar_folder_star",
+                        ButtonText = "Добавить папку"
+                    },                    
+                    new PanelButtonManager
+                    {
+                        OnButtonAction = o => EditHandlerAsync(),
                         ButtonIcon = "appbar_edit",
                         ButtonText = "Изменить"
                     },
@@ -96,15 +108,64 @@ namespace Autoservice.Screens.Managers
                     }
                 }
             };
-            MouseDoubleClickCommand = new RelayCommand(EditHandler);
+            MouseDoubleClickCommand = new RelayCommand(EditHandlerAsync);
+            HelperVisibility = Visibility.Collapsed;
+            //Refresh();
+        }       
+
+        private SparePartsFolder GetParentFolder()
+        {
+
+            if (_selectedItem == null)
+                return null;
+            if (_selectedItem is SparePartsFolder)
+                return _selectedItem as SparePartsFolder;
+            return (_selectedItem as SparePart).Parent;
         }
 
-        private async void AddHandler()
+        public void MoveNode(ITreeViewNode node,SparePartsFolder newFolder)
+        {
+            node.Parent = null;
+            if (newFolder != null)
+                node.ParentId = newFolder.Id;
+            else
+                node.ParentId = null;
+            UpdateNode(node);
+            Refresh();
+        }
+
+        private async Task AddFolderHandlerAsync()
+        {
+            SetIsBusy(true);
+
+            var addManager = new AddFolderManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => addManager.initializeAdd(GetParentFolder()));
+
+            var addDialog = new AddFolderDialog(addManager);
+
+            addDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+
+                if (addManager.WasChanged)
+                {
+                    await Task.Run(() => addManager.Save2DB());
+
+                    Refresh();
+                }
+
+                SetIsBusy(false);
+            };
+
+            addDialog.Show();
+        }
+
+        private async void AddSparePartHandler()
         {
             SetIsBusy(true);
 
             var addManager = new AddSparePartManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
-            await Task.Run(() => addManager.initializeAdd());
+            await Task.Run(() => addManager.initializeAdd(GetParentFolder()));
 
             var addDialog = new AddSparePartDialog(addManager);
 
@@ -125,15 +186,45 @@ namespace Autoservice.Screens.Managers
             addDialog.Show();
         }
 
-        private async void EditHandler()
+        private async void EditHandlerAsync()
         {
-            if (SelectedSparePart == null)
+            if (_selectedItem == null)
                 return;
+            if (_selectedItem is SparePartsFolder)
+                await EditFolder(_selectedItem as SparePartsFolder);
+            else
+                await EditSparePart(_selectedItem as SparePart);           
+        }
 
+        private async Task EditFolder(SparePartsFolder folder)
+        {
+            SetIsBusy(true);
+
+            var addManager = new AddFolderManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => addManager.initializeEdit(folder));
+            var addDialog = new AddFolderDialog(addManager);
+
+            addDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+
+                if (addManager.WasChanged)
+                {
+                    await Task.Run(() => addManager.Save2DB());
+
+                    Refresh();
+                }
+
+                SetIsBusy(false);
+            };
+            addDialog.Show();
+        }
+        private async Task EditSparePart(SparePart sparePart)
+        {
             SetIsBusy(true);
 
             var addManager = new AddSparePartManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
-            await Task.Run(() => addManager.initializeEdit(SelectedSparePart));
+            await Task.Run(() => addManager.initializeEdit(sparePart));
 
             var addDialog = new AddSparePartDialog(addManager);
 
@@ -152,10 +243,12 @@ namespace Autoservice.Screens.Managers
             };
             addDialog.Show();
         }
+
 
         private async void DeleteHandler()
         {
-            if (SelectedSparePart == null)
+
+            /*if (SelectedSparePart == null)
                 return;
 
             var deleteDialogSettings = new MetroDialogSettings
@@ -188,7 +281,7 @@ namespace Autoservice.Screens.Managers
                 Refresh();
             }
 
-            SetIsBusy(false);
+            SetIsBusy(false);*/
         }
 
         public async override void Refresh()
@@ -196,8 +289,51 @@ namespace Autoservice.Screens.Managers
             SetIsBusy(true);
             var service = Get<IGeneralService>();
             SpareParts = new ObservableCollection<SparePart>(await Task.Run(() => service.GetAllSpareParts()));
+            Nodes = new ObservableCollection<ITreeViewNode>(await Task.Run(() => service.GetAllSparePartsFolders())).Where(n => n.Parent == null).ToList();
+            Nodes.AddRange(SpareParts.Where(s => s.Parent == null));
+            /**Nodes = new List<ITreeViewNode>
+            {
+                new SparePartsFolder
+                {
+                    Name = "Lalala",
+                    Children = new List<ITreeViewNode>
+                    {
+                        new SparePartsFolder
+                        {
+                            Name = "dadada",
+                            Children = new List<ITreeViewNode>{ new SparePart { Name = "Spapa",Number = 23, Cargo="asdasf" } }
+                        }
+                    }
+                },
+                new SparePartsFolder
+                {
+                    Name = "Mamama",
+                    Children = new List<ITreeViewNode>{ new SparePart {Name = "dsadas",Number = 23,Cargo = "sa" }, new SparePart { Name = "lhfh", Number = 2143, Cargo = "qte" } }
+                },
+                new SparePart
+                { Name = "Superpuper",Number=1243}
+            };*/
             RaisePropertyChanged("SpareParts");
+            RaisePropertyChanged("Nodes");
             SetIsBusy(false);
         }
+
+        public async void UpdateNode(ITreeViewNode node)
+        {
+            SetIsBusy(true);
+            var service = Get<IGeneralService>();
+            if (node is SparePartsFolder)
+                service.UpdateSparePartsFolder((SparePartsFolder)node);
+            else
+                service.UpdateSparePart((SparePart)node);
+            SetIsBusy(false);
+        }
+    }
+    public interface ITreeViewNode
+    {
+        Guid Id { get; set; }
+        string Name { get; set; }
+        Guid? ParentId { get; set; }
+        SparePartsFolder Parent { get; set; }
     }
 }
