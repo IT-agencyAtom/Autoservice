@@ -8,14 +8,20 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 
 namespace Autoservice.Dialogs.Managers
 {
     public class SparePartSelectorManager : PanelViewModelBase
     {
+        private string _sparePartFilterString;
+        private ICollectionView _sparePartView { get; set; }
+        private List<ITreeViewNode> _nodesBuffer;
+        private ObservableCollection<SparePart> _spareParts;
         public Action OnExit { get; set; }
         
         public string Title { get; set; }
@@ -30,6 +36,48 @@ namespace Autoservice.Dialogs.Managers
 
         private bool _isEdit { get; set; }
         private Order _order;
+
+
+        public string SparePartFilterString
+        {
+            get { return _sparePartFilterString; }
+            set
+            {
+                if (_sparePartFilterString == value)
+                    return;
+                _sparePartFilterString = value.ToLower();
+                if (_sparePartFilterString == "")
+                    Nodes = _nodesBuffer;
+                else
+                {
+                    Nodes = _spareParts.Select(s => s as ITreeViewNode).ToList();
+                    _sparePartView = CollectionViewSource.GetDefaultView(Nodes);
+                    _sparePartView.Filter = SparePartFilter;
+                    _sparePartView.MoveCurrentToFirst();
+                }
+                RaisePropertyChanged("SparePartFilterString");
+                RaisePropertyChanged("Nodes");
+
+
+            }
+        }
+        private bool SparePartFilter(object item)
+        {
+            var sparePart = item as SparePart;
+            if (sparePart == null)
+                return false;
+            if (SparePartFilterString != null)
+                if (StringFilter(sparePart) == false)
+                    return false;
+            return true;
+        }
+        private bool StringFilter(SparePart sparePart)
+        {
+            return sparePart.Name.ToLower().Contains(SparePartFilterString) ||
+                sparePart.Cargo.ToLower().Contains(SparePartFilterString);
+
+
+        }
 
         public void Initialize(Order order)
         {
@@ -83,11 +131,15 @@ namespace Autoservice.Dialogs.Managers
         }
         public async void GetNodes()
         {
+            SetIsBusy(true);
             var service = Get<IGeneralService>();
-            var spareParts = new ObservableCollection<SparePart>(await Task.Run(() => service.GetAllSpareParts()));
+            _spareParts = new ObservableCollection<SparePart>(await Task.Run(() => service.GetAllSpareParts()));
+            var folders = new ObservableCollection<SparePartsFolder>(await Task.Run(() => service.GetAllSparePartsFolders()));
             Nodes = new ObservableCollection<ITreeViewNode>(await Task.Run(() => service.GetAllSparePartsFolders())).Where(n => n.Parent == null).ToList();
-            Nodes.AddRange(spareParts.Where(s => s.Parent == null));            
-            RaisePropertyChanged("Nodes");            
+            Nodes.AddRange(_spareParts.Where(s => s.Parent == null));
+            _nodesBuffer = Nodes;
+            RaisePropertyChanged("Nodes");
+            SetIsBusy(false);
         }
     }   
 }
