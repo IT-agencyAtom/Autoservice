@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using Autoservice.ViewModel.Utils;
+using System.Windows.Forms;
 
 namespace Autoservice.Dialogs.Managers
 {
@@ -32,7 +33,8 @@ namespace Autoservice.Dialogs.Managers
         public ObservableCollection<SparePart> SpareParts { get; private set; }
         public ObservableCollection<OrderWorkModel> OrderWorks { get; private set; }
         public ObservableCollection<OrderSparePartModel> OrderSpareParts { get; private set; }
-        
+
+
         public string[] Methods { get; private set; }
         public string[] Sources { get; private set; }
 
@@ -110,11 +112,9 @@ namespace Autoservice.Dialogs.Managers
             OrderWorks = new ObservableCollection<OrderWorkModel>(order.Works.Select(w => new OrderWorkModel(w)));
             foreach (var orderWork in OrderWorks)
                 orderWork.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-            OrderSpareParts = new ObservableCollection<OrderSparePartModel>(order.SpareParts.Select(s => new OrderSparePartModel(s)));
+            OrderSpareParts = new ObservableCollection<OrderSparePartModel>(order.SpareParts.Select(w => new OrderSparePartModel(w)));
             foreach (var orderSparePart in OrderSpareParts)
-            {
                 orderSparePart.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-            }
 
             SelectedMethod = (int?)Order.PaymentMethod??-1;           
             RaisePropertyChanged("SelectedStatus");
@@ -155,16 +155,40 @@ namespace Autoservice.Dialogs.Managers
             Methods = EnumExtender.GetAllDescriptions(typeof(PaymentMethod));
             Sources = EnumExtender.GetAllDescriptions(typeof(SparePartSource));
             AddWorkCommand = new RelayCommand(AddNewWork);
-            AddSparePartCommand = new RelayCommand(AddNewSparePart);
+            AddSparePartCommand = new RelayCommand(GetParts);
 
         }
 
-        private void AddNewSparePart()
+        private void ChangeSparePartCollection(List<SparePart> _newParts)
         {
-            var newSparePart = new OrderSparePartModel { OrderId = Order.Id, IsNew=true };
-            newSparePart.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
-            OrderSpareParts.Add(newSparePart);
+            foreach (var part in _newParts)
+            {
+                var sparePartModel = new OrderSparePartModel(new OrderSparePart { IsNew = true, Number = 0, Order = Order, OrderId = Order.Id, Source = 0, SparePart = part, SparePartId = part.Id });
+                sparePartModel.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
+                OrderSpareParts.Add(sparePartModel);
+            }
             RaisePropertyChanged("OrderSpareParts");
+        }
+
+        private async void GetParts()
+        {
+            SetIsBusy(true);
+            var manager = new SparePartSelectorManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => manager.Initialize(Order));
+            var addDialog = new SparePartSelectorDialog(manager);
+            var _newParts = new List<SparePart>();
+            addDialog.Closed += async (sender, args) =>
+            {
+                SetIsBusy(true);
+                if (manager.WasChanged)
+                {
+                    _newParts = manager.Checked;
+                    ChangeSparePartCollection(_newParts);
+                    Refresh();                    
+                }
+                SetIsBusy(false);
+            };
+            addDialog.Show();
         }
 
         private async void AddNewWork()
@@ -199,6 +223,17 @@ namespace Autoservice.Dialogs.Managers
         private void SaveHandler()
         {
             Validate();
+            foreach (var item in OrderSpareParts)
+            {
+                if (item.Source == 0 && item.IsNew)
+                {
+                    if (item.Number > item.SparePart.Number)
+                    {
+                        MessageBox.Show("На складе нет требуемого кол-ва запчастей");
+                        return;
+                    }
+                }
+            }
             if (HasErrors)
                 return;
 
@@ -209,12 +244,14 @@ namespace Autoservice.Dialogs.Managers
 
         public void Save2DB()
         {
+
             var generalService = Get<IGeneralService>();
 
             Order.Works = OrderWorks.Select(w => new OrderWork(w)).ToList();
+            Order.SpareParts = OrderSpareParts.Select(s => new OrderSparePart(s)).ToList();
             Order.TotalPrice = OrderWorks.Sum(ow => ow.Price) - SelectedClient.Discount * OrderWorks.Sum(ow => ow.Price) / 100;
 
-            Order.SpareParts = OrderSpareParts.Select(w => new OrderSparePart(w)).ToList();
+
             if (_isEdit)
                 generalService.UpdateOrder(Order);
             else
@@ -305,7 +342,7 @@ namespace Autoservice.Dialogs.Managers
         }
     }
 
-    public class OrderSparePartModel: ViewModelBase
+    public class OrderSparePartModel : ViewModelBase
     {
         public Guid Id { get; set; }
         public Guid OrderId { get; set; }
@@ -313,15 +350,16 @@ namespace Autoservice.Dialogs.Managers
         public Guid SparePartId { get; set; }
         public SparePart SparePart { get; set; }
         public int Number { get; set; }
-        
+
         public int Source { get; set; }
-        public string StringSource { get {return _strings[Source]; } set {} }
+        public string StringSource { get { return _strings[Source]; } set { } }
         public bool IsNew { get; set; }
+
         private static string[] _strings;
 
         static OrderSparePartModel()
         {
-            _strings = EnumExtender.GetAllDescriptions(typeof(SparePartSource));          
+            _strings = EnumExtender.GetAllDescriptions(typeof(SparePartSource));
         }
         public OrderSparePartModel()
         {
@@ -340,6 +378,5 @@ namespace Autoservice.Dialogs.Managers
             StringSource = _strings[Source];
             IsNew = orderSparePart.IsNew;
         }
-
     }
 }

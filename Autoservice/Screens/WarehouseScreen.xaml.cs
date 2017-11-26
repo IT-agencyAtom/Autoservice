@@ -44,7 +44,6 @@ namespace Autoservice.Screens
             var node = e.Data.GetData(typeof(SparePart));
             if(node == null)
                 node = e.Data.GetData(typeof(SparePartsFolder));
-            wm.HelperVisibility = Visibility.Collapsed;
             var folder = ((TextBlock)e.Source).DataContext as SparePartsFolder;
             if (folder == node)
                 return;
@@ -57,8 +56,7 @@ namespace Autoservice.Screens
             if (wm == null)
                 return;
             if (!(e.Source is TextBlock))
-                return;
-            wm.HelperVisibility = Visibility.Visible;            
+                return;        
             DragDrop.DoDragDrop((TextBlock)e.Source,((TextBlock)e.Source).DataContext as ITreeViewNode, DragDropEffects.Move);
         }
 
@@ -70,16 +68,7 @@ namespace Autoservice.Screens
             var node = e.Data.GetData(typeof(SparePart));
             if (node == null)
                 node = e.Data.GetData(typeof(SparePartsFolder));
-            wm.HelperVisibility = Visibility.Collapsed;
             wm.MoveNode((ITreeViewNode)node, null);
-        }
-
-        private void StackPanel_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            WarehouseManager wm = (WarehouseManager)DataContext;
-            if (wm == null)
-                return;
-            wm.HelperVisibility = Visibility.Collapsed;
-        }
+        }           
     }
 }

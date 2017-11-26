@@ -182,8 +182,9 @@
     <Compile Include="Dialogs\AddClientDialog.xaml.cs">
       <DependentUpon>AddClientDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Dialogs\AddOrderSparePartsDialog.xaml.cs">
-      <DependentUpon>AddOrderSparePartsDialog.xaml</DependentUpon>
+    <Compile Include="Dialogs\Managers\SparePartSelectorManager.cs" />
+    <Compile Include="Dialogs\SparePartSelectorDialog.xaml.cs">
+      <DependentUpon>SparePartSelectorDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="Dialogs\AddSparePartDialog.xaml.cs">
       <DependentUpon>AddSparePartDialog.xaml</DependentUpon>
@@ -211,7 +212,6 @@
     </Compile>
     <Compile Include="Dialogs\Managers\AddCarSelectorManager.cs" />
     <Compile Include="Dialogs\Managers\AddClientSelectorManager.cs" />
-    <Compile Include="Dialogs\Managers\AddOrderSparePartsManager.cs" />
     <Compile Include="Dialogs\Managers\AddSparePartManager.cs" />
     <Compile Include="Dialogs\Managers\AddOrderManager.cs" />
     <Compile Include="Dialogs\Managers\AddClientManager.cs" />
@@ -221,9 +221,9 @@
     <Compile Include="Dialogs\Managers\AddFolderManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkTemplateManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkManager.cs" />
-    <Compile Include="Migrations\201711251750552_InitialMigration.cs" />
-    <Compile Include="Migrations\201711251750552_InitialMigration.Designer.cs">
-      <DependentUpon>201711251750552_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201711260914045_InitialMigration.cs" />
+    <Compile Include="Migrations\201711260914045_InitialMigration.Designer.cs">
+      <DependentUpon>201711260914045_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
@@ -291,8 +291,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201711251750552_InitialMigration.resx">
-      <DependentUpon>201711251750552_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711260914045_InitialMigration.resx">
+      <DependentUpon>201711260914045_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -329,9 +329,9 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Dialogs\AddOrderSparePartsDialog.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Dialogs\SparePartSelectorDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\AddSparePartDialog.xaml">
       <Generator>MSBuild:Compile</Generator>

@@ -94,6 +94,8 @@ namespace Autoservice.Migrations
                         Name = c.String(),
                         Cargo = c.String(),
                         Number = c.Int(nullable: false),
+                        Price = c.Decimal(nullable: false, precision: 18, scale: 2),
+                        Manufacturer = c.String(),
                         ParentId = c.Guid(),
                     })
                 .PrimaryKey(t => t.Id)

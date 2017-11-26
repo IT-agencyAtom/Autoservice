@@ -23,12 +23,10 @@ namespace Autoservice.Screens.Managers
     {
         private string _sparePartFilterString;
         private object _selectedItem;
-        private Visibility helperVisibility;
         private ICollectionView _sparePartView { get; set; }
         public object SelectedItem { get { return _selectedItem; } set { _selectedItem = value; RaisePropertyChanged("SelectedItem"); } }
         public ObservableCollection<SparePart> SpareParts { get; set; }
         public List<ITreeViewNode> Nodes { get; set; }
-        public Visibility HelperVisibility { get { return helperVisibility; } set { helperVisibility = value;RaisePropertyChanged("HelperVisibility"); } }
 
         public string SparePartFilterString
         {
@@ -81,7 +79,7 @@ namespace Autoservice.Screens.Managers
                     },
                     new PanelButtonManager
                     {
-                        OnButtonAction = o => AddFolderHandlerAsync(),
+                        OnButtonAction = o => AddFolderHandler(),
                         ButtonIcon = "appbar_folder_star",
                         ButtonText = "Добавить папку"
                     },                    
@@ -109,7 +107,6 @@ namespace Autoservice.Screens.Managers
                 }
             };
             MouseDoubleClickCommand = new RelayCommand(EditHandlerAsync);
-            HelperVisibility = Visibility.Collapsed;
             //Refresh();
         }       
 
@@ -134,7 +131,7 @@ namespace Autoservice.Screens.Managers
             Refresh();
         }
 
-        private async Task AddFolderHandlerAsync()
+        private async void AddFolderHandler()
         {
             SetIsBusy(true);
 

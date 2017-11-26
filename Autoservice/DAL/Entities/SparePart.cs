@@ -1,5 +1,6 @@
 ﻿using Autoservice.DAL.Common.Implementation;
 using Autoservice.Screens.Managers;
+using GalaSoft.MvvmLight;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,7 +16,11 @@ namespace Autoservice.DAL.Entities
         public string Name { get; set; }
         public string Cargo { get; set; }
         public int Number { get; set; }
+        public decimal Price { get; set; }
+        public string Manufacturer { get; set; }
 
+        [NotMapped]
+        public bool IsChecked { get; set; }
 
         public Guid? ParentId { get; set; }
         [ForeignKey("ParentId")]
@@ -24,6 +29,9 @@ namespace Autoservice.DAL.Entities
         public SparePart()
         {
             Id = Guid.NewGuid();
+            IsChecked = false;
+            
         }
+        
     }
 }

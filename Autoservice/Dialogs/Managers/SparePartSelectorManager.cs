@@ -1,5 +1,7 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
+using Autoservice.Screens.Managers;
+using Autoservice.ViewModel.Utils;
 using ConstaSoft.Core.Controls.Managers;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
@@ -12,57 +14,24 @@ using System.Threading.Tasks;
 
 namespace Autoservice.Dialogs.Managers
 {
-    public class AddOrderSparePartsManager : PanelViewModelBase
+    public class SparePartSelectorManager : PanelViewModelBase
     {
         public Action OnExit { get; set; }
-
+        
         public string Title { get; set; }
 
-        private SparePart _sparePart;
+        public List<ITreeViewNode> Nodes { get; set; }
+        public List<SparePart> Checked { get; set; }
 
-        public SparePart SparePart
-        {
-            get { return _sparePart; }
-            set
-            {
-                if (_sparePart == value)
-                    return;
-
-                _sparePart = value;
-                RaisePropertyChanged("SparePart");
-            }
-        }
         //Комманды
         public RelayCommand Save { get; private set; }
 
         public RelayCommand Cancel { get; private set; }
 
         private bool _isEdit { get; set; }
+        private Order _order;
 
-        /// <summary>
-        ///     Initializes a new instance of the SettingsScreen class.
-        /// </summary>
-        public void initializeEdit(SparePart sparePart)
-        {
-            _isEdit = true;
-
-            initialize();
-
-            SparePart = sparePart;
-
-            Title = "Изменить запчасть";
-        }
-
-        public void initializeAdd()
-        {
-            initialize();
-
-            SparePart = new SparePart();
-
-            Title = "Добавить запчасть";
-        }
-
-        private void initialize()
+        public void Initialize(Order order)
         {
             Panel = new PanelManager
             {
@@ -82,6 +51,9 @@ namespace Autoservice.Dialogs.Managers
                     }
                 }
             };
+            _order = order;
+            Checked = new List<SparePart>();
+            GetNodes();
         }
         private void CancelHandler()
         {
@@ -91,6 +63,7 @@ namespace Autoservice.Dialogs.Managers
         private void SaveHandler()
         {
             Validate();
+            
             if (HasErrors)
                 return;
             WasChanged = true;
@@ -99,17 +72,22 @@ namespace Autoservice.Dialogs.Managers
 
         public void Save2DB()
         {
-            var generalService = Get<IGeneralService>();
-
-            if (_isEdit)
-                generalService.UpdateSparePart(SparePart);
-            else
-                generalService.AddSparePart(SparePart);
+            /*var generalService = Get<IGeneralService>();
+            _order.SpareParts = OrderSpareParts.Select(o => new OrderSparePart(o)).ToList();
+            generalService.UpdateOrder(_order);*/
         }
 
         public override void Refresh()
         {
-            SetIsBusy(false);
+            SetIsBusy(false);            
         }
-    }    
+        public async void GetNodes()
+        {
+            var service = Get<IGeneralService>();
+            var spareParts = new ObservableCollection<SparePart>(await Task.Run(() => service.GetAllSpareParts()));
+            Nodes = new ObservableCollection<ITreeViewNode>(await Task.Run(() => service.GetAllSparePartsFolders())).Where(n => n.Parent == null).ToList();
+            Nodes.AddRange(spareParts.Where(s => s.Parent == null));            
+            RaisePropertyChanged("Nodes");            
+        }
+    }   
 }

@@ -1,5 +1,6 @@
 ﻿using Autoservice.DAL.Common.Implementation;
 using Autoservice.Dialogs.Managers;
+using Autoservice.ViewModel.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,6 +23,8 @@ namespace Autoservice.DAL.Entities
         public int Number { get; set; }
         public SparePartSource Source { get; set; }
 
+        [NotMapped]
+        public string StringSource => Source.ToDescriptionString();
         [NotMapped]
         public bool IsNew { get; set; }
 

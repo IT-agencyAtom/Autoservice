@@ -51,13 +51,11 @@
                 </TextBox.Style>
             </TextBox>
         </Grid>
-        <GroupBox Header="Запчасти" Grid.Row="1">
-            <StackPanel>
-                <TextBlock Background="IndianRed" TextAlignment="Center" Text="Корень" Visibility="{Binding HelperVisibility}" Drop="helper_Drop" AllowDrop="True" FontSize="28" Foreground="White"></TextBlock>
+        <GroupBox Header="Запчасти" Grid.Row="1" Drop="helper_Drop" AllowDrop="True">            
             <TreeView x:Name="treeView1" ItemsSource="{Binding Nodes}" SelectedItemChanged="treeView1_SelectedItemChanged">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type entites:SparePartsFolder}" ItemsSource="{Binding Children}">
-                        <StackPanel Orientation="Horizontal" Drop="StackPanel_Drop" AllowDrop="True" MouseDown="StackPanel_MouseDown">
+                            <StackPanel Orientation="Horizontal" Drop="StackPanel_Drop" AllowDrop="True" MouseDown="StackPanel_MouseDown">
                             <iconPacks:PackIconMaterial Kind="Folder"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Firebrick"/>
                             <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
                             <TextBlock Text=" [" Foreground="Blue" />
@@ -66,7 +64,7 @@
                         </StackPanel>
                     </HierarchicalDataTemplate>
                     <DataTemplate DataType="{x:Type entites:SparePart}">
-                        <StackPanel Orientation="Horizontal" MouseDown="StackPanel_MouseDown" MouseUp="StackPanel_MouseUp">
+                        <StackPanel Orientation="Horizontal" MouseDown="StackPanel_MouseDown">
                             <iconPacks:PackIconMaterial Kind="Wrench"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkBlue"/>
                             <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
                             <TextBlock Text=" (" Foreground="Green" />
@@ -76,7 +74,6 @@
                     </DataTemplate>
                 </TreeView.Resources>      
             </TreeView>
-            </StackPanel>
         </GroupBox>
         <controls:Flyout
             Grid.Row="3"
