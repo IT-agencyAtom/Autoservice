@@ -39,7 +39,30 @@
     </i:Interaction.Triggers>
 
     <Grid>
-        <GroupBox Header="Добавить запчасти">
+        <StackPanel>
+            <GroupBox Header="Фильтр">
+            <TextBox
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                controls:TextBoxHelper.ButtonCommand="{Binding ClearFilter}"
+                Text="{Binding SparePartFilterString, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.Style>
+                    <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
+                        <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
+                        <Style.Triggers>
+                            <Trigger Property="controls:TextBoxHelper.HasText" Value="False">
+                                <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="False" />
+                                <Setter Property="controls:TextBoxHelper.Watermark" Value="Search..." />
+                            </Trigger>
+                            <Trigger Property="controls:TextBoxHelper.HasText" Value="True">
+                                <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
+            </GroupBox>
+            <GroupBox Header="Добавить запчасти">
             <ScrollViewer>
                 <TreeView x:Name="treeView1" ItemsSource="{Binding Nodes}">
                     <TreeView.Resources>
@@ -53,20 +76,20 @@
                             </StackPanel>
                         </HierarchicalDataTemplate>
                         <DataTemplate DataType="{x:Type entites:SparePart}">
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                                 <iconPacks:PackIconMaterial Kind="Wrench"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkBlue"/>
                                 <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
                                 <TextBlock Text=" (" Foreground="Green" />
-                                <TextBlock Text="{Binding NumberOfAvailable}" Foreground="Green" />
+                                <TextBlock Text="{Binding Number}" Foreground="Green" />
                                 <TextBlock Text=")" Foreground="Green" />
-                                <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"  Margin="10,0"></CheckBox>                               
+                                <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" HorizontalAlignment="Right" Margin="10,0"></CheckBox>                               
                             </StackPanel>
                         </DataTemplate>
                     </TreeView.Resources>
                 </TreeView>
             </ScrollViewer>
         </GroupBox>
-
+        </StackPanel>
         <controls:Flyout
             Grid.Row="1"
             Height="75"

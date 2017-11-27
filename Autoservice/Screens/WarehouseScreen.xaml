@@ -24,15 +24,11 @@
             <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="70" />
             <RowDefinition Height="7*" />
         </Grid.RowDefinitions>
-        <Grid Margin="20,0" VerticalAlignment="Stretch">
+        <GroupBox Header="Фильтр">
             <TextBox
-                Width="300"
-                Margin="5,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center"
                 controls:TextBoxHelper.ButtonCommand="{Binding ClearFilter}"
                 Text="{Binding SparePartFilterString, UpdateSourceTrigger=PropertyChanged}">
                 <TextBox.Style>
@@ -50,8 +46,8 @@
                     </Style>
                 </TextBox.Style>
             </TextBox>
-        </Grid>
-        <GroupBox Header="Запчасти" Grid.Row="1" Drop="helper_Drop" AllowDrop="True">            
+        </GroupBox>
+        <GroupBox Header="Запчасти" Grid.Row="1">            
             <TreeView x:Name="treeView1" ItemsSource="{Binding Nodes}" SelectedItemChanged="treeView1_SelectedItemChanged">
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type entites:SparePartsFolder}" ItemsSource="{Binding Children}">

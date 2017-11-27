@@ -52,6 +52,8 @@ namespace Autoservice.Screens
 
         private void StackPanel_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.ClickCount > 1)
+                return;
             WarehouseManager wm = (WarehouseManager)DataContext;
             if (wm == null)
                 return;

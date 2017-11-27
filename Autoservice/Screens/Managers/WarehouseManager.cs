@@ -23,9 +23,11 @@ namespace Autoservice.Screens.Managers
     {
         private string _sparePartFilterString;
         private object _selectedItem;
+        private List<ITreeViewNode> _nodesBuffer;
+        private ObservableCollection<SparePart> _spareParts;
         private ICollectionView _sparePartView { get; set; }
         public object SelectedItem { get { return _selectedItem; } set { _selectedItem = value; RaisePropertyChanged("SelectedItem"); } }
-        public ObservableCollection<SparePart> SpareParts { get; set; }
+        public ObservableCollection<SparePart> SpareParts { get { return _spareParts; } set { _spareParts = value;RaisePropertyChanged("Nodes"); } }
         public List<ITreeViewNode> Nodes { get; set; }
 
         public string SparePartFilterString
@@ -35,15 +37,19 @@ namespace Autoservice.Screens.Managers
             {
                 if (_sparePartFilterString == value)
                     return;
-
                 _sparePartFilterString = value.ToLower();
-
-                _sparePartView = CollectionViewSource.GetDefaultView(SpareParts)
-                    ;
-                _sparePartView.Filter = SparePartFilter;
-                _sparePartView.MoveCurrentToFirst();
-
+                if (_sparePartFilterString == "")
+                    Nodes = _nodesBuffer;
+                else
+                {
+                    Nodes = SpareParts.Select(s => s as ITreeViewNode).ToList();      
+                    _sparePartView = CollectionViewSource.GetDefaultView(Nodes);
+                    _sparePartView.Filter = SparePartFilter;
+                    _sparePartView.MoveCurrentToFirst();
+                }
                 RaisePropertyChanged("SparePartFilterString");
+                RaisePropertyChanged("Nodes");
+
 
             }
         }
@@ -59,11 +65,13 @@ namespace Autoservice.Screens.Managers
         }
         private bool StringFilter(SparePart sparePart)
         {
-            return sparePart.Name.ToLower().Contains(SparePartFilterString);
+            return sparePart.Name.ToLower().Contains(SparePartFilterString) || 
+                sparePart.Cargo.ToLower().Contains(SparePartFilterString);
+
+
         }
+
         public RelayCommand MouseDoubleClickCommand { get; set; }
-
-
 
         public WarehouseManager()
         {
@@ -288,6 +296,7 @@ namespace Autoservice.Screens.Managers
             SpareParts = new ObservableCollection<SparePart>(await Task.Run(() => service.GetAllSpareParts()));
             Nodes = new ObservableCollection<ITreeViewNode>(await Task.Run(() => service.GetAllSparePartsFolders())).Where(n => n.Parent == null).ToList();
             Nodes.AddRange(SpareParts.Where(s => s.Parent == null));
+            _nodesBuffer = Nodes;
             /**Nodes = new List<ITreeViewNode>
             {
                 new SparePartsFolder

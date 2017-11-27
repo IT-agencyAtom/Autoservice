@@ -272,13 +272,20 @@ namespace Autoservice.DAL.Services
                     //_________
                     _orderWorkRepository.SaveWork(work);
                 }
+                foreach (var sPart in order.SpareParts.Where(s => s.IsNew == true && s.Source == 0))
+                {
+                    var part = sPart.SparePart;
+                    part.Number -= sPart.Number;
+                    UpdateSparePart(part);
+                }
+
                 foreach (var sparePart in order.SpareParts.Where(s=>s.SparePart!=null && s.Number!=0))
                 {
                     sparePart.OrderId = order.Id;
                     sparePart.Order = null;
-
                     _orderSparePartRepository.SaveSparePart(sparePart);
                 }
+                
 
                 var baseOrder = _orderRepository.Get(o => o.Id == order.Id);
                 if (baseOrder == null)
@@ -425,8 +432,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                var list =  _sparePartsFolderRepository.GetAll(f=>f.Parent,f=>f.Folders,f=>f.SpareParts);
-                return list;
+                return  _sparePartsFolderRepository.GetAll(f=>f.Folders,f=>f.SpareParts);
             }
         }
 
