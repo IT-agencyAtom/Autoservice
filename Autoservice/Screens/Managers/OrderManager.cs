@@ -292,7 +292,7 @@ namespace Autoservice.Screens.Managers
                 if (addCarManager.WasChanged)
                 {
                     _newOrder.Car = addCarManager.Car;
-                    _newOrder.CarId = addCarManager.Car.Id;                   
+                    _newOrder.ClientCarId = addCarManager.Car.Id;                   
                     Save2DB();
                     SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
                     if (addCarManager.Template != null)

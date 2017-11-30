@@ -11,19 +11,15 @@ namespace Autoservice.DAL.Entities
 {
     public class Car: IEntity
     {
-        public Guid Id { get; set; }        
-        public string RegistrationNumber { get; set;}
+        public Guid Id { get; set; }
+        //Производитель
         public string Brand { get; set; }
+        //Модель
         public string Model { get; set; }
         public CarType Type { get; set; }
-        public int Mileage { get; set; }
-
-        public Guid ClientId { get; set; }
-        [ForeignKey("ClientId")]
-        public Client Client { get; set; }
 
         [NotMapped]
-        public string LocalName { get { return ToString(); } set { } }
+        public string LocalName => ToString();
 
         public Car()
         {
@@ -41,7 +37,7 @@ namespace Autoservice.DAL.Entities
         }
         public override string ToString()
         {
-            return string.Format("{0} {1} [{2}]",Brand,Model,RegistrationNumber);
+            return $"{Brand} {Model}";
         }
     }
 }

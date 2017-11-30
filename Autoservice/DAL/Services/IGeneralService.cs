@@ -27,6 +27,7 @@ namespace Autoservice.DAL.Services
         List<Order> GetAllOrders();
         List<Client> GetAllClients();
         List<Car> GetAllCars();
+        List<ClientCar> GetAllClientCars();
         List<Work> GetAllWorks();
         List<Master> GetAllMasters();
         List<WorkTemplate> GetAllWorkTemplates();        
@@ -38,7 +39,10 @@ namespace Autoservice.DAL.Services
         void UpdateOrder(Order order);
         void AddOrder(Order order);
         void UpdateClient(Client client);
-        void DeleteOrder(Order selectedOrder);
+        void DeleteOrder(Order order);
+        void UpdateClientCar(ClientCar clientCar);
+        void AddClientCar(ClientCar clientCar);
+        void DeleteClientCar(ClientCar clientCar);
         void UpdateCar(Car car);
         void AddCar(Car car);
         void DeleteCar(Car selectedCar);
@@ -59,5 +63,6 @@ namespace Autoservice.DAL.Services
         List<SparePartsFolder> GetAllSparePartsFolders();
         void AddSparePartsFolder(SparePartsFolder folder);
         void UpdateSparePartsFolder(SparePartsFolder folder);
+        void AddCars(List<Car> cars);
     }
 }

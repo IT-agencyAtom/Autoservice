@@ -17,9 +17,9 @@ namespace Autoservice.Dialogs.Managers
         public Action OnExit { get; set; }
         private Client _client;
         public string Title { get; set; }
-        public List<Car> Cars { get; set; }
+        public List<ClientCar> Cars { get; set; }
         public ObservableCollection<WorkTemplate> Templates { get; set; }
-        public Car Car
+        public ClientCar Car
         { get { return _car; }
             set
             {
@@ -37,7 +37,7 @@ namespace Autoservice.Dialogs.Managers
             }
         }
 
-        private Car _car;
+        private ClientCar _car;
         private WorkTemplate _template;
         //Комманды
         //public RelayCommand Save { get; private set; }
@@ -107,11 +107,11 @@ namespace Autoservice.Dialogs.Managers
                 SetIsBusy(true);
                 if (addCarManager.WasChanged)
                 {
-                    Car = addCarManager.Car;
+                    Car = addCarManager.ClientCar;
                     Car.ClientId = _client.Id;
 
                     var generalService = Get<IGeneralService>();
-                    generalService.AddCar(Car);
+                    generalService.AddClientCar(Car);
 
                     NavigateNext();
                 }

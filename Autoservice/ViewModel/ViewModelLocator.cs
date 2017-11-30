@@ -64,6 +64,7 @@ namespace Autoservice.ViewModel
             builder.RegisterType<ClientRepository<TContext>>().As<IClientRepository>().InstancePerDependency();
             builder.RegisterType<ActivityRepository<TContext>>().As<IActivityRepository>().InstancePerDependency();
             builder.RegisterType<CarRepository<TContext>>().As<ICarRepository>().InstancePerDependency();
+            builder.RegisterType<ClientCarRepository<TContext>>().As<IClientCarRepository>().InstancePerDependency();
             builder.RegisterType<MasterRepository<TContext>>().As<IMasterRepository>().InstancePerDependency();
             builder.RegisterType<OrderRepository<TContext>>().As<IOrderRepository>().InstancePerDependency();
             builder.RegisterType<SparePartRepository<TContext>>().As<ISparePartRepository>().InstancePerDependency();

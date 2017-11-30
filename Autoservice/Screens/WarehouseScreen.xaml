@@ -17,8 +17,11 @@
         <BooleanToVisibilityConverter x:Key="btv" />
     </UserControl.Resources>
     <i:Interaction.Triggers>
-       
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding Loaded}" />
+        </i:EventTrigger>
     </i:Interaction.Triggers>
+    
     <Grid>
         <Grid.Resources>
             <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />

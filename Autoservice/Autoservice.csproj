@@ -134,6 +134,7 @@
     <Compile Include="DAL\Common\Context\AutoServiceDBContext.cs" />
     <Compile Include="DAL\Common\Interfaces\IDbWorker.cs" />
     <Compile Include="DAL\Common\Interfaces\IEntityRepository.cs" />
+    <Compile Include="DAL\Entities\ClientCar.cs" />
     <Compile Include="DAL\Entities\Car.cs" />
     <Compile Include="DAL\Entities\Activity.cs" />
     <Compile Include="DAL\Entities\Master.cs" />
@@ -145,6 +146,8 @@
     <Compile Include="DAL\Entities\SparePartsFolder.cs" />
     <Compile Include="DAL\Entities\Work.cs" />
     <Compile Include="DAL\Entities\WorkTemplate.cs" />
+    <Compile Include="DAL\Repositories\ClientCarRepository.cs" />
+    <Compile Include="DAL\Repositories\Interfaces\IClientCarRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IOrderWorkRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IWorkTemplateRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IOrderSparePartRepository.cs" />
@@ -221,9 +224,9 @@
     <Compile Include="Dialogs\Managers\AddFolderManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkTemplateManager.cs" />
     <Compile Include="Dialogs\Managers\AddWorkManager.cs" />
-    <Compile Include="Migrations\201711260914045_InitialMigration.cs" />
-    <Compile Include="Migrations\201711260914045_InitialMigration.Designer.cs">
-      <DependentUpon>201711260914045_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201711272346097_InitialMigration.cs" />
+    <Compile Include="Migrations\201711272346097_InitialMigration.Designer.cs">
+      <DependentUpon>201711272346097_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
@@ -291,8 +294,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Migrations\201711260914045_InitialMigration.resx">
-      <DependentUpon>201711260914045_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201711272346097_InitialMigration.resx">
+      <DependentUpon>201711272346097_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -424,7 +427,35 @@
   <ItemGroup>
     <Resource Include="Resources\Entypo-license.txt" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>5</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Excel">
+      <Guid>{00020813-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

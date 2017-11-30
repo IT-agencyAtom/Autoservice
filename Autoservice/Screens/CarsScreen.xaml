@@ -78,15 +78,15 @@
                             Header="Рег. Номер" />
                         <DataGridTextColumn
                             Width="2*"
-                            Binding="{Binding Brand}"
+                            Binding="{Binding Car.Brand}"
                             Header="Производитель" />
                         <DataGridTextColumn
                             Width="2*"
-                            Binding="{Binding Model}"
+                            Binding="{Binding Car.Model}"
                             Header="Модель" />
                         <DataGridTextColumn
                             Width="2*"
-                            Binding="{Binding Type}"
+                            Binding="{Binding Car.Type}"
                             Header="Тип" />
                         <DataGridTextColumn
                             Width="2*"

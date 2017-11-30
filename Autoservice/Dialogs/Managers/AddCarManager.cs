@@ -6,10 +6,11 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Autoservice.DAL.Entities.Car;
+using System.Windows.Data;
 
 namespace Autoservice.Dialogs.Managers
 {
@@ -21,22 +22,36 @@ namespace Autoservice.Dialogs.Managers
 
         public string Title { get; set; }
 
-        private Car _car;
+        private ClientCar _clientCar;
 
-        public Car Car
+        public ClientCar ClientCar
         {
-            get { return _car; }
+            get { return _clientCar; }
             set
             {
-                if (_car == value)
+                if (_clientCar == value)
                     return;
 
-                _car = value;
+                _clientCar = value;
+                RaisePropertyChanged();
                 RaisePropertyChanged("Car");
             }
         }
 
-        public string[] Types { get;private set; }
+        public Car Car
+        {
+            get { return ClientCar.Car; }
+            set
+            {
+                if (ClientCar.Car == value)
+                    return;
+
+                ClientCar.Car = value;
+                RaisePropertyChanged();
+            }
+        }
+
+        /*public string[] Types { get;private set; }
 
         public int SelectedType
         {
@@ -44,10 +59,54 @@ namespace Autoservice.Dialogs.Managers
             set
             {
                 _selectedType = value;
-                Car.Type = (CarType)value;
+                Car.Type = (Car.CarType)value;
                 RaisePropertyChanged("SelectedType");
             }
+        }*/
+
+        public ObservableCollection<string> Brands { get; set; }
+
+        private string _brand;
+        public string Brand
+        {
+            get { return _brand; }
+            set
+            {
+                if (_brand == value)
+                    return;
+
+                if (value != null)
+                {
+                    _brand = value.ToLower();
+
+                    _carsView = CollectionViewSource.GetDefaultView(Cars);
+                    _carsView.Filter = CarsFilter;
+                    _carsView.MoveCurrentToFirst();
+                }
+
+                RaisePropertyChanged();
+
+            }
         }
+
+        private bool CarsFilter(object item)
+        {
+            var car = item as Car;
+            if (car == null)
+                return false;
+            if (Brand != null)
+                if (StringFilter(car) == false)
+                    return false;
+            return true;
+        }
+        private bool StringFilter(Car car)
+        {
+            return car.Brand.ToLower().Contains(Brand);
+        }
+
+        private ICollectionView _carsView { get; set; }
+        public ObservableCollection<Car> Cars { get; set; }
+
         //Комманды
         public RelayCommand Save { get; private set; }
 
@@ -58,12 +117,12 @@ namespace Autoservice.Dialogs.Managers
         /// <summary>
         ///     Initializes a new instance of the SettingsScreen class.
         /// </summary>
-        public void initializeEdit(Car car)
+        public void initializeEdit(ClientCar car)
         {
             _isEdit = true;
             initialize();
-            Car = car;
-            SelectedType = (int)Car.Type;
+            ClientCar = car;
+            //SelectedType = (int)Car.Car.Type;
             Title = "Изменить машину";
         }
 
@@ -71,7 +130,7 @@ namespace Autoservice.Dialogs.Managers
         {
             initialize();
 
-            Car = new Car();
+            ClientCar = new ClientCar();
             
             Title = "Добавить машину";
         }
@@ -96,7 +155,7 @@ namespace Autoservice.Dialogs.Managers
                     }
                 }
             };
-            Types = EnumExtender.GetAllDescriptions(typeof(CarType));
+            //Types = EnumExtender.GetAllDescriptions(typeof(Car.CarType));
         }
         private void CancelHandler()
         {
@@ -119,13 +178,24 @@ namespace Autoservice.Dialogs.Managers
             var generalService = Get<IGeneralService>();
 
             if (_isEdit)
-                generalService.UpdateCar(Car);
+                generalService.UpdateClientCar(ClientCar);
             else
-                generalService.AddCar(Car);
+                generalService.AddClientCar(ClientCar);
         }
 
         public override void Refresh()
         {
+            var generalService = Get<IGeneralService>();
+
+            Cars = new ObservableCollection<Car>(generalService.GetAllCars());
+            Brands = new ObservableCollection<string>(Cars.Select(c => c.Brand).Distinct());
+
+            if(ClientCar.Car != null)
+                Brand = ClientCar.Car.Brand;
+
+            RaisePropertyChanged("Cars");
+            RaisePropertyChanged("Brands");
+
             SetIsBusy(false);
         }
     }

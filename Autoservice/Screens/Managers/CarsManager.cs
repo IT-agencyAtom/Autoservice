@@ -23,9 +23,9 @@ namespace Autoservice.Screens.Managers
         private string _carsFilterString;
         private ICollectionView _carsView { get; set; }
 
-        public Car SelectedCar { get; set; }
+        public ClientCar SelectedCar { get; set; }
 
-        public ObservableCollection<Car> Cars { get; set; }
+        public ObservableCollection<ClientCar> Cars { get; set; }
 
         public string CarsFilterString
         {
@@ -48,7 +48,7 @@ namespace Autoservice.Screens.Managers
         }
         private bool CarsFilter(object item)
         {
-            var car = item as Car;
+            var car = item as ClientCar;
             if (car == null)
                 return false;
             if (CarsFilterString != null)
@@ -56,12 +56,12 @@ namespace Autoservice.Screens.Managers
                     return false;
             return true;
         }
-        private bool StringFilter(Car car)
+        private bool StringFilter(ClientCar car)
         {
             return car.RegistrationNumber.ToLower().Contains(CarsFilterString) ||
-                   car.Brand.ToString().ToLower().Contains(CarsFilterString) ||
-                   car.Model.ToLower().Contains(CarsFilterString) ||
-                   car.Type.ToString().ToLower().Contains(CarsFilterString);
+                   car.Car.Brand.ToString().ToLower().Contains(CarsFilterString) ||
+                   car.Car.Model.ToLower().Contains(CarsFilterString) ||
+                   car.Car.Type.ToString().ToLower().Contains(CarsFilterString);
         }
         public RelayCommand MouseDoubleClickCommand { get; set; }
 
@@ -152,7 +152,7 @@ namespace Autoservice.Screens.Managers
             if (result == MessageDialogResult.Affirmative)
             {
                 var generalService = Get<IGeneralService>();
-                generalService.DeleteCar(SelectedCar);
+                //generalService.DeleteCar(SelectedCar);
 
                 await
                     metroWindow.ShowMessageAsync("Успех", $"Машина {SelectedCar.LocalName} была удалена");
@@ -168,7 +168,7 @@ namespace Autoservice.Screens.Managers
             SetIsBusy(true);
 
             var service = Get<IGeneralService>();
-            Cars = new ObservableCollection<Car>(await Task.Run(() => service.GetAllCars()));
+            Cars = new ObservableCollection<ClientCar>(await Task.Run(() => service.GetAllClientCars()));
             RaisePropertyChanged("Cars");
             SetIsBusy(false);
         }

@@ -24,6 +24,7 @@ namespace Autoservice.DAL.Common.Context
         public DbSet<User> Users { get; set; }
         public DbSet<Activity> Activities { get; set; }
         public DbSet<Car> Cars { get; set; }
+        public DbSet<ClientCar> ClientCars { get; set; }
         public DbSet<Client> Clients { get; set; }
         public DbSet<Master> Masters { get; set; }
         public DbSet<Order> Orders { get; set; }

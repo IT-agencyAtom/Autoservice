@@ -15,6 +15,7 @@ namespace Autoservice.DAL.Services
     {
         private readonly IActivityRepository _activityRepository;
         private readonly ICarRepository _carRepository;
+        private readonly IClientCarRepository _clientCarRepository;
         private readonly IClientRepository _clientRepository;
         private readonly IMasterRepository _masterRepository;
         private readonly IOrderRepository _orderRepository;
@@ -31,11 +32,13 @@ namespace Autoservice.DAL.Services
         public GeneralService(
             IDbWorker dbWorker,IActivityRepository activityRepository,ICarRepository carRepository,IClientRepository clientRepository,IMasterRepository masterRepository,            
             IOrderRepository orderRepository,ISparePartRepository sparePartRepository, IUserRepository userRepository, IWorkRepository workRepository,
-            IOrderWorkRepository orderWorkRepository,IWorkTemplateRepository workTemplateRepository,IOrderSparePartRepository orderSparePartRepository,ISparePartsFolderRepository sparePartsFolderRepository)
+            IOrderWorkRepository orderWorkRepository,IWorkTemplateRepository workTemplateRepository,IOrderSparePartRepository orderSparePartRepository,ISparePartsFolderRepository sparePartsFolderRepository,
+            IClientCarRepository clientCarRepository)
             : base(dbWorker)
         {
             _activityRepository = activityRepository;
             _carRepository = carRepository;
+            _clientCarRepository = clientCarRepository;
             _clientRepository = clientRepository;
             _masterRepository = masterRepository;
             _orderRepository = orderRepository;
@@ -91,6 +94,14 @@ namespace Autoservice.DAL.Services
             }
         }
 
+        public List<ClientCar> GetAllClientCars()
+        {
+            using (Db.BeginReadOnlyWork())
+            {
+                return _clientCarRepository.GetAll(c => c.Car);
+            }
+        }
+
         public List<Car> GetAllCars()
         {
             using (Db.BeginReadOnlyWork())
@@ -127,6 +138,52 @@ namespace Autoservice.DAL.Services
                 if (baseCar != null)
                 {
                     _carRepository.Delete(baseCar);
+
+                    scope.SaveChanges();
+                }
+            }
+        }
+
+        public void AddClientCar(ClientCar clientCar)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                if (clientCar.Car != null)
+                {
+                    clientCar.CarId = clientCar.Car.Id;
+                    clientCar.Car = null;
+                }
+
+                _clientCarRepository.Add(clientCar);
+
+                scope.SaveChanges();
+            }
+        }
+
+        public void UpdateClientCar(ClientCar clientCar)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                if (clientCar.Car != null)
+                {
+                    clientCar.CarId = clientCar.Car.Id;
+                    clientCar.Car = null;
+                }
+
+                _clientCarRepository.Update(clientCar);
+
+                scope.SaveChanges();
+            }
+        }
+
+        public void DeleteClientCar(ClientCar clientCar)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                var baseClientCar = _clientCarRepository.Get(u => u.Id == clientCar.Id);
+                if (baseClientCar != null)
+                {
+                    _clientCarRepository.Delete(baseClientCar);
 
                     scope.SaveChanges();
                 }
@@ -450,6 +507,19 @@ namespace Autoservice.DAL.Services
             using (var scope = Db.BeginWork())
             {
                 _sparePartsFolderRepository.Update(sparePartsFolder);
+                scope.SaveChanges();
+            }
+        }
+
+        public void AddCars(List<Car> cars)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                foreach (var car in cars)
+                {
+                    _carRepository.Add(car);
+                }
+
                 scope.SaveChanges();
             }
         }

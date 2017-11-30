@@ -34,30 +34,41 @@ namespace Autoservice.Migrations
                         PreOrderDateTime = c.DateTime(),
                         StartDate = c.DateTime(nullable: false),
                         RepairZone = c.String(),
-                        CarId = c.Guid(nullable: false),
+                        ClientCarId = c.Guid(nullable: false),
                         Notes = c.String(),
                         TotalPrice = c.Decimal(nullable: false, precision: 18, scale: 2),
                         PaymentMethod = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ClientCars", t => t.ClientCarId, cascadeDelete: true)
+                .Index(t => t.ClientCarId);
+            
+            CreateTable(
+                "dbo.ClientCars",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        RegistrationNumber = c.String(),
+                        Mileage = c.Int(nullable: false),
+                        CarId = c.Guid(nullable: false),
+                        ClientId = c.Guid(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Cars", t => t.CarId, cascadeDelete: true)
-                .Index(t => t.CarId);
+                .ForeignKey("dbo.Clients", t => t.ClientId, cascadeDelete: true)
+                .Index(t => t.CarId)
+                .Index(t => t.ClientId);
             
             CreateTable(
                 "dbo.Cars",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        RegistrationNumber = c.String(),
                         Brand = c.String(),
                         Model = c.String(),
                         Type = c.Int(nullable: false),
-                        Mileage = c.Int(nullable: false),
-                        ClientId = c.Guid(nullable: false),
                     })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Clients", t => t.ClientId, cascadeDelete: true)
-                .Index(t => t.ClientId);
+                .PrimaryKey(t => t.Id);
             
             CreateTable(
                 "dbo.Clients",
@@ -188,8 +199,9 @@ namespace Autoservice.Migrations
             DropForeignKey("dbo.SpareParts", "ParentId", "dbo.SparePartsFolders");
             DropForeignKey("dbo.SparePartsFolders", "ParentId", "dbo.SparePartsFolders");
             DropForeignKey("dbo.OrderSpareParts", "OrderId", "dbo.Orders");
-            DropForeignKey("dbo.Orders", "CarId", "dbo.Cars");
-            DropForeignKey("dbo.Cars", "ClientId", "dbo.Clients");
+            DropForeignKey("dbo.Orders", "ClientCarId", "dbo.ClientCars");
+            DropForeignKey("dbo.ClientCars", "ClientId", "dbo.Clients");
+            DropForeignKey("dbo.ClientCars", "CarId", "dbo.Cars");
             DropForeignKey("dbo.Activities", "OrderId", "dbo.Orders");
             DropIndex("dbo.Works", new[] { "WorkTemplate_Id" });
             DropIndex("dbo.OrderWorks", new[] { "OrderId" });
@@ -199,8 +211,9 @@ namespace Autoservice.Migrations
             DropIndex("dbo.SpareParts", new[] { "ParentId" });
             DropIndex("dbo.OrderSpareParts", new[] { "SparePartId" });
             DropIndex("dbo.OrderSpareParts", new[] { "OrderId" });
-            DropIndex("dbo.Cars", new[] { "ClientId" });
-            DropIndex("dbo.Orders", new[] { "CarId" });
+            DropIndex("dbo.ClientCars", new[] { "ClientId" });
+            DropIndex("dbo.ClientCars", new[] { "CarId" });
+            DropIndex("dbo.Orders", new[] { "ClientCarId" });
             DropIndex("dbo.Activities", new[] { "UserId" });
             DropIndex("dbo.Activities", new[] { "OrderId" });
             DropTable("dbo.WorkTemplates");
@@ -213,6 +226,7 @@ namespace Autoservice.Migrations
             DropTable("dbo.OrderSpareParts");
             DropTable("dbo.Clients");
             DropTable("dbo.Cars");
+            DropTable("dbo.ClientCars");
             DropTable("dbo.Orders");
             DropTable("dbo.Activities");
         }

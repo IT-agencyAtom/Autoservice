@@ -20,14 +20,14 @@ namespace Autoservice.Dialogs.Managers
     {
         private int _selectedMethod=-1;
         private Client _selectedClient;
-        private Car _selectedCar;
+        private ClientCar _selectedCar;
 
         public Action OnExit { get; set; }
 
         public string Title { get; set; }
 
         public ObservableCollection<Client> Clients { get; private set; }
-        public ObservableCollection<Car> Cars { get; private set; }
+        public ObservableCollection<ClientCar> Cars { get; private set; }
         public ObservableCollection<Master> Masters { get; private set; }
         public ObservableCollection<Work> Works { get; private set; }
         public ObservableCollection<SparePart> SpareParts { get; private set; }
@@ -61,7 +61,7 @@ namespace Autoservice.Dialogs.Managers
                 RaisePropertyChanged("TotalPrice");
             }
         }
-        public Car SelectedCar { get { return _selectedCar; }
+        public ClientCar SelectedCar { get { return _selectedCar; }
             set
             {
                 _selectedCar = value;
@@ -263,7 +263,7 @@ namespace Autoservice.Dialogs.Managers
             SetIsBusy(true);
             var service = Get<IGeneralService>();
             Clients = new ObservableCollection<Client>(await Task.Run(() => service.GetAllClients()));
-            Cars = new ObservableCollection<Car>(await Task.Run(() => service.GetAllCars()));
+            Cars = new ObservableCollection<ClientCar>(await Task.Run(() => service.GetAllClientCars()));
             Masters = new ObservableCollection<Master>(await Task.Run(() => service.GetAllMasters()));
             Works = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks()));
             SpareParts = new ObservableCollection<SparePart>(await Task.Run(() => service.GetAllSpareParts()));
@@ -271,7 +271,7 @@ namespace Autoservice.Dialogs.Managers
             if (_isEdit)
             {
                 SelectedClient = Clients.First(x => x.Id == Order.Car.ClientId);
-                SelectedCar = Cars.First(x => x.Id == Order.CarId);
+                SelectedCar = Cars.First(x => x.Id == Order.ClientCarId);
             }
             RaisePropertyChanged("Clients");
             RaisePropertyChanged("Cars");

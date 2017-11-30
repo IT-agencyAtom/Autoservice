@@ -10,6 +10,7 @@ namespace Autoservice.DAL.Common.Context
         DbSet<User> Users { get; set; }
         DbSet<Activity> Activities { get; set; }
         DbSet<Car> Cars { get; set; }
+        DbSet<ClientCar> ClientCars { get; set; }
         DbSet<Client> Clients { get; set; }
         DbSet<Master> Masters { get; set; }
         DbSet<Order> Orders { get; set; }

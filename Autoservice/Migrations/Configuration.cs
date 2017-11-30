@@ -15,8 +15,8 @@ namespace Autoservice.Migrations
         }
 
         protected override void Seed(DAL.Common.Context.AutoServiceDBContext context)
-        {/*
-            Guid firstClientId = Guid.Parse("6cc74d2c-012b-4bdc-bf8c-dd46c4ed2b04"), secondClientId=Guid.Parse("7a2f9aca-f47e-471f-9ab2-cb082e14e310");
+        {
+           /* Guid firstClientId = Guid.Parse("6cc74d2c-012b-4bdc-bf8c-dd46c4ed2b04"), secondClientId=Guid.Parse("7a2f9aca-f47e-471f-9ab2-cb082e14e310");
             Guid firstCarId = Guid.Parse("a938c86b-e17a-49a8-a065-e1bbe03b5736"), secondCarId = Guid.Parse("fd60a645-3e02-40f8-8007-c419eb8a6fa5");
             Guid o1Id = Guid.Parse("b3f0ab1b-da85-4020-9b4d-f56eb0b2c8ef"),o2Id=Guid.Parse("f3a310df-980e-48a8-a0b1-13e9ae553fbb"), o3Id=Guid.Parse("c1d32578-fe8e-44bc-a335-4a6f54409573");
             Guid m1Id = Guid.Parse("b3f0ab1b-da85-4020-9b4d-f56eb1b2c8ef"), m2Id = Guid.Parse("b3f0ab1b-da85-4020-9b4d-f56eb2b2c8ef");
@@ -118,34 +118,28 @@ namespace Autoservice.Migrations
                     Price = 7000
                 }
                 );
-            context.Cars.AddOrUpdate(c => c.RegistrationNumber,
-                new Car
+            context.ClientCars.AddOrUpdate(c => c.RegistrationNumber,
+                new ClientCar
                 {
                     Id = firstCarId,
                     RegistrationNumber = "A345BC69",
-                    Brand = "Volkswagen",
-                    Model = "Passat",
-                    Type = Car.CarType.Automobile,
+                    CarId = context.Cars.FirstOrDefault().Id,
                     Mileage = 60000,
                     ClientId = firstClientId
                 },
-                 new Car
+                 new ClientCar
                  {
                      Id = secondCarId,
                      RegistrationNumber = "M007CK99",
-                     Brand = "Skoda",
-                     Model = "Octavia",
-                     Type = Car.CarType.Automobile,
+                     CarId = context.Cars.FirstOrDefault().Id,
                      Mileage = 30189,
                      ClientId = secondClientId
                  },
-                 new Car
+                 new ClientCar
                  {
                      Id = Guid.NewGuid(),
                      RegistrationNumber = "K108EA197",
-                     Brand = "Porsche",
-                     Model = "Cayen",
-                     Type = Car.CarType.Automobile,
+                     CarId = context.Cars.FirstOrDefault().Id,
                      Mileage = 3821,
                      ClientId = firstClientId
                      }               
@@ -175,7 +169,7 @@ namespace Autoservice.Migrations
                     Id = Guid.NewGuid(),
                     StartDate = DateTime.Now.AddDays(-47),
                     RepairZone = "Бокс 6",
-                    CarId = firstCarId,
+                    ClientCarId = firstCarId,
                     PaymentMethod = PaymentMethod.Cash
                 },
                 new Order
@@ -184,7 +178,7 @@ namespace Autoservice.Migrations
                     StartDate = DateTime.Now.AddDays(-8),
                     PreOrderDateTime = DateTime.Now.AddDays(-10.7),
                     RepairZone = "Бокс 8",
-                    CarId = secondCarId,
+                    ClientCarId = secondCarId,
                     PaymentMethod = PaymentMethod.Cash
                 },
                 new Order
@@ -192,7 +186,7 @@ namespace Autoservice.Migrations
                     Id = o1Id,
                     StartDate = DateTime.Now.AddDays(-45),
                     RepairZone = "Бокс 1",
-                    CarId = firstCarId,
+                    ClientCarId = firstCarId,
                     TotalPrice = 22000,
                     PaymentMethod = PaymentMethod.Cash
                 },
@@ -202,7 +196,7 @@ namespace Autoservice.Migrations
                     PreOrderDateTime = DateTime.Now.AddDays(-26.5),
                     StartDate = DateTime.Now.AddDays(-23),
                     RepairZone = "Бокс 2",
-                    CarId = secondCarId,
+                    ClientCarId = secondCarId,
                     TotalPrice = 16550,
                     PaymentMethod = PaymentMethod.BankCard                    
                 },
@@ -211,7 +205,7 @@ namespace Autoservice.Migrations
                     Id = o3Id,
                     StartDate = DateTime.Now.AddDays(-15).AddHours(5.14),
                     RepairZone = "Бокс 3",
-                    CarId = firstCarId,
+                    ClientCarId = firstCarId,
                     TotalPrice = 36900,
                     PaymentMethod = PaymentMethod.Cash
                 }
@@ -239,7 +233,7 @@ namespace Autoservice.Migrations
                     }
                 }
                 );
-            /*context.SpareParts.AddOrUpdate(s => s.Name,
+            context.SpareParts.AddOrUpdate(s => s.Name,
                 new SparePart
                 {
                     Name = "Дворник - ВАЗ2101",

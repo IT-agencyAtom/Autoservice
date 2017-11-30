@@ -10,6 +10,7 @@
     xmlns:managers1="clr-namespace:ConstaSoft.Core.Controls.Managers;assembly=ConstaSoft.Core"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:utils="clr-namespace:Autoservice.ViewModel.Utils"
     Title="{Binding Title}"
     Width="250"
     Height="450"
@@ -25,6 +26,7 @@
         </DataTemplate>
 
         <BooleanToVisibilityConverter x:Key="btv" />
+        <utils:NullToVisibilityBackConverter x:Key="n2vb" />
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -43,7 +45,7 @@
 
         <GroupBox Header="Данные о транспортном средстве">
             <StackPanel>
-                <StackPanel Margin="0,5">
+                <!--StackPanel Margin="0,5">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -54,6 +56,41 @@
                         Margin="0,5,0,0"
                         ItemsSource="{Binding Types}"
                         SelectedIndex="{Binding SelectedType}" />
+                </-->
+                <StackPanel Margin="0,5">
+                    <TextBlock Text="Марка" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    <ComboBox Margin="0, 5, 0, 0"
+                              Name="brandsCB"
+                              Style="{DynamicResource VirtualisedMetroComboBox}"
+                              SelectedItem="{Binding Brand, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                              controls:TextBoxHelper.Watermark="Выберите марку..."
+                              IsEditable="True"
+                              ItemsSource="{Binding Brands}"
+                              MaxDropDownHeight="125"
+                              Text="{Binding Brand}" 
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Stretch"/>
+                </StackPanel>
+                <StackPanel Margin="0,5" Visibility="{Binding SelectedItem, ElementName=brandsCB, Converter={StaticResource n2vb}}">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Bold"
+                        Text="Модель" />
+                    
+                    <ComboBox Margin="0, 5, 0, 0"
+                              Style="{DynamicResource VirtualisedMetroComboBox}"
+                              SelectedItem="{Binding Car, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                              controls:TextBoxHelper.Watermark="Выберите модель..."
+                              IsEditable="True"
+                              DisplayMemberPath="Model"
+                              ItemsSource="{Binding Cars}"
+                              MaxDropDownHeight="125"
+                              Text="{Binding Car.Model}" 
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Stretch"/>
                 </StackPanel>
                 <StackPanel Margin="0,5">
                     <TextBlock
@@ -64,32 +101,8 @@
                         Text="Регистрационный номер" />
                     <TextBox
                         Margin="0,5,0,0"
-                        controls:TextBoxHelper.Watermark="Reg.Number."
-                        Text="{Binding Car.RegistrationNumber}" />
-                </StackPanel>
-                <StackPanel Margin="0,5">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        FontWeight="Bold"
-                        Text="Производитель" />
-                    <TextBox
-                        Margin="0,5,0,0"
-                        controls:TextBoxHelper.Watermark="Brand"
-                        Text="{Binding Car.Brand}" />
-                </StackPanel>
-                <StackPanel Margin="0,5">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        FontWeight="Bold"
-                        Text="Модель" />
-                    <TextBox
-                        Margin="0,5,0,0"
-                        controls:TextBoxHelper.Watermark="Model"
-                        Text="{Binding Car.Model}" />
+                        controls:TextBoxHelper.Watermark="Регистрационный номер"
+                        Text="{Binding ClientCar.RegistrationNumber}" />
                 </StackPanel>
                 <StackPanel Margin="0,5">
                     <TextBlock
@@ -100,8 +113,8 @@
                         Text="Пробег" />
                     <TextBox
                         Margin="0,5,0,0"
-                        controls:TextBoxHelper.Watermark="Mileage ( km )"
-                        Text="{Binding Car.Mileage}" />
+                        controls:TextBoxHelper.Watermark="Пробег ( км )"
+                        Text="{Binding ClientCar.Mileage}" />
                 </StackPanel>
             </StackPanel>
         </GroupBox>
