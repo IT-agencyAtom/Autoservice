@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Autoservice.DAL.Entities
 {
@@ -19,9 +20,9 @@ namespace Autoservice.DAL.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Number { get; set; }
 
-        public DateTime? PreOrderDateTime { get; set; }
 
         public DateTime StartDate { get; set; }
+        public DateTime? PreOrderDateTime { get; set; }
         public string PersonalNumber => $"АГ-{Number}";
         public string RepairZone { get; set; }
         public List<OrderSparePart> SpareParts { get; set; }
@@ -37,6 +38,9 @@ namespace Autoservice.DAL.Entities
         [NotMapped]
         public string StringStatus => Status?.ToDescriptionString()??"";
 
+        [NotMapped]
+        public Visibility PreOrderVisibility => PreOrderDateTime == null ? Visibility.Collapsed : Visibility.Visible;
+
         public List<Activity> Activities { get; set; }
         public decimal TotalPrice { get; set; }
         public PaymentMethod? PaymentMethod { get; set; }
@@ -48,21 +52,21 @@ namespace Autoservice.DAL.Entities
             Works = new List<OrderWork>();
             SpareParts = new List<OrderSparePart>();
             Activities = new List<Activity>();
+            PaymentMethod = Entities.PaymentMethod.Cash;
         }
 
         public static int CompareByPreOrderStartDate(Order o1, Order o2)
         {
-            var pTime1 = o1.PreOrderDateTime;
-            var pTime2 = o2.PreOrderDateTime;
+            var pTime1 = o1.PreOrderDateTime>DateTime.Now?o1.PreOrderDateTime:null;
+            var pTime2 = o2.PreOrderDateTime>DateTime.Now?o2.PreOrderDateTime : null;
+            if(pTime1==null&&pTime2==null)
+                return -o1.StartDate.CompareTo(o2.StartDate);
             if (pTime1 == null && pTime2 != null)
                 return 1;
             if (pTime1 != null && pTime2 == null)
-                return -1;
-            if (pTime1 != null && pTime2 != null)
-            {
-                return -((DateTime)pTime1).CompareTo((DateTime)pTime2);
-            }
-            return -o1.StartDate.CompareTo(o2.StartDate);
+                return -1;              
+            return -((DateTime)pTime1).CompareTo((DateTime)pTime2);
+           
         }
     }   
     public enum PaymentMethod

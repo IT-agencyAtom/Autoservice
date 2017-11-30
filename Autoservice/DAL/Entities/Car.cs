@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations.Schema;
+using Autoservice.ViewModel.Utils;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,6 +21,9 @@ namespace Autoservice.DAL.Entities
 
         [NotMapped]
         public string LocalName => ToString();
+
+        [NotMapped]
+        public string StringType => Type.ToDescriptionString();
 
         public Car()
         {

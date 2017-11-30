@@ -46,6 +46,7 @@ namespace Autoservice
         private MastersManager _mastersManager;
         private WorkTemplateManager _workTemplateManager;
         private WarehouseManager _warehouseManager;
+        private CarModelsManager _carModelsManager;
 
         private ObservableCollection<ScreenManager> _tabScreens;
 
@@ -137,6 +138,10 @@ namespace Autoservice
             {
                 SetIsBusy = isBusy => IsBusy = isBusy
             };
+            _carModelsManager = new CarModelsManager
+            {
+                SetIsBusy = isBusy => IsBusy = isBusy
+            };
             ShowChangelog = new RelayCommand(() => Process.Start("Changelog.docx"));
             ShowLogs = new RelayCommand(() => Process.Start(Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), @"ConstaSoft\" + Assembly.GetExecutingAssembly().GetName().Name + @"\Logs")));
@@ -205,6 +210,13 @@ namespace Autoservice
                 ToolTip = "Шаблоны",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.Tablet },
                 Tag = _workTemplateManager
+            });
+            TabScreens.Add(new ScreenManager
+            {
+                Label = "Модели ТС",
+                ToolTip = "Модели ТС",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.CarConnected },
+                Tag = _carModelsManager
             });
             TabScreens.Add(new ScreenManager
             {

@@ -72,7 +72,9 @@ namespace Autoservice.Screens.Managers
             return order.PersonalNumber.ToLower().Contains(OrdersFilterString) ||
                    order.Car.Client.Name.ToLower().Contains(OrdersFilterString) ||
                    order.Car.Client.Phone.ToLower().Contains(OrdersFilterString) ||
-                   order.Car.ToString().ToLower().Contains(OrdersFilterString);
+                   order.Car.ToString().ToLower().Contains(OrdersFilterString) ||
+                   order.StringStatus.ToLower().Contains(OrdersFilterString) ||
+                   order.Works.Select(w => w.Master).ToString().ToLower().Contains(OrdersFilterString);
         }
        
 
@@ -173,6 +175,8 @@ namespace Autoservice.Screens.Managers
         }
         private void ChangeRightButtons()
         {
+            if (_selectedOrder == null)
+                return;
             if (_selectedOrder.Activities.Count == 0 || 
                 _selectedOrder.Activities == null || 
                 _selectedOrder.Activities.LastOrDefault().Status == ActivityStatus.Closed)
@@ -212,14 +216,9 @@ namespace Autoservice.Screens.Managers
             addDialog.Closed += async (sender, args) =>
             {
                 SetIsBusy(true);
-
-                if (addManager.WasChanged)
-                {
-                    await Task.Run(() => addManager.Save2DB());
-
-                    Refresh();
-                }
-
+                if (addManager.WasChanged)                
+                    await Task.Run(() => addManager.Save2DB());               
+                Refresh();
                 SetIsBusy(false);
             };
             addDialog.Show();
@@ -293,15 +292,13 @@ namespace Autoservice.Screens.Managers
                 {
                     _newOrder.Car = addCarManager.Car;
                     _newOrder.ClientCarId = addCarManager.Car.Id;                   
-                    Save2DB();
-                    SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
                     if (addCarManager.Template != null)
                     {
                         var works = addCarManager.Template.Works;
-                        SelectedOrder.Works = new List<OrderWork>();
+                        _newOrder.Works = new List<OrderWork>();
                         foreach (var work in works)
                         {
-                            SelectedOrder.Works.Add(new OrderWork
+                            _newOrder.Works.Add(new OrderWork
                             {
                                 IsNew = true,
                                 Order = SelectedOrder,
@@ -312,12 +309,40 @@ namespace Autoservice.Screens.Managers
                             });
                         }
                     }
-                    EditHandler();
+                    if (addCarManager.PreOrderIsChecked)
+                        AddPreEntry();
+                    else
+                    {
+                        Save2DB();
+                        EditHandler();
+                    }
                 }
                 SetIsBusy(false);
             };
             addClientDialog.Show();
         }
+        private async void AddPreEntry()
+        {
+            SetIsBusy(true);
+            var addPreEntryManager = new AddPreEntryManager() { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
+            addPreEntryManager.Initialize();
+            var addPreEntryDialog = new AddPreEntryDialog(addPreEntryManager);
+            addPreEntryDialog.Closed += (sender, args) =>
+            {
+                SetIsBusy(true);
+                if (addPreEntryManager.WasChanged)
+                {                    
+                    _newOrder.PreOrderDateTime = addPreEntryManager.SelectedDate;
+                    Save2DB();
+                    SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id); 
+                    EditHandler();
+                }
+                SetIsBusy(false);
+            };
+            addPreEntryDialog.Show();
+        }
+
+
         private void Save2DB()
         {
             var generalService = Get<IGeneralService>();

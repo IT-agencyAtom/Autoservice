@@ -19,6 +19,7 @@ namespace Autoservice.Dialogs.Managers
         public string Title { get; set; }
         public List<ClientCar> Cars { get; set; }
         public ObservableCollection<WorkTemplate> Templates { get; set; }
+        public bool PreOrderIsChecked { get; set; }
         public ClientCar Car
         { get { return _car; }
             set
@@ -107,13 +108,14 @@ namespace Autoservice.Dialogs.Managers
                 SetIsBusy(true);
                 if (addCarManager.WasChanged)
                 {
+                    Cars.Add(addCarManager.ClientCar);
                     Car = addCarManager.ClientCar;
                     Car.ClientId = _client.Id;
-
+                    RaisePropertyChanged("Cars");
                     var generalService = Get<IGeneralService>();
                     generalService.AddClientCar(Car);
 
-                    NavigateNext();
+                    //NavigateNext();
                 }
                 SetIsBusy(false);
             };

@@ -87,11 +87,11 @@
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding PreOrderDateTime}"
-                            Header="Дата заказа" />
+                            Header="Предварительная запись" />
                         <DataGridTextColumn
-                            Width="2*"
+                            Width="3*"
                             Binding="{Binding StartDate}"
-                            Header="Дата начала" />
+                            Header="Дата открытия заказа" />
                         <DataGridTextColumn
                             Width="2*"
                             Binding="{Binding RepairZone}"

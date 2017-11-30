@@ -1,0 +1,117 @@
+﻿<controls:MetroWindow
+    x:Class="Autoservice.Dialogs.AddCarModelDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:controls1="clr-namespace:ConstaSoft.Core.Controls;assembly=ConstaSoft.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:managers1="clr-namespace:ConstaSoft.Core.Controls.Managers;assembly=ConstaSoft.Core"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    xmlns:utils="clr-namespace:Autoservice.ViewModel.Utils"
+    Title="{Binding Title}"
+    Width="250"
+    Height="450"
+    GlowBrush="{DynamicResource AccentColorBrush}"
+    ResizeMode="NoResize"
+    ShowMaxRestoreButton="False"
+    ShowMinButton="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type managers1:PanelManager}">
+            <controls1:Panel />
+        </DataTemplate>
+
+        <BooleanToVisibilityConverter x:Key="btv" />
+        <utils:NullToVisibilityBackConverter x:Key="n2vb" />
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding Loaded}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <command:EventToCommand Command="{Binding Close}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="75" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Данные о транспортном средстве">
+            <StackPanel>
+                <!--StackPanel Margin="0,5">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Bold"
+                        Text="Тип" />
+                    <ComboBox
+                        Margin="0,5,0,0"
+                        ItemsSource="{Binding Types}"
+                        SelectedIndex="{Binding SelectedType}" />
+                </-->
+                <StackPanel Margin="0,5">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Bold"
+                        Text="Тип" />
+                    <ComboBox
+                        Margin="0,5,0,0"
+                        controls:TextBoxHelper.Watermark="Тип ТС"
+                        ItemsSource="{Binding Types}"
+                        SelectedIndex="{Binding SelectedType}" />
+                </StackPanel>
+                <StackPanel Margin="0,5">
+                    <TextBlock Text="Производитель" FontSize="12" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                    <ComboBox Margin="0, 5, 0, 0"
+                              Name="brandsCB"
+                              Style="{DynamicResource VirtualisedMetroComboBox}"
+                              SelectedItem="{Binding Car.Brand, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                              controls:TextBoxHelper.Watermark="Выберите марку ТС"
+                              IsEditable="True"
+                              ItemsSource="{Binding Brands}"
+                              MaxDropDownHeight="125"
+                              Text="{Binding Brand}" 
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Stretch"/>
+                </StackPanel>               
+                <StackPanel Margin="0,5">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Bold"
+                        Text="Модель" />
+                    <TextBox
+                        Margin="0,5,0,0"
+                        controls:TextBoxHelper.Watermark="Наименование модели"
+                        Text="{Binding Car.Model}" />
+                </StackPanel>
+                
+            </StackPanel>
+        </GroupBox>
+
+        <controls:Flyout
+            Grid.Row="1"
+            Height="75"
+            CloseButtonVisibility="Collapsed"
+            IsOpen="True"
+            IsPinned="True"
+            Position="Bottom"
+            TitleVisibility="Collapsed">
+            <Grid>
+                <ContentControl Content="{Binding Panel}" />
+            </Grid>
+        </controls:Flyout>
+    </Grid>
+</controls:MetroWindow>

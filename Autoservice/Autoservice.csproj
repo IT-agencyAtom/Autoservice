@@ -176,6 +176,9 @@
     <Compile Include="DAL\Services\IGeneralService.cs" />
     <Compile Include="DAL\Services\ServiceBase.cs" />
     <Compile Include="DAL\Entities\User.cs" />
+    <Compile Include="Dialogs\AddCarModelDialog.xaml.cs">
+      <DependentUpon>AddCarModelDialog.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddCarSelectorDialog.xaml.cs">
       <DependentUpon>AddCarSelectorDialog.xaml</DependentUpon>
     </Compile>
@@ -185,6 +188,11 @@
     <Compile Include="Dialogs\AddClientDialog.xaml.cs">
       <DependentUpon>AddClientDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\AddPreEnrtyDialog.xaml.cs">
+      <DependentUpon>AddPreEnrtyDialog.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Dialogs\Managers\AddCarModelManager.cs" />
+    <Compile Include="Dialogs\Managers\AddPreEntryManager.cs" />
     <Compile Include="Dialogs\Managers\SparePartSelectorManager.cs" />
     <Compile Include="Dialogs\SparePartSelectorDialog.xaml.cs">
       <DependentUpon>SparePartSelectorDialog.xaml</DependentUpon>
@@ -233,10 +241,14 @@
     <Compile Include="Screens\CarsScreen.xaml.cs">
       <DependentUpon>CarsScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\CarModelsScreen.xaml.cs">
+      <DependentUpon>CarModelsScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Screens\Managers\ActivityManager.cs" />
     <Compile Include="Screens\ActivityScreen.xaml.cs">
       <DependentUpon>ActivityScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\Managers\CarModelsManager.cs" />
     <Compile Include="Screens\Managers\MastersManager.cs" />
     <Compile Include="Screens\Managers\WarehouseManager.cs" />
     <Compile Include="Screens\Managers\WorksManager.cs" />
@@ -320,6 +332,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Dialogs\AddCarModelDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Dialogs\AddCarSelectorDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -331,6 +347,10 @@
     <Page Include="Dialogs\AddClientDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Dialogs\AddPreEnrtyDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\SparePartSelectorDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -387,6 +407,10 @@
     <Page Include="Screens\ActivityScreen.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Screens\CarModelsScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Screens\MastersScreen.xaml">
       <SubType>Designer</SubType>
