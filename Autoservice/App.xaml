@@ -3,6 +3,11 @@
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Themes/Windows7/System.Windows.xaml" />
+                <ResourceDictionary Source="Themes/Windows7/Telerik.Windows.Controls.xaml" />
+                <ResourceDictionary Source="Themes/Windows7/Telerik.Windows.Controls.Input.xaml" />
+                <ResourceDictionary Source="Themes/Windows7/Telerik.Windows.Controls.Navigation.xaml" />
+                <ResourceDictionary Source="Themes/Windows7/Telerik.ReportViewer.Wpf.xaml" />
                 <ResourceDictionary
                 Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary

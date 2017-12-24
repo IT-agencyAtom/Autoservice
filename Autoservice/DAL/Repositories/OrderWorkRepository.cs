@@ -5,6 +5,8 @@ using Autoservice.DAL.Common.Implementation;
 using Autoservice.DAL.Entities;
 using Autoservice.DAL.Repositories.Interfaces;
 using Mehdime.Entity;
+using System;
+using System.Collections.Generic;
 
 namespace Autoservice.DAL.Repositories
 {
@@ -29,6 +31,7 @@ namespace Autoservice.DAL.Repositories
             var baseOrderWork = work.IsNew ? work : Context.OrderWorks.Single(ow => ow.Id == work.Id);
 
             baseOrderWork.Price = work.Price;
+            baseOrderWork.MasterPercentage = work.MasterPercentage;
             if (baseOrderWork.Work != null)
             {
                 baseOrderWork.WorkId = work.Work.Id;
@@ -41,6 +44,22 @@ namespace Autoservice.DAL.Repositories
 
             if (work.IsNew)
                 Add(baseOrderWork);
+        }
+        public List<OrderWork> GetAllSalaries(DateTime from, DateTime to)
+        {
+            return Context.OrderWorks.Include(w=>w.Order)
+                .Include(w => w.Master)
+                .Include(w=>w.Work)
+                .Where(w => w.Order.StartDate >= from && w.Order.StartDate <= to)
+                .ToList();
+        }
+        public List<OrderWork> GetAllSalariesByMaster(DateTime from, DateTime to,Guid masterGuid)
+        {
+            return Context.OrderWorks.Include(w => w.Order)
+                .Include(w => w.Master)
+                .Include(w => w.Work)
+                .Where(w => w.Order.StartDate >= from && w.Order.StartDate <= to&&w.MasterId==masterGuid)
+                .ToList();
         }
     }
 }

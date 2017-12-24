@@ -110,6 +110,24 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="Telerik.Reporting">
+      <HintPath>Lib\Telerik.Reporting.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.ReportViewer.Wpf">
+      <HintPath>Lib\Telerik.ReportViewer.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls">
+      <HintPath>Lib\Telerik.Windows.Controls.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Input">
+      <HintPath>Lib\Telerik.Windows.Controls.Input.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Controls.Navigation">
+      <HintPath>Lib\Telerik.Windows.Controls.Navigation.dll</HintPath>
+    </Reference>
+    <Reference Include="Telerik.Windows.Data">
+      <HintPath>Lib\Telerik.Windows.Data.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -123,6 +141,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controls\Managers\ReportManager.cs" />
     <Compile Include="Controls\Managers\ScreenManager.cs" />
     <Compile Include="DAL\Common\Context\IAutoServiceDBContext.cs" />
     <Compile Include="DAL\Common\Implementation\DbWorker.cs" />
@@ -194,6 +213,9 @@
     <Compile Include="Dialogs\Managers\AddCarModelManager.cs" />
     <Compile Include="Dialogs\Managers\AddPreEntryManager.cs" />
     <Compile Include="Dialogs\Managers\SparePartSelectorManager.cs" />
+    <Compile Include="Dialogs\ReportScreen.xaml.cs">
+      <DependentUpon>ReportScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\SparePartSelectorDialog.xaml.cs">
       <DependentUpon>SparePartSelectorDialog.xaml</DependentUpon>
     </Compile>
@@ -236,6 +258,10 @@
     <Compile Include="Migrations\201711272346097_InitialMigration.Designer.cs">
       <DependentUpon>201711272346097_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201712232115055_AddMasterPercentageFieldMigration.cs" />
+    <Compile Include="Migrations\201712232115055_AddMasterPercentageFieldMigration.Designer.cs">
+      <DependentUpon>201712232115055_AddMasterPercentageFieldMigration.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
@@ -250,12 +276,14 @@
     </Compile>
     <Compile Include="Screens\Managers\CarModelsManager.cs" />
     <Compile Include="Screens\Managers\MastersManager.cs" />
+    <Compile Include="Screens\Managers\ReportsManager.cs" />
     <Compile Include="Screens\Managers\WarehouseManager.cs" />
     <Compile Include="Screens\Managers\WorksManager.cs" />
     <Compile Include="Screens\Managers\WorkTemplateManager.cs" />
     <Compile Include="Screens\MastersScreen.xaml.cs">
       <DependentUpon>MastersScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Screens\ReportsScreen.xaml.cs" />
     <Compile Include="Screens\WarehouseScreen.xaml.cs">
       <DependentUpon>WarehouseScreen.xaml</DependentUpon>
     </Compile>
@@ -282,6 +310,7 @@
     <Compile Include="Screens\SettingsScreen.xaml.cs">
       <DependentUpon>SettingsScreen.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Themes\Windows7\Telerik.ReportViewer.Wpf.xaml.cs" />
     <Compile Include="ViewModel\Utils\Constants.cs" />
     <Compile Include="ViewModel\Utils\EnumExtender.cs" />
     <Compile Include="ViewModel\Utils\RandomStrings.cs" />
@@ -309,6 +338,9 @@
     <EmbeddedResource Include="Migrations\201711272346097_InitialMigration.resx">
       <DependentUpon>201711272346097_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712232115055_AddMasterPercentageFieldMigration.resx">
+      <DependentUpon>201712232115055_AddMasterPercentageFieldMigration.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -324,6 +356,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Reports\SalariesOfMasters.trdp" />
     <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -349,6 +382,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Dialogs\AddPreEnrtyDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\ReportScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -416,6 +453,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Screens\ReportsScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Screens\WarehouseScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -441,6 +482,30 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Screens\SettingsScreen.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="System.Windows.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Windows7\System.Windows.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Windows7\Telerik.ReportViewer.Wpf.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Windows7\Telerik.Windows.Controls.Input.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Windows7\Telerik.Windows.Controls.Navigation.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Windows7\Telerik.Windows.Controls.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

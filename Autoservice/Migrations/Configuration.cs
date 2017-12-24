@@ -78,6 +78,28 @@ namespace Autoservice.Migrations
                     Price = 7000
                 }
                 );
+            context.Cars.AddOrUpdate(c=>c.Model,
+                new Car
+                {
+                    Brand = "Mercedes",Model = "Benz",Type = Car.CarType.Automobile
+                },
+                new Car
+                {
+                    Brand = "VW",
+                    Model = "Polo",
+                    Type = Car.CarType.Automobile
+                }, new Car
+                {
+                    Brand = "Nissan",
+                    Model = "Almera",
+                    Type = Car.CarType.Automobile
+                }, new Car
+                {
+                    Brand = "Kia",
+                    Model = "Rio",
+                    Type = Car.CarType.Automobile
+                }
+                );
             /*context.ClientCars.AddOrUpdate(c => c.RegistrationNumber,
                 new ClientCar
                 {

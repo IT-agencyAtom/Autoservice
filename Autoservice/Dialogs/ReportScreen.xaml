@@ -1,0 +1,16 @@
+﻿<UserControl
+    x:Class="Autoservice.Dialogs.ReportScreen"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:tr="http://schemas.telerik.com/wpf"
+    x:Name="reportScreen">
+
+    <tr:ReportViewer HorizontalAlignment="Stretch" ReportSource="{Binding DataContext.Report, ElementName=reportScreen}">
+        <!--tr:ReportViewer.ReportSource>
+            <reporting:TypeReportSource TypeName="MedicalGenomics.Reports.ReportBook, MedicalGenomics.Reports" />
+        </tr:ReportViewer.ReportSource>
+        <tr:ReportViewer.ReportSource>
+            <reporting:UriReportSource Uri="Reports/TestReport.trdx"/>
+        </tr:ReportViewer.ReportSource-->
+    </tr:ReportViewer>
+</UserControl>

@@ -21,6 +21,7 @@ using Autoservice.DAL.Services;
 using Autoservice.Migrations;
 using Autoservice.Screens.Managers;
 using Autoservice.ViewModel.Utils;
+using Autoservice.Screens.Managers;
 
 namespace Autoservice
 {
@@ -224,6 +225,13 @@ namespace Autoservice
                 ToolTip = "Список запчастей",
                 Icon = new PackIconMaterial { Kind = PackIconMaterialKind.CarBattery },
                 Tag = _warehouseManager
+            });
+            TabScreens.Add(new ScreenManager
+            {
+                Label = "Отчёты",
+                ToolTip = "Отчёты",
+                Icon = new PackIconMaterial { Kind = PackIconMaterialKind.FileChart },
+                Tag = new ReportsManager { SetIsBusy = isBusy => IsBusy = isBusy }
             });
             if (UserService.Instance.IsAdmin)
             {                

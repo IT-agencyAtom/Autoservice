@@ -321,6 +321,7 @@ namespace Autoservice.Dialogs.Managers
         }
 
         public bool IsNew { get; set; }
+        public int MasterPercentage { get; set; }
 
         public OrderWorkModel()
         {
@@ -339,6 +340,7 @@ namespace Autoservice.Dialogs.Managers
             Order = work.Order;
             Price = work.Price;
             IsNew = work.IsNew;
+            MasterPercentage = work.MasterPercentage;
         }
     }
 

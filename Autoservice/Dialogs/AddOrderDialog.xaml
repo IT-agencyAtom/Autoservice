@@ -22,7 +22,7 @@
     <Window.Resources>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
             <controls1:Panel />
-        </DataTemplate>        
+        </DataTemplate>
         <BooleanToVisibilityConverter x:Key="btv" />
     </Window.Resources>
     <i:Interaction.Triggers>
@@ -34,304 +34,336 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
 
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="70"></RowDefinition>
-                <RowDefinition Height="10*"/>
-                <RowDefinition Height="3*"/>
-                <RowDefinition Height="75" />
-            </Grid.RowDefinitions>
-            <GroupBox Header="Время жизни заказа" Margin="5,3,0,0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition></ColumnDefinition>
-                        <ColumnDefinition></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                <StackPanel Margin="15,0" Grid.Column="0" Orientation="Horizontal">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="3*" />
+            <RowDefinition Height="75" />
+        </Grid.RowDefinitions>
+        <GroupBox Margin="5,3,0,0" Header="Время жизни заказа">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <StackPanel
+                    Grid.Column="0"
+                    Margin="15,0"
+                    Orientation="Horizontal">
                     <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="12"
-                                        FontWeight="Bold"
-                                        Text="Дата поступления заказа: " />
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Bold"
+                        Text="Дата поступления заказа: " />
                     <TextBox
-                                        Margin="5,0"
-                                        IsEnabled="{Binding IsNew}"
-                                        HorizontalAlignment="Stretch"
-                                        Text="{Binding Order.StartDate, Mode=OneWay}" />
+                        Margin="5,0"
+                        HorizontalAlignment="Stretch"
+                        IsEnabled="{Binding IsNew}"
+                        Text="{Binding Order.StartDate, Mode=OneWay}" />
                 </StackPanel>
-                <StackPanel Margin="15,0" Grid.Column="1" Visibility="{Binding Order.PreOrderVisibility, Mode=OneWay}" Orientation="Horizontal">
+                <StackPanel
+                    Grid.Column="1"
+                    Margin="15,0"
+                    Orientation="Horizontal"
+                    Visibility="{Binding Order.PreOrderVisibility, Mode=OneWay}">
                     <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="12"
-                                        FontWeight="Bold"
-                                        Text="Предварительная запись: " />
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        FontSize="12"
+                        FontWeight="Bold"
+                        Text="Предварительная запись: " />
                     <TextBox
-                                        Background="LightSalmon"
-                                        
-                                        Margin="5,0"
-                                        IsEnabled="{Binding IsNew}"
-                                        Text="{Binding Order.PreOrderDateTime, Mode=OneWay}" />
+                        Margin="5,0"
+                        Background="LightSalmon"
+                        IsEnabled="{Binding IsNew}"
+                        Text="{Binding Order.PreOrderDateTime, Mode=OneWay}" />
                 </StackPanel>
-                      
-                </Grid>
-            </GroupBox>
-            <GroupBox Header="Данные заказа" Grid.Row="1">        
-                <Grid Grid.Row="1">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*" />
-                            <ColumnDefinition Width="5*" />
-                        </Grid.ColumnDefinitions>
-                        <StackPanel Margin="5,0">
-                            <StackPanel Margin="0,5">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    FontWeight="Bold"
-                                    Text="Номер" />
-                                <TextBox
-                                    Margin="0,5,0,0"
-                                    IsEnabled="{Binding IsNew}"
-                                    Text="{Binding Order.PersonalNumber, Mode=OneWay}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,5">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    FontWeight="Bold"
-                                    Text="Клиент" />
-                                <ComboBox
-                                    Margin="0,5,0,0"
-                                    IsEnabled="{Binding IsNew}"
-                                    ItemsSource="{Binding Clients}"
-                                    SelectedItem="{Binding SelectedClient}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,5">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    FontWeight="Bold"
-                                    Text="Транспортное средство" />
-                                <ComboBox
-                                    Margin="0,5,0,0"
-                                    IsEnabled="{Binding IsNew}"
-                                    ItemsSource="{Binding Cars}"
-                                    SelectedItem="{Binding SelectedCar}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,5">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    FontWeight="Bold"
-                                    Text="Зона ремонта" />
-                                <TextBox
-                                    Margin="0,5,0,0"
-                                    IsReadOnly="False"
-                                    Text="{Binding Order.RepairZone}" />
-                            </StackPanel>
-                            <StackPanel Margin="0,5">
-                                <TextBlock
-                                    HorizontalAlignment="Center"
-                                    VerticalAlignment="Center"
-                                    FontSize="12"
-                                    FontWeight="Bold"
-                                    Text="Статус" />
-                                <TextBlock 
-                                Margin="0,5,0,0"
+
+            </Grid>
+        </GroupBox>
+        <GroupBox Grid.Row="1" Header="Данные заказа">
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Margin="5,0">
+                    <StackPanel Margin="0,5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Номер" />
+                        <TextBox
+                            Margin="0,5,0,0"
+                            IsEnabled="{Binding IsNew}"
+                            Text="{Binding Order.PersonalNumber, Mode=OneWay}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Клиент" />
+                        <ComboBox
+                            Margin="0,5,0,0"
+                            IsEnabled="{Binding IsNew}"
+                            ItemsSource="{Binding Clients}"
+                            SelectedItem="{Binding SelectedClient}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Транспортное средство" />
+                        <ComboBox
+                            Margin="0,5,0,0"
+                            IsEnabled="{Binding IsNew}"
+                            ItemsSource="{Binding Cars}"
+                            SelectedItem="{Binding SelectedCar}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Зона ремонта" />
+                        <TextBox
+                            Margin="0,5,0,0"
+                            IsReadOnly="False"
+                            Text="{Binding Order.RepairZone}" />
+                    </StackPanel>
+                    <StackPanel Margin="0,5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Статус" />
+                        <TextBlock
+                            Margin="0,5,0,0"
+                            FontSize="12"
+                            FontWeight="Regular"
+                            Text="{Binding Order.StringStatus}" />
+                        <StackPanel Margin="0,7">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 FontSize="12"
-                                FontWeight="Regular"
-                                Text ="{Binding Order.StringStatus}" />
-                                <StackPanel Margin="0,7">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="12"
-                                        FontWeight="Bold"
-                                        Text="Конечная цена заказа" />
-                                    <TextBox
-                                        Margin="0,5,0,0"
-                                        IsReadOnly="True"
-                                        Text="{Binding TotalPrice, Mode=OneWay}" />
-                                </StackPanel>
-                                <StackPanel Margin="0,5">
-                                    <TextBlock
-                                        HorizontalAlignment="Center"
-                                        VerticalAlignment="Center"
-                                        FontSize="12"
-                                        FontWeight="Bold"
-                                        Text="Способ оплаты" />
-                                    <ComboBox
-                                        Margin="0,5,0,0"
-                                        ItemsSource="{Binding Methods}"
-                                        SelectedIndex="{Binding SelectedMethod}" />
-                                </StackPanel>
-                            </StackPanel>
+                                FontWeight="Bold"
+                                Text="Конечная цена заказа" />
+                            <TextBox
+                                Margin="0,5,0,0"
+                                IsReadOnly="True"
+                                Text="{Binding TotalPrice, Mode=OneWay}" />
                         </StackPanel>
-                        <Grid Grid.Column="1" Margin="5,0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition />
-                                <RowDefinition />
-                            </Grid.RowDefinitions>
-                            <GroupBox Margin="0,7" Header="Работы">
-                                <GroupBox.HeaderTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <TextBlock Text="{Binding}"></TextBlock>
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                                <Button VerticalAlignment="Center" ToolTip="Add Work" Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddWorkCommand}" Margin="5,0,0,0">
-                                                    <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                                                        <Rectangle.OpacityMask>
-                                                            <VisualBrush Visual="{StaticResource appbar_add}" />
-                                                        </Rectangle.OpacityMask>
-                                                    </Rectangle>
-                                                </Button>
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </GroupBox.HeaderTemplate>
-                                <ScrollViewer>
-                                    <DataGrid
-                                            MinHeight="70"
-                                            AutoGenerateColumns="False"
-                                            CanUserAddRows="False"
-                                            IsSynchronizedWithCurrentItem="True"
-                                            ItemsSource="{Binding OrderWorks}">
-                                        <DataGrid.Columns>
-                                            <DataGridTemplateColumn Header="Наменование" Width="2*">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <ComboBox Margin="0, 5, 0, 0"
-                                                                        Style="{DynamicResource VirtualisedMetroComboBox}"
-                                                                        SelectedItem="{Binding Work, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                                                                        controls:TextBoxHelper.Watermark="Выберите работу..."
-                                                                        IsReadOnly="True"
-                                                                        IsEditable="True"
-                                                                        ItemsSource="{Binding DataContext.Works, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                        MaxDropDownHeight="125"
-                                                                        Text="{Binding Work.Name}" 
-                                                                        DisplayMemberPath="Name"
-                                                                        VerticalAlignment="Center"
-                                                                        HorizontalAlignment="Stretch"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                            <DataGridTextColumn
-                                                    Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Header="Цена" />
-                                            <DataGridTemplateColumn Header="Мастер" Width="2*">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <ComboBox Margin="0, 5, 0, 0"
-                                                                        Style="{DynamicResource VirtualisedMetroComboBox}"
-                                                                        SelectedItem="{Binding Master, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
-                                                                        controls:TextBoxHelper.Watermark="Выберите мастера..."
-                                                                        IsReadOnly="True"
-                                                                        IsEditable="True"
-                                                                        ItemsSource="{Binding DataContext.Masters, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                        MaxDropDownHeight="125"
-                                                                        DisplayMemberPath="Name"
-                                                                        Text="{Binding Master.Name}"
-                                                                        VerticalAlignment="Center"
-                                                                        HorizontalAlignment="Stretch"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                            <DataGridTemplateColumn Header="Процент">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBox Text="50" VerticalAlignment="Bottom" MinWidth="50"></TextBox>
-                                                            <TextBlock Text="%" FontFamily="Bold" VerticalAlignment="Bottom" FontSize="20"></TextBlock>
-                                                        </StackPanel>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                </ScrollViewer>
-                            </GroupBox>
-                            <GroupBox Margin="0,7" Header="Запчасти" Grid.Row ="1">
-                                <GroupBox.HeaderTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <TextBlock Text="{Binding}"></TextBlock>
-                                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                                                <Button VerticalAlignment="Center" ToolTip="Add SpareParts" Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddSparePartCommand}" Margin="5,0,0,0">
-                                                    <Rectangle Width="15" Height="15" Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
-                                                        <Rectangle.OpacityMask>
-                                                            <VisualBrush Visual="{StaticResource appbar_add}" />
-                                                        </Rectangle.OpacityMask>
-                                                    </Rectangle>
-                                                </Button>
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </GroupBox.HeaderTemplate>
-                                <ScrollViewer>
-                                    <DataGrid
-                                            MinHeight="70"
-                                            AutoGenerateColumns="False"
-                                            CanUserAddRows="False"
-                                            IsSynchronizedWithCurrentItem="True"
-                                            ItemsSource="{Binding OrderSpareParts}">
-                                        <DataGrid.Columns>
-                                            <DataGridTextColumn
-                                                    Binding="{Binding SparePart.Name, UpdateSourceTrigger=PropertyChanged}"
-                                                    Width="2*"
+                        <StackPanel Margin="0,5">
+                            <TextBlock
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                FontSize="12"
+                                FontWeight="Bold"
+                                Text="Способ оплаты" />
+                            <ComboBox
+                                Margin="0,5,0,0"
+                                ItemsSource="{Binding Methods}"
+                                SelectedIndex="{Binding SelectedMethod}" />
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                <Grid Grid.Column="1" Margin="5,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <GroupBox Margin="0,7" Header="Работы">
+                        <GroupBox.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding}" />
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddWorkCommand}"
+                                            ToolTip="Add Work">
+                                            <Rectangle
+                                                Width="15"
+                                                Height="15"
+                                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Visual="{StaticResource appbar_add}" />
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GroupBox.HeaderTemplate>
+                        <ScrollViewer>
+                            <DataGrid
+                                MinHeight="70"
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                IsSynchronizedWithCurrentItem="True"
+                                ItemsSource="{Binding OrderWorks}">
+                                <DataGrid.Columns>
+                                    <DataGridTemplateColumn Width="2*" Header="Наменование">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox
+                                                    Margin="0,5,0,0"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Center"
+                                                    controls:TextBoxHelper.Watermark="Выберите работу..."
+                                                    DisplayMemberPath="Name"
+                                                    IsEditable="True"
                                                     IsReadOnly="True"
-                                                    Header="Наименование" />
-                                            <DataGridTextColumn
-                                                    Binding="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Header="Количество" />
-                                            <DataGridTemplateColumn Header="Источник" Width="2*">
-                                                <DataGridTemplateColumn.CellTemplate>
-                                                    <DataTemplate>
-                                                        <ComboBox Margin="0, 5, 0, 0"
-                                                                        Style="{DynamicResource VirtualisedMetroComboBox}"
-                                                                        SelectedIndex="{Binding Source,  Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                                        controls:TextBoxHelper.Watermark="Выберите источник запчастей..."
-                                                                        IsReadOnly="True"
-                                                                        IsEditable="True"
-                                                                        ItemsSource="{Binding DataContext.Sources, RelativeSource={RelativeSource AncestorType=DataGrid}}"
-                                                                        MaxDropDownHeight="125"
-                                                                        Text="{Binding StringSource}"
-                                                                        VerticalAlignment="Center"
-                                                                        HorizontalAlignment="Stretch"/>
-                                                    </DataTemplate>
-                                                </DataGridTemplateColumn.CellTemplate>
-                                            </DataGridTemplateColumn>
-                                            <DataGridTextColumn
-                                                    Binding="{Binding SparePart.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    ItemsSource="{Binding DataContext.Works, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    MaxDropDownHeight="125"
+                                                    SelectedItem="{Binding Work, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                    Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                    Text="{Binding Work.Name}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn Binding="{Binding Price, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Цена" />
+                                    <DataGridTemplateColumn Width="2*" Header="Мастер">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox
+                                                    Margin="0,5,0,0"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Center"
+                                                    controls:TextBoxHelper.Watermark="Выберите мастера..."
+                                                    DisplayMemberPath="Name"
+                                                    IsEditable="True"
                                                     IsReadOnly="True"
-                                                    Header="На складе" />
-                                        </DataGrid.Columns>
-                                    </DataGrid>
-                                </ScrollViewer>
-                            </GroupBox>
-                        </Grid>
-                    </Grid>                                     
-            </GroupBox>
-            <GroupBox Grid.Row="2" Margin="5,10" Header="Примечания к заказу">
-                <ScrollViewer>
-                    <TextBox Text="{Binding Order.Notes}"></TextBox>
-                </ScrollViewer>
-            </GroupBox>
-            <controls:Flyout
-                    Grid.Row="3"
-                    Height="75"
-                    CloseButtonVisibility="Collapsed"
-                    IsOpen="True"
-                    IsPinned="True"
-                    Position="Bottom"
-                    TitleVisibility="Collapsed">
-                    <Grid>
-                        <ContentControl Content="{Binding Panel}" />
-                    </Grid>
-                </controls:Flyout>
-        </Grid>
+                                                    ItemsSource="{Binding DataContext.Masters, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    MaxDropDownHeight="125"
+                                                    SelectedItem="{Binding Master, NotifyOnSourceUpdated=True, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnNotifyDataErrors=True}"
+                                                    Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                    Text="{Binding Master.Name}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTemplateColumn Header="Процент">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBox
+                                                        MinWidth="50"
+                                                        VerticalAlignment="Bottom"
+                                                        Text="{Binding MasterPercentage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                                                    <TextBlock
+                                                        VerticalAlignment="Bottom"
+                                                        FontFamily="Bold"
+                                                        FontSize="20"
+                                                        Text="%" />
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
+                    </GroupBox>
+                    <GroupBox
+                        Grid.Row="1"
+                        Margin="0,7"
+                        Header="Запчасти">
+                        <GroupBox.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding}" />
+                                    <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                                        <Button
+                                            Margin="5,0,0,0"
+                                            VerticalAlignment="Center"
+                                            Command="{Binding RelativeSource={RelativeSource AncestorType=controls:MetroWindow}, Path=DataContext.AddSparePartCommand}"
+                                            ToolTip="Add SpareParts">
+                                            <Rectangle
+                                                Width="15"
+                                                Height="15"
+                                                Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                                                <Rectangle.OpacityMask>
+                                                    <VisualBrush Visual="{StaticResource appbar_add}" />
+                                                </Rectangle.OpacityMask>
+                                            </Rectangle>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </GroupBox.HeaderTemplate>
+                        <ScrollViewer>
+                            <DataGrid
+                                MinHeight="70"
+                                AutoGenerateColumns="False"
+                                CanUserAddRows="False"
+                                IsSynchronizedWithCurrentItem="True"
+                                ItemsSource="{Binding OrderSpareParts}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn
+                                        Width="2*"
+                                        Binding="{Binding SparePart.Name, UpdateSourceTrigger=PropertyChanged}"
+                                        Header="Наименование"
+                                        IsReadOnly="True" />
+                                    <DataGridTextColumn Binding="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Количество" />
+                                    <DataGridTemplateColumn Width="2*" Header="Источник">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <ComboBox
+                                                    Margin="0,5,0,0"
+                                                    HorizontalAlignment="Stretch"
+                                                    VerticalAlignment="Center"
+                                                    controls:TextBoxHelper.Watermark="Выберите источник запчастей..."
+                                                    IsEditable="True"
+                                                    IsReadOnly="True"
+                                                    ItemsSource="{Binding DataContext.Sources, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                                    MaxDropDownHeight="125"
+                                                    SelectedIndex="{Binding Source, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    Style="{DynamicResource VirtualisedMetroComboBox}"
+                                                    Text="{Binding StringSource}" />
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                    <DataGridTextColumn
+                                        Binding="{Binding SparePart.Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        Header="На складе"
+                                        IsReadOnly="True" />
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
+                    </GroupBox>
+                </Grid>
+            </Grid>
+        </GroupBox>
+        <GroupBox
+            Grid.Row="2"
+            Margin="5,10"
+            Header="Примечания к заказу">
+            <ScrollViewer>
+                <TextBox Text="{Binding Order.Notes}" />
+            </ScrollViewer>
+        </GroupBox>
+        <controls:Flyout
+            Grid.Row="3"
+            Height="75"
+            CloseButtonVisibility="Collapsed"
+            IsOpen="True"
+            IsPinned="True"
+            Position="Bottom"
+            TitleVisibility="Collapsed">
+            <Grid>
+                <ContentControl Content="{Binding Panel}" />
+            </Grid>
+        </controls:Flyout>
+    </Grid>
 </controls:MetroWindow>

@@ -27,6 +27,8 @@ namespace Autoservice.DAL.Entities
 
         public decimal Price { get; set; }
 
+        public int MasterPercentage { get; set; }
+
         [NotMapped]
         public bool IsNew { get; set; }
 
@@ -45,6 +47,7 @@ namespace Autoservice.DAL.Entities
             Master = work.Master;
             OrderId = work.OrderId;
             Order = work.Order;
+            MasterPercentage = work.MasterPercentage;
             Price = work.Price;
             IsNew = work.IsNew;
         }

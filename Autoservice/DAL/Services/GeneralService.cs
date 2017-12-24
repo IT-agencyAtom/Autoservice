@@ -588,5 +588,19 @@ namespace Autoservice.DAL.Services
                 return _activityRepository.GetAll(a=>a.Order,a=>a.User);
             }
         }
+        public List<OrderWork> GetAllSalaries(DateTime startDateTime,DateTime endDateTime)
+        {
+            using (Db.BeginReadOnlyWork())
+            {
+                return _orderWorkRepository.GetAllSalaries(startDateTime,endDateTime);
+            }
+        }
+        public List<OrderWork> GetAllSalariesByMaster(DateTime startDateTime, DateTime endDateTime,Guid masterGuid)
+        {
+            using (Db.BeginReadOnlyWork())
+            {
+                return _orderWorkRepository.GetAllSalariesByMaster(startDateTime, endDateTime,masterGuid);
+            }
+        }
     }
 }

@@ -47,6 +47,7 @@ namespace Autoservice.DAL.Services
         void AddCar(Car car);
         void DeleteCar(Car selectedCar);
         void UpdateMaster(Master master);
+        List<OrderWork> GetAllSalaries(DateTime startDate, DateTime endDate);
         void AddMaster(Master master);
         void DeleteMaster(Master selectedMaster);
         void AddActivity(Activity activity);
@@ -64,5 +65,6 @@ namespace Autoservice.DAL.Services
         void AddSparePartsFolder(SparePartsFolder folder);
         void UpdateSparePartsFolder(SparePartsFolder folder);
         void AddCars(List<Car> cars);
+        List<OrderWork> GetAllSalariesByMaster(DateTime startDate, DateTime endDate, Guid masterGuid);
     }
 }
