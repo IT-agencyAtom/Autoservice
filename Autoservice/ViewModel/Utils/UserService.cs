@@ -14,6 +14,8 @@ namespace Autoservice.ViewModel.Utils
 
         public bool IsAdmin => true; //CurrentUser.Role?.Name == "Admin";
 
+        public Master DefaultMaster { get; set; }
+
         /*public void LoadUser(User user)
         {
             _user = user;

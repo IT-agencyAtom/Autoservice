@@ -117,10 +117,15 @@ namespace Autoservice.Dialogs.Managers
             var service = Get<IGeneralService>();
             var allWorks = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks())).ToList();
             Works.AddRange(allWorks.Select(w => new WorkModel(w)));
-            foreach (var work in WorkTemplate.Works)
+
+            if (WorkTemplate.Works != null)
             {
-                Works.First(w => w.Id == work.Id).IsChecked = true;
+                foreach (var work in WorkTemplate.Works)
+                {
+                    Works.First(w => w.Id == work.Id).IsChecked = true;
+                }
             }
+
             RaisePropertyChanged("Works");
             SetIsBusy(false);
         }

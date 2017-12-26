@@ -98,7 +98,7 @@ namespace Autoservice
 
             checkUpdates();
 
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<AutoServiceDBContext, Configuration>());    
+            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<AutoServiceDBContext, Configuration>());    
                      
 
             _settingsManager = new SettingsManager

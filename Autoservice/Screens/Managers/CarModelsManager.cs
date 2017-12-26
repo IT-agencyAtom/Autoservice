@@ -157,7 +157,7 @@ namespace Autoservice.Screens.Managers
             SetIsBusy(false);
         }
 
-        public async override void Refresh()
+        public override async void Refresh()
         {
             SetIsBusy(true);
 

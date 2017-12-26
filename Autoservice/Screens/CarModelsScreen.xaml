@@ -24,11 +24,10 @@
             <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
         </Grid.Resources>      
         
-        <ScrollViewer Margin="10,15,10,0">
             <GroupBox Header="Модели машин">
-                <DataGrid
+                <DataGrid Margin="10,15,10,75"
                     Name="dg"
-                    Margin="5"
+                    VirtualizingStackPanel.VirtualizationMode ="Recycling"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
                     IsReadOnly="True"
@@ -54,9 +53,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
-        </ScrollViewer>
         <controls:Flyout
-            Grid.Row="3"
             Height="75"
             Background="#444444"
             CloseButtonVisibility="Collapsed"

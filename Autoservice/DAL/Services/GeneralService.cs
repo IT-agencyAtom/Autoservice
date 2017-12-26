@@ -294,11 +294,20 @@ namespace Autoservice.DAL.Services
         public void AddOrder(Order order)
         {
             order.TotalPrice = order.Works.Sum(w => w.Price);
+
+            if (order.Car?.Client != null)
+            {
+                //_clientRepository.SaveClient(order.Car?.Client);
+                order.Car.Client = null;
+            }
+            if (order.Car != null)
+            {
+                order.ClientCarId = order.Car.Id;
+                order.Car = null;
+            }
+
             using (var scope = Db.BeginWork())
             {
-                order.Car = null;
-                _orderRepository.Add(order);
-
                 _orderWorkRepository.DeleteWorks(order);
 
                 foreach (var work in order.Works)
@@ -306,6 +315,7 @@ namespace Autoservice.DAL.Services
                     work.OrderId = order.Id;
                     _orderWorkRepository.SaveWork(work);
                 }
+                _orderRepository.Add(order);
 
                 scope.SaveChanges();
             }
@@ -422,8 +432,18 @@ namespace Autoservice.DAL.Services
         public void UpdateWorkTemplate(WorkTemplate workTemplate)
         {
             using (var scope = Db.BeginWork())
-            {               
-                _workTemplateRepository.Update(workTemplate);
+            {
+                var baseWorkTemplate = _workTemplateRepository.Get(wt => wt.Id == workTemplate.Id);
+                baseWorkTemplate.Name = workTemplate.Name;
+
+                _workRepository.DeleteWorks(workTemplate);
+
+                for (var i = 0; i < workTemplate.Works.Count; ++i)
+                {
+                    var work = workTemplate.Works.ElementAt(i);
+                    _workRepository.SaveWork(baseWorkTemplate, work);
+                }
+
                 scope.SaveChanges();
             }
         }

@@ -28,7 +28,8 @@
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="70" />
-            <RowDefinition Height="7*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="75" />
         </Grid.RowDefinitions>
         <GroupBox Header="Фильтр">
             <TextBox

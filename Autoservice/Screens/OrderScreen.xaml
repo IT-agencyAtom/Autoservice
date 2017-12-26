@@ -27,7 +27,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="3*" />
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="75"/>
         </Grid.RowDefinitions>
         <Grid Margin="20,0" VerticalAlignment="Stretch">
             <TextBox
@@ -58,7 +58,6 @@
             <GroupBox Header="Заказы">
                 <DataGrid                    
                     Margin="5"
-                    LoadingRow="DataGrid_LoadingRow"
                     AutoGenerateColumns="False"
                     CanUserAddRows="False"
                     IsReadOnly="True"
@@ -75,6 +74,15 @@
                             <command:EventToCommand Command="{Binding MouseDoubleClickCommand}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
+                    <DataGrid.RowStyle>
+                        <Style BasedOn="{StaticResource MetroDataGridRow}" TargetType="DataGridRow">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=IsPinned}" Value="True">
+                                    <Setter Property="Background" Value="DarkCyan"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </DataGrid.RowStyle>
                     <DataGrid.Columns>
                         <DataGridTextColumn
                             Width="1*"

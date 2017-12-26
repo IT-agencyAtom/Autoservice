@@ -5,5 +5,6 @@ namespace Autoservice.DAL.Repositories.Interfaces
 {
     public interface IClientRepository : IEntityRepository<Client>
     {
+        void SaveClient(Client client);
     }
 }

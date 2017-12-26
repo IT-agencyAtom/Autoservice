@@ -68,6 +68,9 @@ namespace Autoservice.DAL.Entities
             return -((DateTime)pTime1).CompareTo((DateTime)pTime2);
            
         }
+
+        [NotMapped]
+        public bool IsPinned => Status != ActivityStatus.Closed && PreOrderDateTime.HasValue;
     }   
     public enum PaymentMethod
     {

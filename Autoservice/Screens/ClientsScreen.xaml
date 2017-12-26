@@ -25,7 +25,8 @@
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
-            <RowDefinition Height="7*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="75" />
         </Grid.RowDefinitions>
         <Grid Margin="20,0" VerticalAlignment="Stretch">
             <TextBox

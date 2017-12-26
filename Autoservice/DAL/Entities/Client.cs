@@ -20,6 +20,13 @@ namespace Autoservice.DAL.Entities
             Id = Guid.NewGuid();
             Cars = new List<ClientCar>();
         }
+
+        public Client(Client client)
+        {
+            Discount = client.Discount;
+            Name = client.Name;
+            Phone = client.Phone;
+        }
         public override string ToString()
         {
             return Name;

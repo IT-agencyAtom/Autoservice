@@ -113,6 +113,7 @@ namespace Autoservice.Screens.Managers
 
             var service = Get<IGeneralService>();
             Users = new ObservableCollection<User>(await Task.Run(() => service.GetAllUsers()));
+            UserService.Instance.DefaultMaster = service.GetAllMasters().FirstOrDefault();
 
             RaisePropertyChanged("Users");
 
