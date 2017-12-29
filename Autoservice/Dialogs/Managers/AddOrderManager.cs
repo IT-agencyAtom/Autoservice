@@ -11,7 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
-using Autoservice.ViewModel.Utils;
 using System.Windows.Forms;
 
 namespace Autoservice.Dialogs.Managers
@@ -40,7 +39,7 @@ namespace Autoservice.Dialogs.Managers
 
         public decimal TotalPrice
         {
-            get { return OrderWorks.Sum(ow => ow.Price) - (SelectedClient?.Discount * OrderWorks.Sum(ow => ow.Price) / 100).GetValueOrDefault(); }
+            get { return OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price) - (SelectedClient?.Discount * (OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price)) / 100).GetValueOrDefault(); }
         }
 
         public int SelectedMethod {
@@ -183,8 +182,7 @@ namespace Autoservice.Dialogs.Managers
                 if (manager.WasChanged)
                 {
                     _newParts = manager.Checked;
-                    ChangeSparePartCollection(_newParts);
-                    Refresh();                    
+                    ChangeSparePartCollection(_newParts);              
                 }
                 SetIsBusy(false);
             };
@@ -249,9 +247,8 @@ namespace Autoservice.Dialogs.Managers
 
             Order.Works = OrderWorks.Select(w => new OrderWork(w)).ToList();
             Order.SpareParts = OrderSpareParts.Select(s => new OrderSparePart(s)).ToList();
-            Order.TotalPrice = OrderWorks.Sum(ow => ow.Price) - SelectedClient.Discount * OrderWorks.Sum(ow => ow.Price) / 100;
-
-
+            Order.TotalPrice = TotalPrice;
+            
             if (_isEdit)
                 generalService.UpdateOrder(Order);
             else
@@ -358,6 +355,8 @@ namespace Autoservice.Dialogs.Managers
         public bool IsNew { get; set; }
 
         private static string[] _strings;
+
+        public decimal? Price => SparePart?.Price;
 
         static OrderSparePartModel()
         {

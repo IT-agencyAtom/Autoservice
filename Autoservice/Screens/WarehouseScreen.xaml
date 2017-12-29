@@ -76,7 +76,7 @@
             </TreeView>
         </GroupBox>
         <controls:Flyout
-            Grid.Row="3"
+            Grid.Row="2"
             Height="75"
             Background="#444444"
             CloseButtonVisibility="Collapsed"

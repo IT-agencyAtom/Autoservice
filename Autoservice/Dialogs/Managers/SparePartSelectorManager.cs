@@ -74,7 +74,7 @@ namespace Autoservice.Dialogs.Managers
         private bool StringFilter(SparePart sparePart)
         {
             return sparePart.Name.ToLower().Contains(SparePartFilterString) ||
-                sparePart.Cargo.ToLower().Contains(SparePartFilterString);
+                   sparePart.Cargo != null && sparePart.Cargo.ToLower().Contains(SparePartFilterString);
 
 
         }

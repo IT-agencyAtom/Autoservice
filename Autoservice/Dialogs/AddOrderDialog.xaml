@@ -318,6 +318,7 @@
                                         Header="Наименование"
                                         IsReadOnly="True" />
                                     <DataGridTextColumn Binding="{Binding Number, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="Количество" />
+                                    <DataGridTextColumn Binding="{Binding Price, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Header="Цена" />
                                     <DataGridTemplateColumn Width="2*" Header="Источник">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>

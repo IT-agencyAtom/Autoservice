@@ -66,5 +66,6 @@ namespace Autoservice.DAL.Services
         void UpdateSparePartsFolder(SparePartsFolder folder);
         void AddCars(List<Car> cars);
         List<OrderWork> GetAllSalariesByMaster(DateTime startDate, DateTime endDate, Guid masterGuid);
+        void DeleteSparePartsFolder(SparePartsFolder sparePartFolder);
     }
 }

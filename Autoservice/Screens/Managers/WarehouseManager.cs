@@ -65,8 +65,8 @@ namespace Autoservice.Screens.Managers
         }
         private bool StringFilter(SparePart sparePart)
         {
-            return sparePart.Name.ToLower().Contains(SparePartFilterString) || 
-                sparePart.Cargo.ToLower().Contains(SparePartFilterString);
+            return sparePart.Name.ToLower().Contains(SparePartFilterString) ||
+                   sparePart.Cargo != null && sparePart.Cargo.ToLower().Contains(SparePartFilterString);
 
 
         }
@@ -252,10 +252,18 @@ namespace Autoservice.Screens.Managers
 
         private async void DeleteHandler()
         {
-
-            /*if (SelectedSparePart == null)
+            if (_selectedItem == null)
                 return;
+            if (_selectedItem is SparePartsFolder)
+                await DeleteFolder(_selectedItem as SparePartsFolder);
+            else
+                await DeleteSparePart(_selectedItem as SparePart);
 
+            SetIsBusy(false);
+        }
+
+        private async Task DeleteSparePart(SparePart SelectedSparePart)
+        {
             var deleteDialogSettings = new MetroDialogSettings
             {
                 AffirmativeButtonText = "Да",
@@ -272,7 +280,7 @@ namespace Autoservice.Screens.Managers
             var result =
                 await
                     metroWindow.ShowMessageAsync("Подтвердите удаление запчасти",
-                        $"Вы уверен что хотите удалить {SelectedSparePart.Name}?",
+                        $"Вы уверены что хотите удалить {SelectedSparePart.Name}?",
                         MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, deleteDialogSettings);
 
             if (result == MessageDialogResult.Affirmative)
@@ -281,15 +289,47 @@ namespace Autoservice.Screens.Managers
                 generalService.DeleteSparePart(SelectedSparePart);
 
                 await
-                    metroWindow.ShowMessageAsync("Успех", $"Работа {SelectedSparePart.Name} была удалена");
+                    metroWindow.ShowMessageAsync("Успех", $"Запчасть {SelectedSparePart.Name} была удалена");
 
                 Refresh();
             }
-
-            SetIsBusy(false);*/
         }
 
-        public async override void Refresh()
+        private async Task DeleteFolder(SparePartsFolder SelectedSparePartFolder)
+        {
+            var deleteDialogSettings = new MetroDialogSettings
+            {
+                AffirmativeButtonText = "Да",
+                NegativeButtonText = "Нет",
+                FirstAuxiliaryButtonText = "Отмена"
+            };
+
+            var metroWindow = Application.Current.MainWindow as MetroWindow;
+            if (metroWindow == null)
+                return;
+
+            SetIsBusy(true);
+
+            var result =
+                await
+                    metroWindow.ShowMessageAsync("Подтвердите удаление набора запчастей",
+                        $"Вы уверены что хотите удалить {SelectedSparePartFolder.Name}?",
+                        MessageDialogStyle.AffirmativeAndNegativeAndSingleAuxiliary, deleteDialogSettings);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                var generalService = Get<IGeneralService>();
+                generalService.DeleteSparePartsFolder(SelectedSparePartFolder);
+
+                await
+                    metroWindow.ShowMessageAsync("Успех", $"Набор запчастей {SelectedSparePartFolder.Name} был удален");
+
+                Refresh();
+            }
+        }
+
+
+        public override async void Refresh()
         {
             SetIsBusy(true);
             var service = Get<IGeneralService>();

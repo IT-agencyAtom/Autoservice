@@ -452,9 +452,11 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
-                var baseWork = _workTemplateRepository.Get(w => w.Id == workTemplate.Id);
+                var baseWork = _workTemplateRepository.Get(w => w.Id == workTemplate.Id, w => w.Works);
                 if (baseWork != null)
                 {
+                    _workRepository.DeleteWorks(workTemplate);
+
                     _workTemplateRepository.Delete(baseWork);
                     scope.SaveChanges();
                 }
@@ -548,9 +550,13 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
-                var basePart = _sparePartsFolderRepository.Get(u => u.Id == sparePartsFolder.Id);
+                var basePart = _sparePartsFolderRepository.Get(u => u.Id == sparePartsFolder.Id, spf => spf.SpareParts);
                 if (basePart != null)
                 {
+                    basePart.SpareParts.Where(
+                            baseSparePart => sparePartsFolder.SpareParts.All(sparePart => sparePart.Id != baseSparePart.Id)).ToList()
+                        .ForEach(deleted => _sparePartRepository.Delete(deleted));
+
                     _sparePartsFolderRepository.Delete(basePart);
 
                     scope.SaveChanges();

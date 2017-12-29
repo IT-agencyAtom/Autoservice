@@ -390,13 +390,17 @@ namespace Autoservice.Screens.Managers
             if (!Directory.Exists(pdfsFolderPath))
                 Directory.CreateDirectory(pdfsFolderPath);
 
-            Microsoft.Office.Interop.Word.Application wordApp = new Microsoft.Office.Interop.Word.Application { Visible = false };
-            Microsoft.Office.Interop.Word.Document aDoc =
-                wordApp.Documents.Open(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, templatePath),
-                    ReadOnly: false, Visible: false);
+            Microsoft.Office.Interop.Word.Application wordApp = null;
+            Microsoft.Office.Interop.Word.Document aDoc = null;
 
             try
             {
+                wordApp = new Microsoft.Office.Interop.Word.Application { Visible = false };
+                aDoc =
+                    wordApp.Documents.Open(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, templatePath),
+                        ReadOnly: false, Visible: false);
+
+            
                 aDoc.Activate();
 
                 Microsoft.Office.Interop.Word.Find fnd = wordApp.ActiveWindow.Selection.Find;
@@ -419,6 +423,7 @@ namespace Autoservice.Screens.Managers
                 ReplaceLarge(wordApp, "RepairZone", order.RepairZone);
                 ReplaceLarge(wordApp, "PaymentMethod", order.PaymentMethod?.ToString() ?? "");
                 ReplaceLarge(wordApp, "Notes", order.Notes);
+                ReplaceLarge(wordApp, "TotalPrice", order.TotalPrice.ToString());
 
                 var ext = "pdf";
 
@@ -438,13 +443,13 @@ namespace Autoservice.Screens.Managers
             }
             catch (Exception ex)
             {
-
+                _logger.Error(ex, "Error while generate pdf!");
             }
             finally
             {
-                aDoc.Close(false);
+                aDoc?.Close(false);
 
-                wordApp.Quit();
+                wordApp?.Quit();
             }
         }
 

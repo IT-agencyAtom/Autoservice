@@ -279,7 +279,7 @@ namespace Autoservice
             //AutoUpdater.RemindLaterAt = 2;
 
             AutoUpdater.CheckForUpdateEvent += AutoUpdaterOnCheckForUpdateEvent;
-            AutoUpdater.Start($"http://constasoft.ru/product/Upwork/{Process.GetCurrentProcess().ProcessName}/{Process.GetCurrentProcess().ProcessName}.xml");
+            AutoUpdater.Start($"http://constasoft.ru/product/Upwork/AutoService/AutoService.xml");
         }
 
         private void AutoUpdaterOnCheckForUpdateEvent(UpdateInfoEventArgs args)
