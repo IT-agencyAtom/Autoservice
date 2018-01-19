@@ -278,7 +278,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.GetAll(o=>o.Car.Client,o=>o.Works.Select(w => w.Master), o => o.Works.Select(w => w.Work), o=>o.Activities,o=>o.SpareParts.Select(s=>s.SparePart));
+                return _orderRepository.GetAll(o=>o.Car.Client,o=>o.Car.Car, o=>o.Works.Select(w => w.Master), o => o.Works.Select(w => w.Work), o=>o.Activities,o=>o.SpareParts.Select(s=>s.SparePart));
             }
         }        
 
@@ -323,7 +323,6 @@ namespace Autoservice.DAL.Services
 
         public void UpdateOrder(Order order)
         {
-            order.TotalPrice = order.Works.Sum(w => w.Price);
             using (var scope = Db.BeginWork())
             {
                 _orderWorkRepository.DeleteWorks(order);
@@ -358,7 +357,7 @@ namespace Autoservice.DAL.Services
                 if (baseOrder == null)
                     return;
 
-                baseOrder.TotalPrice = order.Works.Sum(w => w.Price);
+                baseOrder.TotalPrice = order.TotalPrice;
                 baseOrder.Notes = order.Notes;
                 baseOrder.PaymentMethod = order.PaymentMethod;
                 baseOrder.RepairZone = order.RepairZone;

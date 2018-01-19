@@ -411,20 +411,22 @@ namespace Autoservice.Screens.Managers
 
                 fnd.Wrap = Microsoft.Office.Interop.Word.WdFindWrap.wdFindContinue;
 
-                ReplaceLarge(wordApp, "Number", $"АГ-{order.Number}");
+                ReplaceLarge(wordApp, "#number", $"АГ-{order.Number}");
                 //ReplaceLarge(wordApp, "Status", order.Status?.ToString() ?? "");
-                ReplaceLarge(wordApp, "CarName", order.Car?.LocalName);
-                ReplaceLarge(wordApp, "CarNumber", order.Car?.RegistrationNumber);
+                ReplaceLarge(wordApp, "#car_name", order.Car?.Car.LocalName);
+                ReplaceLarge(wordApp, "#car_number", order.Car?.RegistrationNumber);
                 //ReplaceLarge(wordApp, "CarBrand", order.Car.Car.Brand);
                 //ReplaceLarge(wordApp, "CarModel", order.Car.Car.Model);
-                ReplaceLarge(wordApp, "ClientName", order.Car?.Client?.Name);
-                ReplaceLarge(wordApp, "ClientPhone", order.Car?.Client?.Phone);
-                ReplaceLarge(wordApp, "ClientDiscount", order.Car?.Client?.Discount.ToString());
-                ReplaceLarge(wordApp, "RepairZone", order.RepairZone);
-                ReplaceLarge(wordApp, "PaymentMethod", order.PaymentMethod?.ToString() ?? "");
-                ReplaceLarge(wordApp, "Notes", order.Notes);
-                ReplaceLarge(wordApp, "TotalPrice", order.TotalPrice.ToString());
+                ReplaceLarge(wordApp, "#client_name", order.Car?.Client?.Name);
+                ReplaceLarge(wordApp, "#client_phone", order.Car?.Client?.Phone);
+                ReplaceLarge(wordApp, "#client_discount", $"{order.Car?.Client?.Discount.ToString()} %");
+                ReplaceLarge(wordApp, "#repair_zone", order.RepairZone);
+                ReplaceLarge(wordApp, "#payment_method", order.PaymentMethod?.ToDescriptionString() ?? "");
+                ReplaceLarge(wordApp, "#notes", order.Notes);
+                ReplaceLarge(wordApp, "#total_price", order.TotalPrice.ToString());
 
+                WriteSpareParts(wordApp,order);
+                WriteWorks(wordApp,order);
                 var ext = "pdf";
 
                 var outputFilePath = string.Format("{0}{2}{1}.{3}", pdfsFolderPath, order.Number.ToString(),
@@ -456,7 +458,7 @@ namespace Autoservice.Screens.Managers
         private void ReplaceLarge(Microsoft.Office.Interop.Word.Application wordApp, string text, string replacement)
         {
             if (replacement == null)
-                return;
+                replacement = "";
 
             List<string> subs = new List<string>();
             int counter = 0;
@@ -472,7 +474,7 @@ namespace Autoservice.Screens.Managers
                 }
                 counter += 250;
             }
-
+            
             Microsoft.Office.Interop.Word.Find fnd = wordApp.ActiveWindow.Selection.Find;
 
             fnd.ClearFormatting();
@@ -488,6 +490,45 @@ namespace Autoservice.Screens.Managers
             {
                 fnd.Replacement.Text = subs[i];
                 fnd.Execute(Forward: true, Replace: Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll);
+            }
+        }
+
+        private void WriteSpareParts(Microsoft.Office.Interop.Word.Application wordApp, Order order)
+        {
+            int COUNT_OF_ROWS = 8;
+
+            List<OrderSparePart> list = order.SpareParts;
+            if (list == null)
+                return;
+            for (int i = 0; i < list.Count; i++)
+            {
+                ReplaceLarge(wordApp,$"#spare_part{i}",list[i].SparePart.Name);
+                ReplaceLarge(wordApp, $"#sp_price{i}", list[i].SparePart.Price.ToString());
+                ReplaceLarge(wordApp, $"#sp_count{i}", list[i].Number.ToString());
+            }
+            for (int i = list.Count; i < COUNT_OF_ROWS; i++)
+            {
+                ReplaceLarge(wordApp, $"#spare_part{i}", "");
+                ReplaceLarge(wordApp, $"#sp_price{i}", "");
+                ReplaceLarge(wordApp, $"#sp_count{i}", "");
+            }
+        }
+        private void WriteWorks(Microsoft.Office.Interop.Word.Application wordApp, Order order)
+        {
+            int COUNT_OF_ROWS = 8;
+
+            List<OrderWork> list = order.Works;
+            if (list == null)
+                return;
+            for (int i = 0; i < list.Count; i++)
+            {
+                ReplaceLarge(wordApp, $"#work{i}", list[i].Work.Name);
+                ReplaceLarge(wordApp, $"#w_price{i}", list[i].Work.Price.ToString());
+            }
+            for (int i = list.Count; i < COUNT_OF_ROWS; i++)
+            {
+                ReplaceLarge(wordApp, $"#work{i}", "");
+                ReplaceLarge(wordApp, $"#w_price{i}", "");
             }
         }
 

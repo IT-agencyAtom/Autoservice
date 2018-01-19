@@ -39,7 +39,11 @@ namespace Autoservice.Dialogs.Managers
 
         public decimal TotalPrice
         {
-            get { return OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price) - (SelectedClient?.Discount * (OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price)) / 100).GetValueOrDefault(); }
+            get
+            {
+                return (OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price))*(1-(decimal?)SelectedClient?.Discount/100).GetValueOrDefault();
+                //return OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price) - (SelectedClient?.Discount * (OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price)) / 100).GetValueOrDefault();
+            }
         }
 
         public int SelectedMethod {
@@ -163,7 +167,10 @@ namespace Autoservice.Dialogs.Managers
             foreach (var part in _newParts)
             {
                 var sparePartModel = new OrderSparePartModel(new OrderSparePart { IsNew = true, Number = 0, Order = Order, OrderId = Order.Id, Source = 0, SparePart = part, SparePartId = part.Id });
-                sparePartModel.PropertyChanged += (s, e) => { RaisePropertyChanged(e.PropertyName); };
+                sparePartModel.PropertyChanged += (s, e) =>
+                {
+                    RaisePropertyChanged(e.PropertyName);
+                };
                 OrderSpareParts.Add(sparePartModel);
             }
             RaisePropertyChanged("OrderSpareParts");
@@ -347,8 +354,27 @@ namespace Autoservice.Dialogs.Managers
         public Guid OrderId { get; set; }
         public Order Order { get; set; }
         public Guid SparePartId { get; set; }
-        public SparePart SparePart { get; set; }
-        public int Number { get; set; }
+
+        private SparePart _sparePart;
+        public SparePart SparePart {
+            get { return _sparePart; }
+            set
+            {
+                if (_sparePart?.Id != value?.Id)
+                {
+                    _sparePart = value;
+
+                    if (_sparePart != null)
+                        Price = _sparePart.Price;
+                }
+            }
+        }
+
+        private int _number;
+        public int Number {
+            get { return _number; }
+            set { _number = value; RaisePropertyChanged("TotalPrice"); }
+        }
 
         public int Source { get; set; }
         public string StringSource { get { return _strings[Source]; } set { } }
@@ -356,7 +382,18 @@ namespace Autoservice.Dialogs.Managers
 
         private static string[] _strings;
 
-        public decimal? Price => SparePart?.Price;
+        private decimal? _price;
+        public decimal? Price
+        {
+            get { return _price; }
+            set
+            {
+                _price = value;
+
+                RaisePropertyChanged();
+                RaisePropertyChanged("TotalPrice");
+            }
+        }
 
         static OrderSparePartModel()
         {
@@ -375,6 +412,7 @@ namespace Autoservice.Dialogs.Managers
             SparePartId = orderSparePart.SparePartId;
             SparePart = orderSparePart.SparePart;
             Number = orderSparePart.Number;
+            Price = orderSparePart.SparePart.Price;
             Source = (int)orderSparePart.Source;
             StringSource = _strings[Source];
             IsNew = orderSparePart.IsNew;
