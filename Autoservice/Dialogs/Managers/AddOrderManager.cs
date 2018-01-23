@@ -41,7 +41,7 @@ namespace Autoservice.Dialogs.Managers
         {
             get
             {
-                return (OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price))*(1-(decimal?)SelectedClient?.Discount/100).GetValueOrDefault();
+                return (OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Where(osp=>osp.Source != (int)SparePartSource.FromClient).Sum(sp => sp.Number * sp.SparePart.Price))*(1-(decimal?)SelectedClient?.Discount/100).GetValueOrDefault();
                 //return OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price) - (SelectedClient?.Discount * (OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price)) / 100).GetValueOrDefault();
             }
         }
@@ -376,7 +376,8 @@ namespace Autoservice.Dialogs.Managers
             set { _number = value; RaisePropertyChanged("TotalPrice"); }
         }
 
-        public int Source { get; set; }
+        private int _source;
+        public int Source { get { return _source; } set { _source = value; RaisePropertyChanged("TotalPrice"); } }
         public string StringSource { get { return _strings[Source]; } set { } }
         public bool IsNew { get; set; }
 

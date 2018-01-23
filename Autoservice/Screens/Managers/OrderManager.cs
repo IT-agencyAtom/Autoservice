@@ -495,7 +495,7 @@ namespace Autoservice.Screens.Managers
 
         private void WriteSpareParts(Microsoft.Office.Interop.Word.Application wordApp, Order order)
         {
-            int COUNT_OF_ROWS = 8;
+            int COUNT_OF_ROWS = 30;           
 
             List<OrderSparePart> list = order.SpareParts;
             if (list == null)
