@@ -31,7 +31,9 @@ namespace Autoservice.Screens.Managers
         private Order _selectedOrder;
         private string _ordersFilterString;
         private ICollectionView _ordersView { get; set; }
-        public Order SelectedOrder { get { return _selectedOrder; }
+        public Order SelectedOrder
+        {
+            get { return _selectedOrder; }
             set
             {
                 _selectedOrder = value;
@@ -81,11 +83,11 @@ namespace Autoservice.Screens.Managers
                    order.StringStatus.ToLower().Contains(OrdersFilterString) ||
                    order.Works.Select(w => w.Master).ToString().ToLower().Contains(OrdersFilterString);
         }
-       
+
 
 
         public RelayCommand MouseDoubleClickCommand { get; set; }
-        
+
 
         public OrderManager()
         {
@@ -157,7 +159,7 @@ namespace Autoservice.Screens.Managers
         {
             var oldActivity = SelectedOrder.Activities.Last();
             oldActivity.EndTime = DateTime.Now;
-            var nextStatus = (oldActivity.Status == ActivityStatus.InOperation) ? ActivityStatus.InExpectationOfSpareParts : ActivityStatus.InOperation; 
+            var nextStatus = (oldActivity.Status == ActivityStatus.InOperation) ? ActivityStatus.InExpectationOfSpareParts : ActivityStatus.InOperation;
             Activity activity = new Activity();
             activity.UniqueString = RandomStrings.GetRandomString(10);
             activity.StartTime = DateTime.Now;
@@ -171,7 +173,7 @@ namespace Autoservice.Screens.Managers
 
         private async void ChangeActivity()
         {
-            
+
             var oldActivity = SelectedOrder.Activities.Last();
             oldActivity.EndTime = DateTime.Now;
             var nextStatus = SelectedOrder.Activities.Last().GetNextStatus();
@@ -192,8 +194,8 @@ namespace Autoservice.Screens.Managers
         {
             if (_selectedOrder == null)
                 return;
-            if (_selectedOrder.Activities.Count == 0 || 
-                _selectedOrder.Activities == null || 
+            if (_selectedOrder.Activities.Count == 0 ||
+                _selectedOrder.Activities == null ||
                 _selectedOrder.Activities.LastOrDefault().Status == ActivityStatus.Closed)
                 _pbm.ButtonVisibility = Visibility.Hidden;
             else
@@ -231,14 +233,14 @@ namespace Autoservice.Screens.Managers
             addDialog.Closed += async (sender, args) =>
             {
                 SetIsBusy(true);
-                if (addManager.WasChanged)                
-                    await Task.Run(() => addManager.Save2DB());               
+                if (addManager.WasChanged)
+                    await Task.Run(() => addManager.Save2DB());
                 Refresh();
                 SetIsBusy(false);
             };
             addDialog.Show();
         }
-        
+
         private async void DeleteHandler()
         {
             if (SelectedOrder == null)
@@ -306,28 +308,30 @@ namespace Autoservice.Screens.Managers
                 if (addCarManager.WasChanged)
                 {
                     _newOrder.Car = addCarManager.Car;
-                    _newOrder.ClientCarId = addCarManager.Car.Id;                   
-                    if (addCarManager.Template != null)
+                    _newOrder.ClientCarId = addCarManager.Car.Id;
+                    _newOrder.Works = new List<OrderWork>();
+                    if (addCarManager.SelectedTemplate != null)
                     {
-                        var works = addCarManager.Template.Works;
-                        _newOrder.Works = new List<OrderWork>();
+                        var works = addCarManager.Works?.Where(w => w.IsChecked);
                         foreach (var work in works)
                         {
                             _newOrder.Works.Add(new OrderWork
                             {
                                 IsNew = true,
-                                OrderId = SelectedOrder.Id,
+                                OrderId = _newOrder.Id,
                                 Price = work.Price,
                                 WorkId = work.Id,
                                 MasterId = UserService.Instance.DefaultMaster.Id
                             });
                         }
                     }
+
                     if (addCarManager.PreOrderIsChecked)
                         AddPreEntry();
                     else
                     {
                         Save2DB();
+                        SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
                         EditHandler();
                     }
                 }
@@ -345,10 +349,10 @@ namespace Autoservice.Screens.Managers
             {
                 SetIsBusy(true);
                 if (addPreEntryManager.WasChanged)
-                {                    
+                {
                     _newOrder.PreOrderDateTime = addPreEntryManager.SelectedDate;
                     Save2DB();
-                    SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id); 
+                    SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
                     EditHandler();
                 }
                 SetIsBusy(false);
@@ -371,12 +375,12 @@ namespace Autoservice.Screens.Managers
                 OrderId = _newOrder.Id
             };
             generalService.AddActivity(activity);
-            Refresh();        
-        }            
+            Refresh();
+        }
 
         public void SaveActivity2DB(Activity oldActivity, Activity newActivity)
         {
-            var generalService = Get<IGeneralService>();            
+            var generalService = Get<IGeneralService>();
             generalService.UpdateOrder(SelectedOrder);
             generalService.UpdateActivity(oldActivity);
             generalService.AddActivity(newActivity);
@@ -400,7 +404,7 @@ namespace Autoservice.Screens.Managers
                     wordApp.Documents.Open(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, templatePath),
                         ReadOnly: false, Visible: false);
 
-            
+
                 aDoc.Activate();
 
                 Microsoft.Office.Interop.Word.Find fnd = wordApp.ActiveWindow.Selection.Find;
@@ -425,8 +429,8 @@ namespace Autoservice.Screens.Managers
                 ReplaceLarge(wordApp, "#notes", order.Notes);
                 ReplaceLarge(wordApp, "#total_price", order.TotalPrice.ToString());
 
-                WriteSpareParts(wordApp,order);
-                WriteWorks(wordApp,order);
+                WriteSpareParts(wordApp, order);
+                WriteWorks(wordApp, order);
                 var ext = "pdf";
 
                 var outputFilePath = string.Format("{0}{2}{1}.{3}", pdfsFolderPath, order.Number.ToString(),
@@ -474,7 +478,7 @@ namespace Autoservice.Screens.Managers
                 }
                 counter += 250;
             }
-            
+
             Microsoft.Office.Interop.Word.Find fnd = wordApp.ActiveWindow.Selection.Find;
 
             fnd.ClearFormatting();
@@ -495,14 +499,14 @@ namespace Autoservice.Screens.Managers
 
         private void WriteSpareParts(Microsoft.Office.Interop.Word.Application wordApp, Order order)
         {
-            int COUNT_OF_ROWS = 30;           
+            int COUNT_OF_ROWS = 30;
 
             List<OrderSparePart> list = order.SpareParts;
             if (list == null)
                 return;
             for (int i = 0; i < list.Count; i++)
             {
-                ReplaceLarge(wordApp,$"#spare_part{i}",list[i].SparePart.Name);
+                ReplaceLarge(wordApp, $"#spare_part{i}", list[i].SparePart.Name);
                 ReplaceLarge(wordApp, $"#sp_price{i}", list[i].SparePart.Price.ToString());
                 ReplaceLarge(wordApp, $"#sp_count{i}", list[i].Number.ToString());
             }
@@ -540,7 +544,7 @@ namespace Autoservice.Screens.Managers
             //notSortedOrders.Sort(Order.CompareByPreOrderStartDate);
             notSortedOrders = notSortedOrders.OrderByDescending(o => o.IsPinned).ThenByDescending(o => o.StartDate).ToList();
             Orders = new ObservableCollection<Order>(notSortedOrders);
-            
+
             var Users = new ObservableCollection<User>(service.GetAllUsers());
 
             foreach (var order in Orders)

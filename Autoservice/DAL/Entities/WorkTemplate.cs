@@ -17,6 +17,7 @@ namespace Autoservice.DAL.Entities
         public WorkTemplate()
         {
             Id = Guid.NewGuid();
+            Works = new List<Work>();
         }
 
         private string WorksToSting()

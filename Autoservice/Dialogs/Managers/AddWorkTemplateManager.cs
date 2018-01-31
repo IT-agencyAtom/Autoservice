@@ -102,8 +102,7 @@ namespace Autoservice.Dialogs.Managers
         public void Save2DB()
         {
             var generalService = Get<IGeneralService>();
-
-            WorkTemplate.Works = Works.Where(s=>s.IsChecked==true).Select(w => new Work(w)).ToList();
+            WorkTemplate.Works = Works.Where(s=>s.IsChecked==true).Select(w => new Work(w)).ToList();      
 
             if (_isEdit)
                 generalService.UpdateWorkTemplate(WorkTemplate);

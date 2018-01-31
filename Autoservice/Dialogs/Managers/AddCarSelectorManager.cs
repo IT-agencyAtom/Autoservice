@@ -19,6 +19,27 @@ namespace Autoservice.Dialogs.Managers
         public string Title { get; set; }
         public List<ClientCar> Cars { get; set; }
         public ObservableCollection<WorkTemplate> Templates { get; set; }
+        private WorkTemplate _selectedTemplate;
+        public WorkTemplate SelectedTemplate {
+            get { return _selectedTemplate; }
+            set {
+                if (_selectedTemplate == value)
+                    return;
+                _selectedTemplate = value;
+                RaisePropertyChanged("SelectedTemplate");
+                Works = SelectedTemplate.Works.Select(w => new WorkModel(w)).ToList();
+                if (Works != null)
+                {
+                    foreach (var work in Works)
+                    {
+                        Works.First(w => w.Id == work.Id).IsChecked = true;
+                    }
+                }
+                RaisePropertyChanged("Works");
+            }
+        }
+        public List<WorkModel> Works { get; set; }
+
         public bool PreOrderIsChecked { get; set; }
         public ClientCar Car
         { get { return _car; }
@@ -27,19 +48,9 @@ namespace Autoservice.Dialogs.Managers
                 _car = value; 
                 RaisePropertyChanged("Car");
             }
-        }
-        public WorkTemplate Template
-        {
-            get { return _template; }
-            set
-            {
-                _template = value;
-                RaisePropertyChanged("Template");
-            }
-        }
-
+        }      
         private ClientCar _car;
-        private WorkTemplate _template;
+
         //Комманды
         //public RelayCommand Save { get; private set; }
 
@@ -62,10 +73,16 @@ namespace Autoservice.Dialogs.Managers
                 {
                     new PanelButtonManager
                     {
+                        OnButtonAction = (obj) => AddNewTemplate(),
+                        ButtonIcon = "appbar_list_add",
+                        ButtonText = "Добавить шаблон"
+                    },
+                    new PanelButtonManager
+                    {
                         OnButtonAction = (obj) => AddNewCar(),
                         ButtonIcon = "appbar_user_add",
                         ButtonText = "Добавить ТС"                        
-                    }
+                    }                    
                 },
 
                 RightButtons = new ObservableCollection<PanelButtonManager>
@@ -92,6 +109,31 @@ namespace Autoservice.Dialogs.Managers
             else
                 Car = Cars.FirstOrDefault();
         }
+
+        private async void AddNewTemplate()
+        {
+            SetIsBusy(true);
+            var addTemplateManager = new AddWorkTemplateManager { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
+            await Task.Run(() => addTemplateManager.initializeAdd());
+            var addTemplateDialog = new AddWorkTemplateDialog(addTemplateManager);
+            addTemplateDialog.Closed += (sender, args) =>
+            {
+                SetIsBusy(true);
+                if (addTemplateManager.WasChanged)
+                {
+                    Templates.Add(addTemplateManager.WorkTemplate);
+                    SelectedTemplate = addTemplateManager.WorkTemplate;
+                    SelectedTemplate.Works = addTemplateManager.Works.Where(s => s.IsChecked == true).Select(w => new Work(w)).ToList();
+                    RaisePropertyChanged("Templates");
+                    var generalService = Get<IGeneralService>();
+                    generalService.AddWorkTemplate(SelectedTemplate);
+                    //NavigateNext();
+                }
+                SetIsBusy(false);
+            };
+            addTemplateDialog.Show();
+        }
+
         private void CancelHandler()
         {
             OnExit();
@@ -114,7 +156,6 @@ namespace Autoservice.Dialogs.Managers
                     RaisePropertyChanged("Cars");
                     var generalService = Get<IGeneralService>();
                     generalService.AddClientCar(Car);
-
                     //NavigateNext();
                 }
                 SetIsBusy(false);
@@ -136,6 +177,8 @@ namespace Autoservice.Dialogs.Managers
             SetIsBusy(true);
             var service = Get<IGeneralService>();
             Templates = new ObservableCollection<WorkTemplate>(await Task.Run(() => service.GetAllWorkTemplates()));
+
+            
             RaisePropertyChanged("Templates");
             SetIsBusy(false);
         }
