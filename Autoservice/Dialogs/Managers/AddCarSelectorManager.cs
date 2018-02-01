@@ -12,7 +12,7 @@ using System.Windows;
 
 namespace Autoservice.Dialogs.Managers
 {
-    public class AddCarSelectorManager:PanelViewModelBase
+    public class AddCarSelectorManager : PanelViewModelBase
     {
         public Action OnExit { get; set; }
         private Client _client;
@@ -20,38 +20,35 @@ namespace Autoservice.Dialogs.Managers
         public List<ClientCar> Cars { get; set; }
         public ObservableCollection<WorkTemplate> Templates { get; set; }
         private WorkTemplate _selectedTemplate;
-        public WorkTemplate SelectedTemplate {
+        public WorkTemplate SelectedTemplate
+        {
             get { return _selectedTemplate; }
-            set {
+            set
+            {
                 if (_selectedTemplate == value)
                     return;
                 _selectedTemplate = value;
                 RaisePropertyChanged("SelectedTemplate");
-                Works = SelectedTemplate.Works.Select(w => new WorkModel(w)).ToList();
-                if (Works != null)
-                {
-                    foreach (var work in Works)
-                    {
-                        Works.First(w => w.Id == work.Id).IsChecked = true;
-                    }
-                }
-                RaisePropertyChanged("Works");
+                RefreshWorks();                
             }
         }
         public List<WorkModel> Works { get; set; }
 
         public bool PreOrderIsChecked { get; set; }
         public ClientCar Car
-        { get { return _car; }
+        {
+            get { return _car; }
             set
             {
-                _car = value; 
+                _car = value;
                 RaisePropertyChanged("Car");
             }
-        }      
+        }
         private ClientCar _car;
 
         //Комманды
+
+        public RelayCommand AddWorkCommand { get; private set; }
         //public RelayCommand Save { get; private set; }
 
         // public RelayCommand Cancel { get; private set; }
@@ -81,8 +78,8 @@ namespace Autoservice.Dialogs.Managers
                     {
                         OnButtonAction = (obj) => AddNewCar(),
                         ButtonIcon = "appbar_user_add",
-                        ButtonText = "Добавить ТС"                        
-                    }                    
+                        ButtonText = "Добавить ТС"
+                    }
                 },
 
                 RightButtons = new ObservableCollection<PanelButtonManager>
@@ -108,30 +105,34 @@ namespace Autoservice.Dialogs.Managers
                 AddNewCar();
             else
                 Car = Cars.FirstOrDefault();
+            RefreshWorks();
+            AddWorkCommand = new RelayCommand(AddNewWork);
+        }
+
+        private void AddNewWork()
+        {
+            var generalService = Get<IGeneralService>();
+            Work work = new Work();
+            work.Name = "Новая работа";
+            work.Price = 0;
+            generalService.AddWork(work);
+            WorkTemplateWork tWork = new WorkTemplateWork();
+            tWork.TemplateId = SelectedTemplate.Id;
+            tWork.WorkId = work.Id;
+            generalService.AddWorkTemplateWork(tWork);
+            SelectedTemplate.Works.Add(new WorkTemplateWork(SelectedTemplate, new WorkModel(work)));
+            RefreshWorks();
         }
 
         private async void AddNewTemplate()
         {
-            SetIsBusy(true);
-            var addTemplateManager = new AddWorkTemplateManager { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
-            await Task.Run(() => addTemplateManager.initializeAdd());
-            var addTemplateDialog = new AddWorkTemplateDialog(addTemplateManager);
-            addTemplateDialog.Closed += (sender, args) =>
-            {
-                SetIsBusy(true);
-                if (addTemplateManager.WasChanged)
-                {
-                    Templates.Add(addTemplateManager.WorkTemplate);
-                    SelectedTemplate = addTemplateManager.WorkTemplate;
-                    SelectedTemplate.Works = addTemplateManager.Works.Where(s => s.IsChecked == true).Select(w => new Work(w)).ToList();
-                    RaisePropertyChanged("Templates");
-                    var generalService = Get<IGeneralService>();
-                    generalService.AddWorkTemplate(SelectedTemplate);
-                    //NavigateNext();
-                }
-                SetIsBusy(false);
-            };
-            addTemplateDialog.Show();
+            WorkTemplate workTemplate = new WorkTemplate();
+            workTemplate.Name = "Новый шаблон";
+            Templates.Add(workTemplate);
+            RaisePropertyChanged("Templates");
+            SelectedTemplate = workTemplate;
+            var generalService = Get<IGeneralService>();
+            generalService.AddWorkTemplate(SelectedTemplate);
         }
 
         private void CancelHandler()
@@ -168,19 +169,47 @@ namespace Autoservice.Dialogs.Managers
                 return;
 
             Validate();
-            
+
             WasChanged = true;
             OnExit();
-        }       
+        }
         public override async void Refresh()
         {
             SetIsBusy(true);
             var service = Get<IGeneralService>();
             Templates = new ObservableCollection<WorkTemplate>(await Task.Run(() => service.GetAllWorkTemplates()));
-
-            
+            Works = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks())).Select(w => new WorkModel(w)).ToList();
+            if (Works != null)
+            {
+                foreach (var work in Works)
+                {
+                    Works.First(w => w.Id == work.Id).IsChecked = false;
+                }
+            }
             RaisePropertyChanged("Templates");
             SetIsBusy(false);
+        }
+        private async void RefreshWorks()
+        {
+            SetIsBusy(true);
+            var service = Get<IGeneralService>();
+            Works = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks())).Select(w => new WorkModel(w)).ToList();
+            if (Works != null)
+            {
+                foreach (var work in Works)
+                {
+                    Works.First(w => w.Id == work.Id).IsChecked = false;
+                }
+                if (SelectedTemplate != null)
+                {
+                    foreach (var work in _selectedTemplate.Works)
+                    {
+                        Works.FirstOrDefault(w => w.Id == work.WorkId).IsChecked = true;
+                    }
+                }
+            }
+            SetIsBusy(false);
+            RaisePropertyChanged("Works");
         }
     }
 }

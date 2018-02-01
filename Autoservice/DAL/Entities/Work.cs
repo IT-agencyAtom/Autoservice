@@ -18,12 +18,6 @@ namespace Autoservice.DAL.Entities
         public Work()
         {
             Id = Guid.NewGuid();          
-        }
-        public Work(WorkModel work)
-        {
-            Id = work.Id;
-            Name = work.Name;
-            Price = work.Price;
-        }
+        }        
     }
 }

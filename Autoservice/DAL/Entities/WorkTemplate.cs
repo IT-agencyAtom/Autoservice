@@ -11,13 +11,13 @@ namespace Autoservice.DAL.Entities
     {
         public Guid Id {get; set;}
         public string Name { get; set; }
-        public List<Work> Works { get; set; }
+        public List<WorkTemplateWork> Works { get; set; }
         public string WorksString => WorksToSting(); 
 
         public WorkTemplate()
         {
             Id = Guid.NewGuid();
-            Works = new List<Work>();
+            Works = new List<WorkTemplateWork>();
         }
 
         private string WorksToSting()

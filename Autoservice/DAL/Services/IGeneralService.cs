@@ -67,5 +67,6 @@ namespace Autoservice.DAL.Services
         void AddCars(List<Car> cars);
         List<OrderWork> GetAllSalariesByMaster(DateTime startDate, DateTime endDate, Guid masterGuid);
         void DeleteSparePartsFolder(SparePartsFolder sparePartFolder);
+        void AddWorkTemplateWork(WorkTemplateWork tWork);
     }
 }

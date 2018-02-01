@@ -26,6 +26,7 @@ namespace Autoservice.DAL.Services
         private readonly IWorkTemplateRepository _workTemplateRepository;
         private readonly IOrderSparePartRepository _orderSparePartRepository;
         private readonly ISparePartsFolderRepository _sparePartsFolderRepository;
+        private readonly IWorkTemplateWorkRepository _workTemplateWorkRepository;
 
         protected Logger _logger;
 
@@ -33,7 +34,7 @@ namespace Autoservice.DAL.Services
             IDbWorker dbWorker,IActivityRepository activityRepository,ICarRepository carRepository,IClientRepository clientRepository,IMasterRepository masterRepository,            
             IOrderRepository orderRepository,ISparePartRepository sparePartRepository, IUserRepository userRepository, IWorkRepository workRepository,
             IOrderWorkRepository orderWorkRepository,IWorkTemplateRepository workTemplateRepository,IOrderSparePartRepository orderSparePartRepository,ISparePartsFolderRepository sparePartsFolderRepository,
-            IClientCarRepository clientCarRepository)
+            IClientCarRepository clientCarRepository,IWorkTemplateWorkRepository workTemplateWorkRepository)
             : base(dbWorker)
         {
             _activityRepository = activityRepository;
@@ -49,6 +50,7 @@ namespace Autoservice.DAL.Services
             _workTemplateRepository = workTemplateRepository;
             _orderSparePartRepository = orderSparePartRepository;
             _sparePartsFolderRepository = sparePartsFolderRepository;
+            _workTemplateWorkRepository = workTemplateWorkRepository;
         }       
       
 
@@ -415,7 +417,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _workTemplateRepository.GetAll(w=>w.Works);
+                return _workTemplateRepository.GetAll(w=>w.Works,w=>w.Works.Select(ws=>ws.Work));
             }
         }
 
@@ -424,6 +426,11 @@ namespace Autoservice.DAL.Services
             using (var scope = Db.BeginWork())
             {
                 _workTemplateRepository.Add(workTemplate);
+                for (var i = 0; i < workTemplate.Works.Count; ++i)
+                {
+                    var work = workTemplate.Works.ElementAt(i);
+                    _workTemplateWorkRepository.SaveWork(work);
+                }
                 scope.SaveChanges();
             }
         }
@@ -435,14 +442,13 @@ namespace Autoservice.DAL.Services
                 var baseWorkTemplate = _workTemplateRepository.Get(wt => wt.Id == workTemplate.Id);
                 baseWorkTemplate.Name = workTemplate.Name;
 
-                _workRepository.DeleteWorks(workTemplate);
+                _workTemplateWorkRepository.DeleteWorks(workTemplate);
 
                 for (var i = 0; i < workTemplate.Works.Count; ++i)
                 {
                     var work = workTemplate.Works.ElementAt(i);
-                    _workRepository.SaveWork(baseWorkTemplate, work);
+                    _workTemplateWorkRepository.SaveWork(work);
                 }
-
                 scope.SaveChanges();
             }
         }
@@ -454,8 +460,7 @@ namespace Autoservice.DAL.Services
                 var baseWork = _workTemplateRepository.Get(w => w.Id == workTemplate.Id, w => w.Works);
                 if (baseWork != null)
                 {
-                    _workRepository.DeleteWorks(workTemplate);
-
+                    _workTemplateWorkRepository.DeleteWorks(workTemplate);
                     _workTemplateRepository.Delete(baseWork);
                     scope.SaveChanges();
                 }
@@ -495,9 +500,15 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
-                var baseWork = _workRepository.Get(u => u.Id == work.Id);
+                var baseWork = _workRepository.Get(u => u.Id == work.Id);                
                 if (baseWork != null)
                 {
+                    var tWorks = _workTemplateWorkRepository.GetAll().Where(w => w.WorkId == work.Id);
+                    foreach (var tw in tWorks)
+                    {
+                        var baseTWork = _workTemplateWorkRepository.Get(u => u.Id == tw.Id);
+                        _workTemplateWorkRepository.Delete(baseTWork);
+                    }
                     _workRepository.Delete(baseWork);
 
                     scope.SaveChanges();
@@ -625,6 +636,17 @@ namespace Autoservice.DAL.Services
             using (Db.BeginReadOnlyWork())
             {
                 return _orderWorkRepository.GetAllSalariesByMaster(startDateTime, endDateTime,masterGuid);
+            }
+        }
+
+        public void AddWorkTemplateWork(WorkTemplateWork work)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                work.Template = null;
+                work.Work = null;
+                _workTemplateWorkRepository.Add(work);
+                scope.SaveChanges();
             }
         }
     }

@@ -165,15 +165,18 @@
     <Compile Include="DAL\Entities\SparePartsFolder.cs" />
     <Compile Include="DAL\Entities\Work.cs" />
     <Compile Include="DAL\Entities\WorkTemplate.cs" />
+    <Compile Include="DAL\Entities\WorkTemplateWork.cs" />
     <Compile Include="DAL\Repositories\ClientCarRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IClientCarRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IOrderWorkRepository.cs" />
+    <Compile Include="DAL\Repositories\Interfaces\IWorkTemplateWorkRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IWorkTemplateRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\IOrderSparePartRepository.cs" />
     <Compile Include="DAL\Repositories\Interfaces\ISparePartsFolderRepository.cs" />
     <Compile Include="DAL\Repositories\OrderSparePartRepository.cs" />
     <Compile Include="DAL\Repositories\OrderWorkRepository.cs" />
     <Compile Include="DAL\Repositories\SparePartsFolderRepository.cs" />
+    <Compile Include="DAL\Repositories\WorkTemplateWorkRepository.cs" />
     <Compile Include="DAL\Repositories\WorkTemplateRepository.cs" />
     <Compile Include="DAL\Repositories\WorkRepository.cs" />
     <Compile Include="DAL\Repositories\SparePartRepository.cs" />
@@ -262,6 +265,10 @@
     <Compile Include="Migrations\201712232115055_AddMasterPercentageFieldMigration.Designer.cs">
       <DependentUpon>201712232115055_AddMasterPercentageFieldMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802011542588_Add_WorkTemplateWork_Entity.cs" />
+    <Compile Include="Migrations\201802011542588_Add_WorkTemplateWork_Entity.Designer.cs">
+      <DependentUpon>201802011542588_Add_WorkTemplateWork_Entity.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
@@ -340,6 +347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712232115055_AddMasterPercentageFieldMigration.resx">
       <DependentUpon>201712232115055_AddMasterPercentageFieldMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802011542588_Add_WorkTemplateWork_Entity.resx">
+      <DependentUpon>201802011542588_Add_WorkTemplateWork_Entity.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

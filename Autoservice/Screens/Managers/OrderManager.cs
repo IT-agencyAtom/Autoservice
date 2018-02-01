@@ -311,7 +311,7 @@ namespace Autoservice.Screens.Managers
                     _newOrder.ClientCarId = addCarManager.Car.Id;
                     _newOrder.Works = new List<OrderWork>();
                     if (addCarManager.SelectedTemplate != null)
-                    {
+                    {                        
                         var works = addCarManager.Works?.Where(w => w.IsChecked);
                         foreach (var work in works)
                         {
@@ -323,7 +323,7 @@ namespace Autoservice.Screens.Managers
                                 WorkId = work.Id,
                                 MasterId = UserService.Instance.DefaultMaster.Id
                             });
-                        }
+                        }                        
                     }
 
                     if (addCarManager.PreOrderIsChecked)
