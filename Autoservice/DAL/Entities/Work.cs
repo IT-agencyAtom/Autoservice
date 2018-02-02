@@ -13,11 +13,17 @@ namespace Autoservice.DAL.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public decimal Price { get; set; }        
+        public decimal Price { get; set; }
 
         public Work()
         {
-            Id = Guid.NewGuid();          
-        }        
+            Id = Guid.NewGuid();
+        }
+        public Work(WorkModel workModel)
+        {
+            Id = workModel.Id;
+            Name = workModel.Name;
+            Price = workModel.Price;
+        }
     }
 }

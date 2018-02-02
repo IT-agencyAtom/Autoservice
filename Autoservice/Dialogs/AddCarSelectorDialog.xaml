@@ -84,6 +84,8 @@
                             <DataGrid.Columns>
                                 <DataGridTextColumn Width="5*" Binding="{Binding Name}" Header="Наименование">
                                 </DataGridTextColumn>
+                                <DataGridTextColumn Width="2*" Binding="{Binding Price}" Header="Цена">
+                                </DataGridTextColumn>
                                 <DataGridCheckBoxColumn Width="1*" Binding="{Binding IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Header="+"></DataGridCheckBoxColumn>
                             </DataGrid.Columns>
                         </DataGrid>

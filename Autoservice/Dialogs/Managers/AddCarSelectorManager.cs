@@ -112,15 +112,20 @@ namespace Autoservice.Dialogs.Managers
         private void AddNewWork()
         {
             var generalService = Get<IGeneralService>();
-            Work work = new Work();
-            work.Name = "Новая работа";
-            work.Price = 0;
+            Work work = new Work
+            {
+                Name = "Новая работа",
+                Price = 0
+            };
             generalService.AddWork(work);
-            WorkTemplateWork tWork = new WorkTemplateWork();
-            tWork.TemplateId = SelectedTemplate.Id;
-            tWork.WorkId = work.Id;
-            generalService.AddWorkTemplateWork(tWork);
-            SelectedTemplate.Works.Add(new WorkTemplateWork(SelectedTemplate, new WorkModel(work)));
+            if (SelectedTemplate != null)
+            {
+                WorkTemplateWork tWork = new WorkTemplateWork();
+                tWork.TemplateId = SelectedTemplate.Id;
+                tWork.WorkId = work.Id;
+                generalService.AddWorkTemplateWork(tWork);
+                SelectedTemplate.Works.Add(new WorkTemplateWork(SelectedTemplate, new WorkModel(work)));
+            }
             RefreshWorks();
         }
 
@@ -196,10 +201,8 @@ namespace Autoservice.Dialogs.Managers
             Works = new ObservableCollection<Work>(await Task.Run(() => service.GetAllWorks())).Select(w => new WorkModel(w)).ToList();
             if (Works != null)
             {
-                foreach (var work in Works)
-                {
-                    Works.First(w => w.Id == work.Id).IsChecked = false;
-                }
+                foreach (var work in Works)                
+                    work.IsChecked = false;                
                 if (SelectedTemplate != null)
                 {
                     foreach (var work in _selectedTemplate.Works)
@@ -208,6 +211,7 @@ namespace Autoservice.Dialogs.Managers
                     }
                 }
             }
+            Works = Works.OrderByDescending(w => w.IsChecked).ThenByDescending(w => w.Name).ToList();
             SetIsBusy(false);
             RaisePropertyChanged("Works");
         }

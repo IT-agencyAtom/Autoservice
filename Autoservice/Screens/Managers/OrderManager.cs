@@ -323,7 +323,8 @@ namespace Autoservice.Screens.Managers
                                 WorkId = work.Id,
                                 MasterId = UserService.Instance.DefaultMaster.Id
                             });
-                        }                        
+                        }
+                        SaveWorks2DB(works.Select(w => new Work(w)).ToList());
                     }
 
                     if (addCarManager.PreOrderIsChecked)
@@ -375,6 +376,16 @@ namespace Autoservice.Screens.Managers
                 OrderId = _newOrder.Id
             };
             generalService.AddActivity(activity);
+            Refresh();
+        }
+
+        private void SaveWorks2DB(List<Work> works)
+        {
+            var generalService = Get<IGeneralService>();
+            foreach (var work in works)
+            {
+                generalService.UpdateWork(work);
+            }
             Refresh();
         }
 
