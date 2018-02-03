@@ -125,7 +125,7 @@ namespace Autoservice.Dialogs.Managers
             {
                 foreach (var work in WorkTemplate.Works)
                 {
-                    Works.First(w => w.Id == work.Id).IsChecked = true;
+                    Works.First(w => w.Id == work.WorkId).IsChecked = true;
                 }
             }
             RaisePropertyChanged("Works");

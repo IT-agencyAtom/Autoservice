@@ -21,14 +21,14 @@ namespace Autoservice.DAL.Repositories
             {
                 work.WorkId = work.Work.Id;
                 work.Work = null;
-            }            
+            }    
             Add(work);
         }
 
         public void DeleteWorks(WorkTemplate workTemplate)
         {
-            var baseWork = Context.WorkTemplates.SingleOrDefault(o => o.Id == workTemplate.Id);
-            baseWork?.Works.Where(bsWork => workTemplate.Works.All(work => work.Id != bsWork.Id)).ToList().ForEach(deleted => Context.WorkTemplateWorks.Remove(deleted));
+            var works = GetAll().Where(w => w.TemplateId == workTemplate.Id).ToList();
+            works.ForEach(del=>Context.WorkTemplateWorks.Remove(del));
         }
     }
 }

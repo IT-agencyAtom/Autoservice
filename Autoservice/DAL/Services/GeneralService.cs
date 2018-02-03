@@ -439,12 +439,31 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
+                _workTemplateWorkRepository.DeleteWorks(workTemplate);
+
                 var baseWorkTemplate = _workTemplateRepository.Get(wt => wt.Id == workTemplate.Id);
                 baseWorkTemplate.Name = workTemplate.Name;
 
-                _workTemplateWorkRepository.DeleteWorks(workTemplate);
 
                 for (var i = 0; i < workTemplate.Works.Count; ++i)
+                {
+                    var work = workTemplate.Works.ElementAt(i);
+                    work.Template = null;
+                    work.Work = null;
+                    _workTemplateWorkRepository.SaveWork(work);
+                }
+                scope.SaveChanges();
+            }
+        }
+
+        public void UpdateWorkTemplate(WorkTemplate workTemplate, List<WorkTemplateWork> works)
+        {
+            using (var scope = Db.BeginWork())
+            {
+                _workTemplateWorkRepository.DeleteWorks(workTemplate);
+                var baseWorkTemplate = _workTemplateRepository.Get(wt => wt.Id == workTemplate.Id);
+                baseWorkTemplate.Name = workTemplate.Name;
+                for (var i = 0; i < works.Count; ++i)
                 {
                     var work = workTemplate.Works.ElementAt(i);
                     _workTemplateWorkRepository.SaveWork(work);

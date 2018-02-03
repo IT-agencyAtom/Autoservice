@@ -323,7 +323,12 @@ namespace Autoservice.Screens.Managers
                                 WorkId = work.Id,
                                 MasterId = UserService.Instance.DefaultMaster.Id
                             });
+                            if (addCarManager.SelectedTemplate.Works.FirstOrDefault(w => w.WorkId == work.Id) == null)
+                            {
+                                addCarManager.SelectedTemplate.Works.Add(new WorkTemplateWork(addCarManager.SelectedTemplate,work));
+                            }
                         }
+                        UpdateTemplate(addCarManager.SelectedTemplate);
                         SaveWorks2DB(works.Select(w => new Work(w)).ToList());
                     }
 
@@ -340,6 +345,8 @@ namespace Autoservice.Screens.Managers
             };
             addClientDialog.Show();
         }
+
+       
         private async void AddPreEntry()
         {
             SetIsBusy(true);
@@ -377,6 +384,11 @@ namespace Autoservice.Screens.Managers
             };
             generalService.AddActivity(activity);
             Refresh();
+        }
+        private void UpdateTemplate(WorkTemplate template)
+        {
+            var generalService = Get<IGeneralService>();
+            generalService.UpdateWorkTemplate(template);
         }
 
         private void SaveWorks2DB(List<Work> works)
