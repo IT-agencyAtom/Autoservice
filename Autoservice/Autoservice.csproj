@@ -273,6 +273,10 @@
     <Compile Include="Migrations\201802040653415_ClientFieldIsLegalEntityAdded.Designer.cs">
       <DependentUpon>201802040653415_ClientFieldIsLegalEntityAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802040738298_RemovedFieldPriceInOrderWork.cs" />
+    <Compile Include="Migrations\201802040738298_RemovedFieldPriceInOrderWork.Designer.cs">
+      <DependentUpon>201802040738298_RemovedFieldPriceInOrderWork.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
@@ -357,6 +361,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802040653415_ClientFieldIsLegalEntityAdded.resx">
       <DependentUpon>201802040653415_ClientFieldIsLegalEntityAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802040738298_RemovedFieldPriceInOrderWork.resx">
+      <DependentUpon>201802040738298_RemovedFieldPriceInOrderWork.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

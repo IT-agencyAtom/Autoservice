@@ -29,8 +29,6 @@ namespace Autoservice.DAL.Repositories
         public void SaveWork(OrderWork work)
         {
             var baseOrderWork = work.IsNew ? work : Context.OrderWorks.Single(ow => ow.Id == work.Id);
-
-            baseOrderWork.Price = work.Price;
             baseOrderWork.MasterPercentage = work.MasterPercentage;
             if (baseOrderWork.Work != null)
             {

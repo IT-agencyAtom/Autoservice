@@ -295,8 +295,6 @@ namespace Autoservice.DAL.Services
 
         public void AddOrder(Order order)
         {
-            order.TotalPrice = order.Works.Sum(w => w.Price);
-
             if (order.Car?.Client != null)
             {
                 //_clientRepository.SaveClient(order.Car?.Client);

@@ -25,7 +25,7 @@ namespace Autoservice.DAL.Entities
         [ForeignKey("OrderId")]
         public Order Order { get; set; }
 
-        public decimal Price { get; set; }
+        public decimal Price => Work.Price;
 
         public int MasterPercentage { get; set; }
 
@@ -48,7 +48,6 @@ namespace Autoservice.DAL.Entities
             OrderId = work.OrderId;
             Order = work.Order;
             MasterPercentage = work.MasterPercentage;
-            Price = work.Price;
             IsNew = work.IsNew;
         }
     }
