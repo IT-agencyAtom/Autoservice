@@ -15,6 +15,9 @@ namespace Autoservice.DAL.Entities
         public int Discount { get; set; }
         public List<ClientCar> Cars { get; set; }
 
+        public bool IsLegalEntity { get; set; }
+        public bool IsIndinidual => !IsLegalEntity;
+
         public Client()
         {
             Id = Guid.NewGuid();

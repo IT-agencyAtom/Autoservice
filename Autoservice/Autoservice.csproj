@@ -269,6 +269,10 @@
     <Compile Include="Migrations\201802011542588_Add_WorkTemplateWork_Entity.Designer.cs">
       <DependentUpon>201802011542588_Add_WorkTemplateWork_Entity.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802040653415_ClientFieldIsLegalEntityAdded.cs" />
+    <Compile Include="Migrations\201802040653415_ClientFieldIsLegalEntityAdded.Designer.cs">
+      <DependentUpon>201802040653415_ClientFieldIsLegalEntityAdded.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
@@ -350,6 +354,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802011542588_Add_WorkTemplateWork_Entity.resx">
       <DependentUpon>201802011542588_Add_WorkTemplateWork_Entity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802040653415_ClientFieldIsLegalEntityAdded.resx">
+      <DependentUpon>201802040653415_ClientFieldIsLegalEntityAdded.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
