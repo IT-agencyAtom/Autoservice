@@ -6,13 +6,13 @@
     xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:controls1="clr-namespace:ConstaSoft.Core.Controls;assembly=ConstaSoft.Core"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:entites="clr-namespace:Autoservice.DAL.Entities"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:managers1="clr-namespace:ConstaSoft.Core.Controls.Managers;assembly=ConstaSoft.Core"
     xmlns:managers2="clr-namespace:Autoservice.Dialogs.Managers"
-    
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:entites="clr-namespace:Autoservice.DAL.Entities"    
+    xmlns:utils="clr-namespace:Autoservice.ViewModel.Utils"
     Title="{Binding Title}"
     Width="600"
     Height="450"
@@ -23,10 +23,122 @@
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">
     <Window.Resources>
+        <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
+            <Setter Property="Focusable" Value="False" />
+            <Setter Property="Width" Value="19" />
+            <Setter Property="Height" Value="13" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                        <Border
+                            Width="19"
+                            Height="13"
+                            Background="Transparent">
+                            <Border
+                                Width="9"
+                                Height="9"
+                                BorderBrush="#FF7898B5"
+                                BorderThickness="1"
+                                CornerRadius="1"
+                                SnapsToDevicePixels="true">
+                                <Border.Background>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                        <LinearGradientBrush.GradientStops>
+                                            <GradientStop Offset=".2" Color="White" />
+                                            <GradientStop Offset="1" Color="#FFC0B7A6" />
+                                        </LinearGradientBrush.GradientStops>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Path
+                                    x:Name="ExpandPath"
+                                    Margin="1,1,1,1"
+                                    Data="M 0 2 L 0 3 L 2 3 L 2 5 L 3 5 L 3 3 L 5 3 L 5 2 L 3 2 L 3 0 L 2 0 L 2 2 Z"
+                                    Fill="Black" />
+                            </Border>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="ExpandPath" Property="Data" Value="M 0 2 L 0 3 L 5 3 L 5 2 Z" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <utils:LevelToIndentConverter x:Key="LevelToIndentConverter" />
+        <Style TargetType="{x:Type utils:TreeListViewItem}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type utils:TreeListViewItem}">
+                        <StackPanel>
+                            <Border
+                                Name="Bd"
+                                Padding="{TemplateBinding Padding}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <GridViewRowPresenter
+                                    x:Name="PART_Header"
+                                    Columns="{Binding Path=Columns, RelativeSource={RelativeSource AncestorType={x:Type utils:TreeListView}}}"
+                                    Content="{TemplateBinding Header}" />
+                            </Border>
+                            <ItemsPresenter x:Name="ItemsHost" />
+                        </StackPanel>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsExpanded" Value="false">
+                                <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="HasHeader" Value="false" />
+                                    <Condition Property="Width" Value="Auto" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="PART_Header" Property="MinWidth" Value="75" />
+                            </MultiTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="HasHeader" Value="false" />
+                                    <Condition Property="Height" Value="Auto" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="PART_Header" Property="MinHeight" Value="19" />
+                            </MultiTrigger>
+                            <Trigger Property="IsSelected" Value="true">
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" />
+                            </Trigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="true" />
+                                    <Condition Property="IsSelectionActive" Value="false" />
+                                </MultiTrigger.Conditions>
+                                <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
+                            </MultiTrigger>
+                            <Trigger Property="IsEnabled" Value="false">
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type utils:TreeListView}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type utils:TreeListView}">
+                        <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
+                            <DockPanel>
+                                <GridViewHeaderRowPresenter Columns="{Binding Path=Columns, RelativeSource={RelativeSource TemplatedParent}}" DockPanel.Dock="Top" />
+                                <ItemsPresenter />
+                            </DockPanel>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
             <controls1:Panel />
         </DataTemplate>
-
         <BooleanToVisibilityConverter x:Key="btv" />
     </Window.Resources>
     <i:Interaction.Triggers>
@@ -41,54 +153,99 @@
     <Grid>
         <StackPanel>
             <GroupBox Header="Фильтр">
-            <TextBox
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                controls:TextBoxHelper.ButtonCommand="{Binding ClearFilter}"
-                Text="{Binding SparePartFilterString, UpdateSourceTrigger=PropertyChanged}">
-                <TextBox.Style>
-                    <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
-                        <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
-                        <Style.Triggers>
-                            <Trigger Property="controls:TextBoxHelper.HasText" Value="False">
-                                <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="False" />
-                                <Setter Property="controls:TextBoxHelper.Watermark" Value="Search..." />
-                            </Trigger>
-                            <Trigger Property="controls:TextBoxHelper.HasText" Value="True">
-                                <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
+                <TextBox
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    controls:TextBoxHelper.ButtonCommand="{Binding ClearFilter}"
+                    Text="{Binding SparePartFilterString, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Style>
+                        <Style BasedOn="{StaticResource MetroTextBox}" TargetType="{x:Type TextBox}">
+                            <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
+                            <Style.Triggers>
+                                <Trigger Property="controls:TextBoxHelper.HasText" Value="False">
+                                    <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="False" />
+                                    <Setter Property="controls:TextBoxHelper.Watermark" Value="Search..." />
+                                </Trigger>
+                                <Trigger Property="controls:TextBoxHelper.HasText" Value="True">
+                                    <Setter Property="controls:TextBoxHelper.ClearTextButton" Value="True" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
             </GroupBox>
             <GroupBox Header="Добавить запчасти">
-            <ScrollViewer>
-                <TreeView x:Name="treeView1" ItemsSource="{Binding Nodes}">
-                    <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type entites:SparePartsFolder}" ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconMaterial Kind="Folder"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Firebrick"/>
-                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
-                                <TextBlock Text=" [" Foreground="Blue" />
-                                <TextBlock Text="{Binding Children.Count}" Foreground="Blue" />
-                                <TextBlock Text="]" Foreground="Blue" />
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                        <DataTemplate DataType="{x:Type entites:SparePart}">
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
-                                <iconPacks:PackIconMaterial Kind="Wrench"  VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="DarkBlue"/>
-                                <TextBlock Text="{Binding Name}" Margin="5,0,0,0"/>
-                                <TextBlock Text=" (" Foreground="Green" />
-                                <TextBlock Text="{Binding Number}" Foreground="Green" />
-                                <TextBlock Text=")" Foreground="Green" />
-                                <CheckBox Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked" HorizontalAlignment="Right" Margin="10,0"></CheckBox>                               
-                            </StackPanel>
-                        </DataTemplate>
-                    </TreeView.Resources>
-                </TreeView>
-            </ScrollViewer>
-        </GroupBox>
+                <ScrollViewer>
+                    <utils:TreeListView ItemsSource="{Binding Nodes}">
+                        <utils:TreeListView.Columns>
+                            <GridViewColumn
+                                Width="330"
+                                CellTemplate="{StaticResource DefaultItemContentPresenterTemplate}"
+                                Header="Наименование" />
+                            <GridViewColumn
+                                Width="110"
+                                DisplayMemberBinding="{Binding Manufacturer}"
+                                Header="Производитель" />
+                            <GridViewColumn
+                                Width="50"
+                                DisplayMemberBinding="{Binding Number}"
+                                Header="Кол-во" />
+                            <GridViewColumn
+                                Width="70"
+                                DisplayMemberBinding="{Binding Price}"
+                                Header="Цена" />
+                        </utils:TreeListView.Columns>
+                        <utils:TreeListView.Resources>
+                            <HierarchicalDataTemplate DataType="{x:Type entites:SparePartsFolder}" ItemsSource="{Binding Children}">
+                                <StackPanel Orientation="Horizontal">
+                                    <ToggleButton
+                                        x:Name="Expander"
+                                        Margin="{Binding Level, Converter={StaticResource LevelToIndentConverter}, RelativeSource={RelativeSource AncestorType={x:Type utils:TreeListViewItem}}}"
+                                        ClickMode="Press"
+                                        IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type utils:TreeListViewItem}}}"
+                                        Style="{StaticResource ExpandCollapseToggleStyle}" />
+                                    <iconPacks:PackIconMaterial
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Foreground="Firebrick"
+                                        Kind="Folder" />
+                                    <TextBlock Margin="5,0,0,0" Text="{Binding Name}" />
+                                </StackPanel>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Path=HasItems, RelativeSource={RelativeSource AncestorType={x:Type utils:TreeListViewItem}}}" Value="False">
+                                        <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </HierarchicalDataTemplate>
+                            <DataTemplate DataType="{x:Type entites:SparePart}">
+                                <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                    <ToggleButton
+                                        x:Name="Expander"
+                                        Margin="{Binding Level, Converter={StaticResource LevelToIndentConverter}, RelativeSource={RelativeSource AncestorType={x:Type utils:TreeListViewItem}}}"
+                                        ClickMode="Press"
+                                        IsChecked="{Binding Path=IsExpanded, RelativeSource={RelativeSource AncestorType={x:Type utils:TreeListViewItem}}}"
+                                        Style="{StaticResource ExpandCollapseToggleStyle}" />
+                                    <CheckBox
+                                        Margin="5,1"
+                                        Checked="CheckBox_Checked"
+                                        Unchecked="CheckBox_Unchecked" />
+                                    <iconPacks:PackIconMaterial
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        Foreground="DarkBlue"
+                                        Kind="Wrench" />
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                                <DataTemplate.Triggers>
+                                    <DataTrigger Binding="{Binding Path=HasItems, RelativeSource={RelativeSource AncestorType={x:Type utils:TreeListViewItem}}}" Value="False">
+                                        <Setter TargetName="Expander" Property="Visibility" Value="Hidden" />
+                                    </DataTrigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </utils:TreeListView.Resources>
+                    </utils:TreeListView>
+                </ScrollViewer>
+            </GroupBox>
         </StackPanel>
         <controls:Flyout
             Grid.Row="1"
