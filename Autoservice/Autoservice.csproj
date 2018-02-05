@@ -277,6 +277,10 @@
     <Compile Include="Migrations\201802040738298_RemovedFieldPriceInOrderWork.Designer.cs">
       <DependentUpon>201802040738298_RemovedFieldPriceInOrderWork.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802051008476_AddNewSparePartFields.cs" />
+    <Compile Include="Migrations\201802051008476_AddNewSparePartFields.Designer.cs">
+      <DependentUpon>201802051008476_AddNewSparePartFields.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
@@ -327,8 +331,10 @@
     </Compile>
     <Compile Include="Themes\Windows7\Telerik.ReportViewer.Wpf.xaml.cs" />
     <Compile Include="ViewModel\Utils\Constants.cs" />
+    <Compile Include="ViewModel\Utils\Converters.cs" />
     <Compile Include="ViewModel\Utils\EnumExtender.cs" />
     <Compile Include="ViewModel\Utils\RandomStrings.cs" />
+    <Compile Include="ViewModel\Utils\TreeListView.cs" />
     <Compile Include="ViewModel\Utils\UserService.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
   </ItemGroup>
@@ -364,6 +370,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802040738298_RemovedFieldPriceInOrderWork.resx">
       <DependentUpon>201802040738298_RemovedFieldPriceInOrderWork.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802051008476_AddNewSparePartFields.resx">
+      <DependentUpon>201802051008476_AddNewSparePartFields.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

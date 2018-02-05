@@ -15,8 +15,10 @@ namespace Autoservice.DAL.Entities
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Cargo { get; set; }
+        public DateTime ReceiptDate { get; set; }
         public int Number { get; set; }
         public decimal Price { get; set; }
+        public decimal PurchasePrice { get; set; }
         public string Manufacturer { get; set; }
 
         [NotMapped]
@@ -29,8 +31,8 @@ namespace Autoservice.DAL.Entities
         public SparePart()
         {
             Id = Guid.NewGuid();
+            ReceiptDate = DateTime.Now;
             IsChecked = false;
-            
         }
         
     }

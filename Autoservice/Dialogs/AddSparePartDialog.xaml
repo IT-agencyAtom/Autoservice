@@ -11,8 +11,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
     Title="{Binding Title}"
-    Width="300"
-    Height="450"
+    Width="450"
+    Height="400"
     GlowBrush="{DynamicResource AccentColorBrush}"
     ResizeMode="NoResize"
     ShowMaxRestoreButton="False"
@@ -43,7 +43,7 @@
 
         <GroupBox Header="Данные по запчасти">
             <StackPanel>
-                <StackPanel Margin="0,5">
+                <StackPanel Margin="5">
                     <TextBlock
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -55,54 +55,96 @@
                         controls:TextBoxHelper.Watermark="Cargo value:"
                         Text="{Binding SparePart.Cargo, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
-                <StackPanel Margin="0,5">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        FontWeight="Bold"
-                        Text="Наименование" />
-                    <TextBox
-                        Margin="0,5,0,0"
-                        controls:TextBoxHelper.Watermark="Name:"
-                        Text="{Binding SparePart.Name}" />
-                </StackPanel>                
-                <StackPanel Margin="0,5">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        FontWeight="Bold"
-                        Text="Производитель" />
-                    <TextBox
-                        Margin="0,5,0,0"
-                        controls:TextBoxHelper.Watermark="Manufacturer:"
-                        Text="{Binding SparePart.Manufacturer, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-                <StackPanel Margin="0,5">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        FontWeight="Bold"
-                        Text="Цена" />
-                    <TextBox
-                        Margin="0,5,0,0"
-                        controls:TextBoxHelper.Watermark="Price:"
-                        Text="{Binding SparePart.Price, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-                <StackPanel Margin="0,5">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        FontWeight="Bold"
-                        Text="Количество" />
-                    <TextBox
-                        Margin="0,5,0,0"
-                        controls:TextBoxHelper.Watermark="Spare parts left:"
-                        Text="{Binding SparePart.Number, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Наименование" />
+                        <TextBox
+                            Margin="0,5,0,0"
+                            controls:TextBoxHelper.Watermark="Name:"
+                            Text="{Binding SparePart.Name}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Производитель" />
+                        <TextBox
+                            Margin="0,5,0,0"
+                            controls:TextBoxHelper.Watermark="Manufacturer:"
+                            Text="{Binding SparePart.Manufacturer, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Цена закупки" />
+                        <TextBox
+                            Margin="0,5,0,0"
+                            controls:TextBoxHelper.Watermark="Purcahse price:"
+                            Text="{Binding SparePart.PurchasePrice, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Цена продажи" />
+                        <TextBox
+                            Margin="0,5,0,0"
+                            controls:TextBoxHelper.Watermark="Price:"
+                            Text="{Binding SparePart.Price, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <StackPanel Margin="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Количество" />
+                        <TextBox
+                            Margin="0,5,0,0"
+                            controls:TextBoxHelper.Watermark="Spare parts left:"
+                            Text="{Binding SparePart.Number, UpdateSourceTrigger=PropertyChanged}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Дата поступления" />
+                        <controls:DateTimePicker
+                            Margin="0,5,0,0"
+                            Culture="Russian"
+                            SelectedDate="{Binding SparePart.ReceiptDate}" />
+                    </StackPanel>
+                </Grid>
             </StackPanel>
         </GroupBox>
 
