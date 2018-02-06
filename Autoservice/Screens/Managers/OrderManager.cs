@@ -158,7 +158,7 @@ namespace Autoservice.Screens.Managers
                             }
                         },
                         ButtonIcon = "appbar_clipboard_paper_check",
-                        ButtonText = "  Акт вып.работ"
+                        ButtonText = "  Акт вып. работ"
                     }
                 },
                 RightButtons = new ObservableCollection<PanelButtonManager>
@@ -249,8 +249,12 @@ namespace Autoservice.Screens.Managers
             {
                 SetIsBusy(true);
                 if (addManager.WasChanged)
+                {
                     await Task.Run(() => addManager.Save2DB());
-                Refresh();
+
+                    Refresh();
+                }
+
                 SetIsBusy(false);
             };
             addDialog.Show();
@@ -578,12 +582,12 @@ namespace Autoservice.Screens.Managers
         {
             SetIsBusy(true);
             var service = Get<IGeneralService>();
-            var notSortedOrders = service.GetAllOrders();
+            var notSortedOrders = await Task.Run(() => service.GetAllOrders());
             //notSortedOrders.Sort(Order.CompareByPreOrderStartDate);
             notSortedOrders = notSortedOrders.OrderByDescending(o => o.IsPinned).ThenByDescending(o => o.StartDate).ToList();
             Orders = new ObservableCollection<Order>(notSortedOrders);
 
-            var Users = new ObservableCollection<User>(service.GetAllUsers());
+            var Users = new ObservableCollection<User>(await Task.Run(() => service.GetAllUsers()));
 
             foreach (var order in Orders)
             {
