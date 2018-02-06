@@ -37,17 +37,15 @@ namespace Autoservice.Dialogs.Managers
         public string[] Methods { get; private set; }
         public string[] Sources { get; private set; }
 
-        public decimal TotalPrice
-        {
-            get
-            {
-                return (OrderWorks.Sum(ow => ow.Price) + 
-                    OrderSpareParts.Where(osp => osp.Source != (int)SparePartSource.FromClient).Sum(sp => sp.Number * sp.SparePart.Price)) 
-                    * (1 - (decimal?)SelectedClient?.Discount / 100).GetValueOrDefault();
+        public string TotalPriceStr => TotalPrice.ToString("#.##");
+        public decimal TotalPrice => (GetWorksSum + GetSparesSum) * GetClientDiscount;
 
-                //return OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price) - (SelectedClient?.Discount * (OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price)) / 100).GetValueOrDefault();
-            }
-        }
+        public decimal GetClientDiscount => SelectedClient == null ? 1 : (1 - (decimal)SelectedClient.Discount / 100);
+
+        public decimal GetWorksSum => OrderWorks.Sum(ow => ow.Price);
+
+        public decimal GetSparesSum => OrderSpareParts.Where(osp => osp.Source != (int) SparePartSource.FromClient)
+            .Sum(sp => sp.Number * sp.SparePart.Price);
 
         public int SelectedMethod {
             get { return _selectedMethod; }
@@ -64,7 +62,7 @@ namespace Autoservice.Dialogs.Managers
             {
                 _selectedClient = value;
                 RaisePropertyChanged();
-                RaisePropertyChanged("TotalPrice");
+                RaisePropertyChanged("TotalPriceStr");
             }
         }
         public ClientCar SelectedCar { get { return _selectedCar; }
@@ -323,7 +321,7 @@ namespace Autoservice.Dialogs.Managers
                 _price = value;
 
                 RaisePropertyChanged();
-                RaisePropertyChanged("TotalPrice");
+                RaisePropertyChanged("TotalPriceStr");
             }
         }
 
@@ -376,11 +374,11 @@ namespace Autoservice.Dialogs.Managers
         private int _number;
         public int Number {
             get { return _number; }
-            set { _number = value; RaisePropertyChanged("TotalPrice"); }
+            set { _number = value; RaisePropertyChanged("TotalPriceStr"); }
         }
 
         private int _source;
-        public int Source { get { return _source; } set { _source = value; RaisePropertyChanged("TotalPrice"); } }
+        public int Source { get { return _source; } set { _source = value; RaisePropertyChanged("TotalPriceStr"); } }
         public string StringSource { get { return _strings[Source]; } set { } }
         public bool IsNew { get; set; }
 
@@ -395,7 +393,7 @@ namespace Autoservice.Dialogs.Managers
                 _price = value;
 
                 RaisePropertyChanged();
-                RaisePropertyChanged("TotalPrice");
+                RaisePropertyChanged("TotalPriceStr");
             }
         }
 
