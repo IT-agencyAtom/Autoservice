@@ -41,9 +41,10 @@ namespace Autoservice.Dialogs.Managers
         {
             get
             {
-                return (OrderWorks.Sum(ow => ow.Price) + 
-                    OrderSpareParts.Where(osp => osp.Source != (int)SparePartSource.FromClient).Sum(sp => sp.Number * sp.SparePart.Price)) 
-                    * (1 - (decimal?)SelectedClient?.Discount / 100).GetValueOrDefault();
+                var sumWorks = (OrderWorks.Sum(ow => ow.Price));
+                var sumSP = OrderSpareParts.Where(osp => osp.Source != (int)SparePartSource.FromClient).Sum(sp => sp.Number * sp.SparePart.Price);
+                var coeff = (1 - (decimal?) SelectedClient?.Discount / 100).GetValueOrDefault();
+                return (sumSP + sumWorks) * coeff;
 
                 //return OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price) - (SelectedClient?.Discount * (OrderWorks.Sum(ow => ow.Price) + OrderSpareParts.Sum(sp => sp.Number * sp.SparePart.Price)) / 100).GetValueOrDefault();
             }

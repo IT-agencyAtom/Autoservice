@@ -152,9 +152,9 @@ namespace Autoservice.Screens.Managers
                             if (SelectedOrder != null)
                             {
                                 if (SelectedOrder.Car.Client.IsIndinidual)
-                                    GenerateActOnPerfomedWorks(SelectedOrder,@"Templates\ActOfPerfWorks_Ind.docx");
+                                    GeneratePDFReport(SelectedOrder,@"Templates\ActOfPerfWorks_Ind.docx");
                                 else
-                                    GenerateActOnPerfomedWorks(SelectedOrder,@"Templates\ActOfPerfWorks_LE.docx");
+                                    GeneratePDFReport(SelectedOrder,@"Templates\ActOfPerfWorks_LE.docx");
                             }
                         },
                         ButtonIcon = "appbar_clipboard_paper_check",
@@ -492,52 +492,6 @@ namespace Autoservice.Screens.Managers
             {
                 aDoc?.Close(false);
 
-                wordApp?.Quit();
-            }
-        }
-
-        private void GenerateActOnPerfomedWorks(Order order, string templatePath)
-        {
-            string pdfsFolderPath = "PDFs";
-            if (!Directory.Exists(pdfsFolderPath))
-                Directory.CreateDirectory(pdfsFolderPath);
-            Microsoft.Office.Interop.Word.Application wordApp = null;
-            Microsoft.Office.Interop.Word.Document aDoc = null;
-            try
-            {
-                wordApp = new Microsoft.Office.Interop.Word.Application { Visible = false };
-                aDoc =
-                    wordApp.Documents.Open(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, templatePath),
-                        ReadOnly: false, Visible: false);
-                aDoc.Activate();
-                Microsoft.Office.Interop.Word.Find fnd = wordApp.ActiveWindow.Selection.Find;
-                fnd.ClearFormatting();
-                fnd.Replacement.ClearFormatting();
-                fnd.Forward = true;
-                fnd.Wrap = Microsoft.Office.Interop.Word.WdFindWrap.wdFindContinue;
-                
-
-
-
-                var ext = "pdf";
-                var outputFilePath = string.Format("{0}{2}W-{1}.{3}", pdfsFolderPath, order.Number.ToString(),
-                    System.IO.Path.DirectorySeparatorChar, ext);
-                var subIndex = 0;
-                while (File.Exists(outputFilePath))
-                {
-                    outputFilePath = string.Format("{0}{2}W-{1}-{4:00}.{3}", pdfsFolderPath, order.Number.ToString(),
-                        System.IO.Path.DirectorySeparatorChar, ext, ++subIndex);
-                }
-                aDoc.ExportAsFixedFormat(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, outputFilePath), WdExportFormat.wdExportFormatPDF);
-                Process.Start(outputFilePath);
-            }
-            catch (Exception ex)
-            {
-                _logger.Error(ex, "Error while generate pdf!");
-            }
-            finally
-            {
-                aDoc?.Close(false);
                 wordApp?.Quit();
             }
         }
