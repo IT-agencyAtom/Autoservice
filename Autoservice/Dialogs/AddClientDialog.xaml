@@ -73,15 +73,14 @@
                     Margin="0,5,0,0"
                     controls:TextBoxHelper.Watermark="Phone"
                     Text="{Binding Client.Discount}" />
-                <UniformGrid Margin="0,5" HorizontalAlignment="Right">
-                    <TextBlock
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FontSize="12"
-                        FontWeight="Bold"
-                        Text="Юр. лицо" />
-                    <controls:ToggleSwitchButton IsChecked="{Binding Client.IsLegalEntity}" />
-                </UniformGrid>
+                
+                <controls:ToggleSwitch
+                                        Margin="15"
+                                        VerticalAlignment="Top"
+                                        HorizontalAlignment="Center"
+                                        IsChecked="{Binding Client.IsLegalEntity}"
+                                        OnLabel="Юр. лицо"
+                                        OffLabel="Физ. лицо" />
             </StackPanel>
         </GroupBox>
 
