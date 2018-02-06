@@ -281,6 +281,10 @@
     <Compile Include="Migrations\201802051008476_AddNewSparePartFields.Designer.cs">
       <DependentUpon>201802051008476_AddNewSparePartFields.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802060931398_ReturnedPriceFieldInOrderWork.cs" />
+    <Compile Include="Migrations\201802060931398_ReturnedPriceFieldInOrderWork.Designer.cs">
+      <DependentUpon>201802060931398_ReturnedPriceFieldInOrderWork.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
@@ -373,6 +377,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802051008476_AddNewSparePartFields.resx">
       <DependentUpon>201802051008476_AddNewSparePartFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802060931398_ReturnedPriceFieldInOrderWork.resx">
+      <DependentUpon>201802060931398_ReturnedPriceFieldInOrderWork.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

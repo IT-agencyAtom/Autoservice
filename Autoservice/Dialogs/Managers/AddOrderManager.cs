@@ -343,7 +343,7 @@ namespace Autoservice.Dialogs.Managers
             Master = work.Master;
             OrderId = work.OrderId;
             Order = work.Order;
-            Price = work.Work.Price;
+            Price = work.Price;
             IsNew = work.IsNew;
             MasterPercentage = work.MasterPercentage;
         }
