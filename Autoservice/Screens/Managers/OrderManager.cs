@@ -334,6 +334,7 @@ namespace Autoservice.Screens.Managers
                             {
                                 IsNew = true,
                                 OrderId = _newOrder.Id,
+                                Price = work.Price,
                                 WorkId = work.Id,
                                 MasterId = UserService.Instance.DefaultMaster.Id
                             });
