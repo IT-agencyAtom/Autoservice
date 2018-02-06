@@ -1,0 +1,7 @@
+[branchname]
+master=production
+develop=default
+feature=feature/
+release=release/
+hotfix=hotfix/
+support=support/
