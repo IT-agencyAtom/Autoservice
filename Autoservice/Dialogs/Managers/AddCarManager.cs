@@ -165,6 +165,8 @@ namespace Autoservice.Dialogs.Managers
         private void SaveHandler()
         {
             Validate();
+            if (Car == null)
+                return;
             if (HasErrors)
                 return;
 
