@@ -151,6 +151,11 @@ namespace Autoservice.Screens.Managers
                         {
                             if (SelectedOrder != null)
                             {
+                                if(SelectedOrder.Car.Client==null)
+                                {
+                                    MessageBox.Show("Непредвиденная ошибка");
+                                    return;
+                                }
                                 if (SelectedOrder.Car.Client.IsIndinidual)
                                     GeneratePDFReport(SelectedOrder,@"Templates\ActOfPerfWorks_Ind.docx");
                                 else
@@ -459,7 +464,7 @@ namespace Autoservice.Screens.Managers
 
                 ReplaceLarge(wordApp, "#number", $"АГ-{order.Number}");
                 //ReplaceLarge(wordApp, "Status", order.Status?.ToString() ?? "");
-                ReplaceLarge(wordApp, "#car_name", order.Car?.Car.LocalName);
+                ReplaceLarge(wordApp, "#car_name", order.Car?.Car?.LocalName);
                 ReplaceLarge(wordApp, "#car_number", order.Car?.RegistrationNumber);
                 //ReplaceLarge(wordApp, "CarBrand", order.Car.Car.Brand);
                 //ReplaceLarge(wordApp, "CarModel", order.Car.Car.Model);
@@ -548,8 +553,10 @@ namespace Autoservice.Screens.Managers
                 return;
             for (int i = 0; i < list.Count; i++)
             {
-                ReplaceLarge(wordApp, $"#spare_part{i}", list[i].SparePart.Name);
-                ReplaceLarge(wordApp, $"#sp_price{i}", list[i].SparePart.Price.ToString());
+                if (list[i] == null)
+                    continue;
+                ReplaceLarge(wordApp, $"#spare_part{i}", list[i].SparePart?.Name);
+                ReplaceLarge(wordApp, $"#sp_price{i}", list[i].SparePart?.Price.ToString());
                 ReplaceLarge(wordApp, $"#sp_count{i}", list[i].Number.ToString());
             }
             for (int i = list.Count; i < COUNT_OF_ROWS; i++)
@@ -562,14 +569,15 @@ namespace Autoservice.Screens.Managers
         private void WriteWorks(Microsoft.Office.Interop.Word.Application wordApp, Order order)
         {
             int COUNT_OF_ROWS = 8;
-
             List<OrderWork> list = order.Works;
             if (list == null)
                 return;
             for (int i = 0; i < list.Count; i++)
             {
-                ReplaceLarge(wordApp, $"#work{i}", list[i].Work.Name);
-                ReplaceLarge(wordApp, $"#w_price{i}", list[i].Work.Price.ToString());
+                if (list[i] == null)
+                    continue;
+                ReplaceLarge(wordApp, $"#work{i}", list[i].Work?.Name);
+                ReplaceLarge(wordApp, $"#w_price{i}", list[i].Work?.Price.ToString());
             }
             for (int i = list.Count; i < COUNT_OF_ROWS; i++)
             {
