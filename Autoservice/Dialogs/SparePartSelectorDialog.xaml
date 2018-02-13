@@ -14,7 +14,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:utils="clr-namespace:Autoservice.ViewModel.Utils"
     Title="{Binding Title}"
-    Width="600"
+    Width="700"
     Height="450"
     GlowBrush="{DynamicResource AccentColorBrush}"
     ResizeMode="NoResize"
@@ -179,11 +179,15 @@
                     <utils:TreeListView ItemsSource="{Binding Nodes}">
                         <utils:TreeListView.Columns>
                             <GridViewColumn
-                                Width="330"
+                                Width="320"
                                 CellTemplate="{StaticResource DefaultItemContentPresenterTemplate}"
                                 Header="Наименование" />
                             <GridViewColumn
-                                Width="110"
+                                Width="100"
+                                DisplayMemberBinding="{Binding Cargo}"
+                                Header="Cargo" />
+                            <GridViewColumn
+                                Width="120"
                                 DisplayMemberBinding="{Binding Manufacturer}"
                                 Header="Производитель" />
                             <GridViewColumn

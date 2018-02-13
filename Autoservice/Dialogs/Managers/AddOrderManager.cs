@@ -167,7 +167,7 @@ namespace Autoservice.Dialogs.Managers
         {
             foreach (var part in _newParts)
             {
-                var sparePartModel = new OrderSparePartModel(new OrderSparePart { IsNew = true, Number = 0, Order = Order, OrderId = Order.Id, Source = 0, SparePart = part, SparePartId = part.Id });
+                var sparePartModel = new OrderSparePartModel(new OrderSparePart { IsNew = true, Number = 1, Order = Order, OrderId = Order.Id, Source = 0, SparePart = part, SparePartId = part.Id });
                 sparePartModel.PropertyChanged += (s, e) =>
                 {
                     RaisePropertyChanged(e.PropertyName);
