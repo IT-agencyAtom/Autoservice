@@ -188,7 +188,7 @@
                     <GridViewColumn 
                         x:Name="purchase"
                         Width="Auto"               
-                        Header="Цена покупки"
+                        Header="Цена закупки"
                         DisplayMemberBinding="{Binding PurchasePrice}">                       
                     </GridViewColumn>
                     <GridViewColumn

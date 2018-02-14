@@ -72,7 +72,7 @@
                 <TextBox
                     Margin="0,5,0,0"
                     controls:TextBoxHelper.Watermark="Discount"
-                    Text="{Binding Client.Discount}" IsEnabled="{Binding DiscountIsEnabled}"/>
+                    Text="{Binding Client.Discount}"/>
                 
                 <controls:ToggleSwitch
                                         Margin="15"

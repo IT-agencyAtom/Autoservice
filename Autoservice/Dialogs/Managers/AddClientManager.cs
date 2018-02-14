@@ -18,9 +18,7 @@ namespace Autoservice.Dialogs.Managers
 
         public string Title { get; set; }
 
-        private Client _client;
-
-        public bool DiscountIsEnabled => _isEdit ? UserService.Instance.IsAdmin : true;
+        private Client _client;       
 
         public Client Client
         {
