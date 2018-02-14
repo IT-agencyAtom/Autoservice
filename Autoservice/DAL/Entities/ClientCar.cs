@@ -28,7 +28,7 @@ namespace Autoservice.DAL.Entities
         
         public override string ToString()
         {
-            return $"[{RegistrationNumber}]";
+            return $"{Car.ToString()} [{RegistrationNumber}]";
         }
     }
 }

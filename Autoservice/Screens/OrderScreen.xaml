@@ -97,7 +97,7 @@
                             Header="Марка авто" />
                         <DataGridTextColumn
                             Width="1*"
-                            Binding="{Binding Car}"
+                            Binding="{Binding Car.RegistrationNumber}"
                             Header="Рег. знак" />
                         <DataGridTextColumn
                             Width="2*"
