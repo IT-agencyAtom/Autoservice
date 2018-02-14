@@ -2,6 +2,7 @@
 using Autoservice.DAL.Services;
 using Autoservice.Dialogs;
 using Autoservice.Dialogs.Managers;
+using Autoservice.ViewModel.Utils;
 using ConstaSoft.Core.Controls.Managers;
 using GalaSoft.MvvmLight.Command;
 using MahApps.Metro.Controls;
@@ -29,6 +30,8 @@ namespace Autoservice.Screens.Managers
         public object SelectedItem { get { return _selectedItem; } set { _selectedItem = value; RaisePropertyChanged("SelectedItem"); } }
         public ObservableCollection<SparePart> SpareParts { get { return _spareParts; } set { _spareParts = value;RaisePropertyChanged("Nodes"); } }
         public List<ITreeViewNode> Nodes { get; set; }
+        public bool PurchasePriceIsVisible => UserService.Instance.IsAdmin;       
+
 
         public string SparePartFilterString
         {

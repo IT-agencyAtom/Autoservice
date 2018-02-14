@@ -108,8 +108,20 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Margin="5">
+                    </Grid.ColumnDefinitions>                    
+                    <StackPanel  Margin="5">
+                        <TextBlock
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FontSize="12"
+                            FontWeight="Bold"
+                            Text="Цена продажи" />
+                        <TextBox
+                            Margin="0,5,0,0"
+                            controls:TextBoxHelper.Watermark="Price:"
+                            Text="{Binding SparePart.Price, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding PriceIsEnabled}"/>
+                    </StackPanel>
+                    <StackPanel Grid.Column="1" Margin="5" Visibility="{Binding PurchasePriceVisibility}" HorizontalAlignment="Stretch">
                         <TextBlock
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
@@ -120,18 +132,6 @@
                             Margin="0,5,0,0"
                             controls:TextBoxHelper.Watermark="Purcahse price:"
                             Text="{Binding SparePart.PurchasePrice, UpdateSourceTrigger=PropertyChanged}" />
-                    </StackPanel>
-                    <StackPanel Grid.Column="1" Margin="5">
-                        <TextBlock
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            FontSize="12"
-                            FontWeight="Bold"
-                            Text="Цена продажи" />
-                        <TextBox
-                            Margin="0,5,0,0"
-                            controls:TextBoxHelper.Watermark="Price:"
-                            Text="{Binding SparePart.Price, UpdateSourceTrigger=PropertyChanged}" />
                     </StackPanel>
                 </Grid>
                 <Grid>

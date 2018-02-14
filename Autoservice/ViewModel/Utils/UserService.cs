@@ -12,7 +12,7 @@ namespace Autoservice.ViewModel.Utils
 
         public User CurrentUser { get; set; }
 
-        public bool IsAdmin => true; //CurrentUser.Role?.Name == "Admin";
+        public bool IsAdmin => CurrentUser.Role == "Admin";
 
         public Master DefaultMaster { get; set; }
 

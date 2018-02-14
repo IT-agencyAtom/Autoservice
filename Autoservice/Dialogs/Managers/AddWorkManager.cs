@@ -5,6 +5,7 @@ using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using Autoservice.ViewModel.Utils;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,6 +32,8 @@ namespace Autoservice.Dialogs.Managers
             }
         }
         public string Price { get; set; }
+
+        public bool PriceIsEnabled => _isEdit ? UserService.Instance.IsAdmin : true;
 
 
         //Комманды
@@ -84,7 +87,7 @@ namespace Autoservice.Dialogs.Managers
         }
         private void CancelHandler()
         {
-            OnExit();
+            OnExit();            
         }
 
         private void SaveHandler()
