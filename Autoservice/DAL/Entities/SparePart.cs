@@ -10,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace Autoservice.DAL.Entities
 {
-    public class SparePart : IEntity,ITreeViewNode
+    public class SparePart : IEntity, ITreeViewNode
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Cargo { get; set; }
+        public string OriginalNumber { get; set; }
         public DateTime ReceiptDate { get; set; }
         public int Number { get; set; }
         public decimal Price { get; set; }
