@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
-using System.Windows.Forms;
+using System.Windows;
 
 namespace Autoservice.Dialogs.Managers
 {
@@ -46,6 +46,7 @@ namespace Autoservice.Dialogs.Managers
 
         public decimal GetSparesSum => OrderSpareParts.Where(osp => osp.Source != (int) SparePartSource.FromClient)
             .Sum(sp => sp.Number * sp.SparePart.Price);
+        public Visibility MasterPercentageVisibility => UserService.Instance.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
 
         public int SelectedMethod {
             get { return _selectedMethod; }

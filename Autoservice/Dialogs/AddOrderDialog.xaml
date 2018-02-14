@@ -18,6 +18,7 @@
     ShowMaxRestoreButton="False"
     ShowMinButton="False"
     WindowStartupLocation="CenterScreen"
+    Loaded="MetroWindow_Loaded"
     mc:Ignorable="d">
     <Window.Resources>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
@@ -209,6 +210,7 @@
                         </GroupBox.HeaderTemplate>
                         <ScrollViewer>
                             <DataGrid
+                                x:Name="works"
                                 MinHeight="70"
                                 AutoGenerateColumns="False"
                                 CanUserAddRows="False"
@@ -254,9 +256,9 @@
                                             </DataTemplate>
                                         </DataGridTemplateColumn.CellTemplate>
                                     </DataGridTemplateColumn>
-                                    <DataGridTemplateColumn Header="Процент">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
+                                    <DataGridTemplateColumn Header="Процент" x:Name="percentColumn">
+                                        <DataGridTemplateColumn.CellTemplate >
+                                            <DataTemplate >
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBox
                                                         MinWidth="50"

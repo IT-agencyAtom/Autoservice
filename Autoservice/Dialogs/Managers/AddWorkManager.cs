@@ -33,7 +33,7 @@ namespace Autoservice.Dialogs.Managers
         }
         public string Price { get; set; }
 
-        public bool PriceIsEnabled => UserService.Instance.IsAdmin;
+        public bool PriceIsEnabled => _isEdit ? UserService.Instance.IsAdmin : true;
 
 
         //Комманды

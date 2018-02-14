@@ -1,5 +1,6 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
+using Autoservice.ViewModel.Utils;
 using ConstaSoft.Core.Controls.Managers;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -18,6 +19,8 @@ namespace Autoservice.Dialogs.Managers
         public string Title { get; set; }
 
         private Client _client;
+
+        public bool DiscountIsEnabled => _isEdit ? UserService.Instance.IsAdmin : true;
 
         public Client Client
         {

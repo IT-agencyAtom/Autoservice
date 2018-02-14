@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Autoservice.Dialogs.Managers
 {
@@ -18,7 +19,7 @@ namespace Autoservice.Dialogs.Managers
 
         public string Title { get; set; }
 
-        public bool PriceIsEnabled => UserService.Instance.IsAdmin;
+        public bool PriceIsEnabled => _isEdit?UserService.Instance.IsAdmin:true;
 
         private SparePart _sparePart;
 
@@ -34,6 +35,8 @@ namespace Autoservice.Dialogs.Managers
                 RaisePropertyChanged("SparePart");
             }
         }
+        public Visibility PurchasePriceVisibility => UserService.Instance.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
+
         //Комманды
         public RelayCommand Save { get; private set; }
 

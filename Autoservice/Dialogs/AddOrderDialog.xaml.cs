@@ -1,4 +1,5 @@
 ﻿using Autoservice.Dialogs.Managers;
+using Autoservice.ViewModel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,15 @@ namespace Autoservice.Dialogs
 
             DataContext = aom;
             aom.OnExit = Close;
+        }
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            var aom = (AddOrderManager)DataContext;
+            if (aom == null)
+                return;
+            if(!UserService.Instance.IsAdmin)
+                works.Columns.Remove(percentColumn);
         }
     }
 }
