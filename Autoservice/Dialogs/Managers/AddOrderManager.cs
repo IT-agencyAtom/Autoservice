@@ -45,7 +45,7 @@ namespace Autoservice.Dialogs.Managers
         public decimal GetWorksSum => OrderWorks.Sum(ow => ow.Price);
 
         public decimal GetSparesSum => OrderSpareParts.Where(osp => osp.Source != (int) SparePartSource.FromClient)
-            .Sum(sp => sp.Number * sp.SparePart.Price);
+            .Sum(sp => sp.Number * sp.Price.Value);
         public Visibility MasterPercentageVisibility => UserService.Instance.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
 
         public int SelectedMethod {
