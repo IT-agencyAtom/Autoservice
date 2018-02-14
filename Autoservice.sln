@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Autoservice", "Autoservice\Autoservice.csproj", "{9417A686-3E44-4A7E-A5D4-7C32A6491000}"
 EndProject
@@ -36,7 +36,6 @@ Global
 		{9417A686-3E44-4A7E-A5D4-7C32A6491000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9417A686-3E44-4A7E-A5D4-7C32A6491000}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9417A686-3E44-4A7E-A5D4-7C32A6491000}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{9417A686-3E44-4A7E-A5D4-7C32A6491000}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
 		{9417A686-3E44-4A7E-A5D4-7C32A6491000}.Debug|x64.ActiveCfg = Debug|Any CPU
 		{9417A686-3E44-4A7E-A5D4-7C32A6491000}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{9417A686-3E44-4A7E-A5D4-7C32A6491000}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,8 +46,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3F1C3A4F-0AF8-4C50-844F-A14A9F2337AC}
 	EndGlobalSection
 EndGlobal
