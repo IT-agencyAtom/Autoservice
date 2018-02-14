@@ -285,6 +285,10 @@
     <Compile Include="Migrations\201802060931398_ReturnedPriceFieldInOrderWork.Designer.cs">
       <DependentUpon>201802060931398_ReturnedPriceFieldInOrderWork.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802140830010_AddedFieldOriginalNumber.cs" />
+    <Compile Include="Migrations\201802140830010_AddedFieldOriginalNumber.Designer.cs">
+      <DependentUpon>201802140830010_AddedFieldOriginalNumber.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
@@ -380,6 +384,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802060931398_ReturnedPriceFieldInOrderWork.resx">
       <DependentUpon>201802060931398_ReturnedPriceFieldInOrderWork.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802140830010_AddedFieldOriginalNumber.resx">
+      <DependentUpon>201802140830010_AddedFieldOriginalNumber.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
