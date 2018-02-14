@@ -1,5 +1,6 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
+using Autoservice.ViewModel.Utils;
 using ConstaSoft.Core.Controls.Managers;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -16,6 +17,8 @@ namespace Autoservice.Dialogs.Managers
         public Action OnExit { get; set; }
 
         public string Title { get; set; }
+
+        public bool PriceIsEnabled => UserService.Instance.IsAdmin;
 
         private SparePart _sparePart;
 

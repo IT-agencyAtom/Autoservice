@@ -131,7 +131,7 @@
                         <TextBox
                             Margin="0,5,0,0"
                             controls:TextBoxHelper.Watermark="Price:"
-                            Text="{Binding SparePart.Price, UpdateSourceTrigger=PropertyChanged}" />
+                            Text="{Binding SparePart.Price, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding PriceIsEnabled}"/>
                     </StackPanel>
                 </Grid>
                 <Grid>

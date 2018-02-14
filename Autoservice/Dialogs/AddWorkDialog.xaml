@@ -53,7 +53,7 @@
                 <StackPanel Margin="0,5">
                     <TextBlock Text="Цена" FontSize="12" FontWeight="Bold" VerticalAlignment="Center"
                             HorizontalAlignment="Center" />
-                    <TextBox Margin="0, 5, 0, 0" controls:TextBoxHelper.Watermark="Price" Text="{Binding Work.Price, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Margin="0, 5, 0, 0" controls:TextBoxHelper.Watermark="Price" Text="{Binding Work.Price, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding PriceIsEnabled}"/>
                 </StackPanel>
             </StackPanel>
         </GroupBox>
