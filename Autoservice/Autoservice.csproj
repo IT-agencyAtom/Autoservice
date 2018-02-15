@@ -352,6 +352,7 @@
     <Compile Include="ViewModel\Utils\RandomStrings.cs" />
     <Compile Include="ViewModel\Utils\TreeListView.cs" />
     <Compile Include="ViewModel\Utils\UserService.cs" />
+    <Compile Include="ViewModel\Utils\WordTemplateHelper.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
