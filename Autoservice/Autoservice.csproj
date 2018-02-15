@@ -289,6 +289,10 @@
     <Compile Include="Migrations\201802140830010_AddedFieldOriginalNumber.Designer.cs">
       <DependentUpon>201802140830010_AddedFieldOriginalNumber.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802142259086_AddedFieldLimitToSparePart.cs" />
+    <Compile Include="Migrations\201802142259086_AddedFieldLimitToSparePart.Designer.cs">
+      <DependentUpon>201802142259086_AddedFieldLimitToSparePart.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
@@ -387,6 +391,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201802140830010_AddedFieldOriginalNumber.resx">
       <DependentUpon>201802140830010_AddedFieldOriginalNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802142259086_AddedFieldLimitToSparePart.resx">
+      <DependentUpon>201802142259086_AddedFieldLimitToSparePart.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -18,6 +18,7 @@ namespace Autoservice.DAL.Entities
         public string OriginalNumber { get; set; }
         public DateTime ReceiptDate { get; set; }
         public int Number { get; set; }
+        public int Limit { get; set; }
         public decimal Price { get; set; }
         public decimal PurchasePrice { get; set; }
         public string Manufacturer { get; set; }
