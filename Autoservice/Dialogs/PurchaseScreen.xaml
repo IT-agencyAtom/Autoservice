@@ -1,0 +1,95 @@
+﻿<controls:MetroWindow
+    x:Class="Autoservice.Dialogs.PurchaseScreen"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:command="http://www.galasoft.ch/mvvmlight"
+    xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+    xmlns:controls1="clr-namespace:ConstaSoft.Core.Controls;assembly=ConstaSoft.Core"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:managers1="clr-namespace:ConstaSoft.Core.Controls.Managers;assembly=ConstaSoft.Core"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+    Title="{Binding Title}"
+    Width="800"
+    Height="550"
+    GlowBrush="{DynamicResource AccentColorBrush}"
+    ResizeMode="NoResize"
+    ShowMaxRestoreButton="False"
+    ShowMinButton="False"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type managers1:PanelManager}">
+            <controls1:Panel />
+        </DataTemplate>    
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <command:EventToCommand Command="{Binding Loaded}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing">
+            <command:EventToCommand Command="{Binding Close}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="75" />
+        </Grid.RowDefinitions>
+
+        <GroupBox Header="Запчасти для закупки">
+            <DataGrid                    
+                    Margin="5"
+                    AutoGenerateColumns="False"
+                    CanUserAddRows="False"
+                    IsReadOnly="True"
+                    IsSynchronizedWithCurrentItem="True"
+                    ItemsSource="{Binding SpareParts}"
+                    RenderOptions.ClearTypeHint="Enabled"
+                    SelectedItem="{Binding SparePart}"
+                    TextOptions.TextFormattingMode="Display">               
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                            Width="3*"
+                            Binding="{Binding Name}"
+                            Header="Наименование" />
+                    <DataGridTextColumn
+                            Width="2*"
+                            Binding="{Binding Number}"
+                            Header="На складе" />
+                    <DataGridTextColumn
+                            Width="2*"
+                            Binding="{Binding Limit}"
+                            Header="Лимит" />
+                    <DataGridTextColumn
+                            Width="2*"
+                            Binding="{Binding Deficit}"
+                            Header="Дефицит" />
+                    <DataGridTextColumn
+                            Width="2*"
+                            Binding="{Binding PurchasePrice}"
+                            Header="Цена закупки" />
+                    <DataGridTextColumn
+                            Width="2*"
+                            Binding="{Binding DeficitCost}"
+                            Header="Стоимость" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+
+        <controls:Flyout
+            Grid.Row="1"
+            Height="75"
+            CloseButtonVisibility="Collapsed"
+            IsOpen="True"
+            IsPinned="True"
+            Position="Bottom"
+            TitleVisibility="Collapsed">
+            <Grid>
+                <ContentControl Content="{Binding Panel}" />
+            </Grid>
+        </controls:Flyout>
+    </Grid>
+</controls:MetroWindow>

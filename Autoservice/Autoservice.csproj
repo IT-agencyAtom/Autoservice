@@ -204,6 +204,10 @@
     <Compile Include="Dialogs\AddCarSelectorDialog.xaml.cs">
       <DependentUpon>AddCarSelectorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\Managers\PurchaseManager.cs" />
+    <Compile Include="Dialogs\PurchaseScreen.xaml.cs">
+      <DependentUpon>PurchaseScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddClientSelectorDialog.xaml.cs">
       <DependentUpon>AddClientSelectorDialog.xaml</DependentUpon>
     </Compile>
@@ -435,6 +439,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\AddCarSelectorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\PurchaseScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

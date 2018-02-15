@@ -115,11 +115,29 @@ namespace Autoservice.Screens.Managers
                         ButtonIcon = "appbar_refresh",
                         ButtonText = "Обновить"
                     }
+                },
+                RightButtons = new ObservableCollection<PanelButtonManager>
+                {
+                    new PanelButtonManager
+                    {
+                        OnButtonAction= o=> OpenPurchaseWindowAsync(),
+                        ButtonIcon = "appbar_calendar_dollar",
+                        ButtonText = "Для закупки"
+                    }
                 }
             };
             MouseDoubleClickCommand = new RelayCommand(EditHandlerAsync);
             //Refresh();
-        }       
+        }
+
+        private async Task OpenPurchaseWindowAsync()
+        {
+            SetIsBusy(true);
+            var manager = new PurchaseManager { SetIsBusy = isBusy => SetIsBusy(isBusy) };
+            await Task.Run(() => manager.Initialize());
+            var dialog = new PurchaseScreen(manager);
+            dialog.Show();
+        }
 
         private SparePartsFolder GetParentFolder()
         {
