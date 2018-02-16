@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -474,7 +475,7 @@ namespace Autoservice.Screens.Managers
                 WordTemplateHelper.ReplaceLarge(wordApp, "#repair_zone", order.RepairZone);
                 WordTemplateHelper.ReplaceLarge(wordApp, "#payment_method", order.PaymentMethod?.ToDescriptionString() ?? "");
                 WordTemplateHelper.ReplaceLarge(wordApp, "#notes", order.Notes);
-                WordTemplateHelper.ReplaceLarge(wordApp, "#total_price", order.TotalPrice.ToString());
+                WordTemplateHelper.ReplaceLarge(wordApp, "#total_price", order.CalculatingTotalPrice.ToString());
 
                 WriteSpareParts(wordApp, order);
                 WriteWorks(wordApp, order);
@@ -539,7 +540,7 @@ namespace Autoservice.Screens.Managers
                 if (list[i] == null)
                     continue;
                 WordTemplateHelper.ReplaceLarge(wordApp, $"#work{i}", list[i].Work?.Name);
-                WordTemplateHelper.ReplaceLarge(wordApp, $"#w_price{i}", list[i].Work?.Price.ToString());
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#w_price{i}", list[i].Price.ToString());
             }
             for (int i = list.Count; i < COUNT_OF_ROWS; i++)
             {
