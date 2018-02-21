@@ -22,7 +22,7 @@
     <Window.Resources>
         <DataTemplate DataType="{x:Type managers1:PanelManager}">
             <controls1:Panel />
-        </DataTemplate>    
+        </DataTemplate>
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded">
@@ -40,41 +40,49 @@
         </Grid.RowDefinitions>
 
         <GroupBox Header="Запчасти для закупки">
-            <DataGrid                    
-                    Margin="5"
-                    AutoGenerateColumns="False"
-                    CanUserAddRows="False"
-                    IsReadOnly="True"
-                    IsSynchronizedWithCurrentItem="True"
-                    ItemsSource="{Binding SpareParts}"
-                    RenderOptions.ClearTypeHint="Enabled"
-                    SelectedItem="{Binding SparePart}"
-                    TextOptions.TextFormattingMode="Display">               
+            <DataGrid
+                Margin="5"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                IsReadOnly="True"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding SpareParts}"
+                RenderOptions.ClearTypeHint="Enabled"
+                SelectedItem="{Binding SparePart}"
+                TextOptions.TextFormattingMode="Display">
                 <DataGrid.Columns>
                     <DataGridTextColumn
-                            Width="3*"
-                            Binding="{Binding Name}"
-                            Header="Наименование" />
+                        Width="3*"
+                        Binding="{Binding Name}"
+                        Header="Наименование" />
                     <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Number}"
-                            Header="На складе" />
+                        Width="2*"
+                        Binding="{Binding Cargo}"
+                        Header="Cargo" />
                     <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Limit}"
-                            Header="Лимит" />
+                        Width="2*"
+                        Binding="{Binding Manufacturer}"
+                        Header="Производитель" />
                     <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Deficit}"
-                            Header="Дефицит" />
+                        Width="1*"
+                        Binding="{Binding Number}"
+                        Header="На складе" />
                     <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding PurchasePrice}"
-                            Header="Цена закупки" />
+                        Width="1*"
+                        Binding="{Binding Limit}"
+                        Header="Лимит" />
                     <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding DeficitCost}"
-                            Header="Стоимость" />
+                        Width="1*"
+                        Binding="{Binding Deficit}"
+                        Header="Дефицит" />
+                    <DataGridTextColumn
+                        Width="1*"
+                        Binding="{Binding PurchasePrice}"
+                        Header="Цена закупки" />
+                    <DataGridTextColumn
+                        Width="1*"
+                        Binding="{Binding DeficitCost}"
+                        Header="Стоимость" />
                 </DataGrid.Columns>
             </DataGrid>
         </GroupBox>
