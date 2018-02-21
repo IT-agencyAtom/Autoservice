@@ -43,6 +43,11 @@ namespace Autoservice.DAL.Entities
 
         public List<Activity> Activities { get; set; }
         public decimal TotalPrice { get; set; }
+
+        public decimal CalculatingTotalPrice => TotalPrice != default(decimal)?TotalPrice:
+        (Works?.Sum(ow => ow.Price) + SpareParts?.Where(osp => osp.Source != SparePartSource.FromClient).Sum(sp => sp.Number * sp.SparePart?.Price))
+            * (1 - (decimal) Car.Client.Discount / 100)??0;
+
         public PaymentMethod? PaymentMethod { get; set; }
 
 
