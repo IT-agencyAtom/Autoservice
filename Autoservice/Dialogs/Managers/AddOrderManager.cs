@@ -264,7 +264,7 @@ namespace Autoservice.Dialogs.Managers
                 generalService.AddOrder(Order);
         }
 
-        public async override void Refresh()
+        public override async void Refresh()
         {
             SetIsBusy(true);
             var service = Get<IGeneralService>();

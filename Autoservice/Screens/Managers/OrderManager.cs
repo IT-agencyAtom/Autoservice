@@ -258,7 +258,8 @@ namespace Autoservice.Screens.Managers
                 {
                     await Task.Run(() => addManager.Save2DB());
 
-                    Refresh();
+                    var service = Get<IGeneralService>();
+                    SelectedOrder = service.GetOrderById(SelectedOrder.Id);
                 }
 
                 SetIsBusy(false);
@@ -362,7 +363,8 @@ namespace Autoservice.Screens.Managers
                     else
                     {
                         Save2DB();
-                        SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
+                        var service = Get<IGeneralService>();
+                        SelectedOrder = service.GetOrderById(_newOrder.Id);
                         EditHandler();
                     }
                 }
@@ -385,7 +387,8 @@ namespace Autoservice.Screens.Managers
                 {
                     _newOrder.PreOrderDateTime = addPreEntryManager.SelectedDate;
                     Save2DB();
-                    SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
+                    var service = Get<IGeneralService>();
+                    SelectedOrder = service.GetOrderById(_newOrder.Id);
                     EditHandler();
                 }
                 SetIsBusy(false);
@@ -408,7 +411,7 @@ namespace Autoservice.Screens.Managers
                 OrderId = _newOrder.Id
             };
             generalService.AddActivity(activity);
-            Refresh();
+            //Refresh();
         }
         private void UpdateTemplate(WorkTemplate template)
         {
@@ -568,16 +571,6 @@ namespace Autoservice.Screens.Managers
             _pbm.ButtonText = SelectedOrder?.Activities?.LastOrDefault()?.GetNextStatus()?.ToString() ?? "";
             RaisePropertyChanged("Orders");
             SetIsBusy(false);
-        }
-
-        public async Task<Order> GetOrder(Guid id)
-        {
-            SetIsBusy(true);
-            var service = Get<IGeneralService>();
-            var order = await Task.Run(() => service.GetOrderById(id));
-            RaisePropertyChanged("Orders");
-            SetIsBusy(false);
-            return order;
         }
     }
 }

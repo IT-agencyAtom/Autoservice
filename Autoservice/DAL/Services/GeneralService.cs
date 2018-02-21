@@ -288,7 +288,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _orderRepository.Get(o => o.Id == id, i => i.Car.Client, i => i.Works,i=>i.SpareParts);
+                return _orderRepository.Get(o => o.Id == id, o => o.Car.Client, o => o.Car.Car, o => o.Works.Select(w => w.Master), o => o.Works.Select(w => w.Work), o => o.Activities, o => o.SpareParts.Select(s => s.SparePart));
             }
         }
 
