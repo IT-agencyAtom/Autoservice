@@ -13,6 +13,7 @@ namespace Autoservice.DAL.Entities
         public Guid CarId { get; set; }
         [ForeignKey("CarId")]
         public Car Car { get; set; }
+
         public Guid ClientId { get; set; }
         [ForeignKey("ClientId")]
         public Client Client { get; set; }
@@ -27,7 +28,7 @@ namespace Autoservice.DAL.Entities
         
         public override string ToString()
         {
-            return $"[{RegistrationNumber}]";
+            return $"{Car?.ToString()} [{RegistrationNumber}]";
         }
     }
 }

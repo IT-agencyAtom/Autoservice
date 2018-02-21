@@ -32,6 +32,8 @@ namespace Autoservice.DAL.Repositories
                 baseOrderSparePart.SparePartId = sparePart.SparePart.Id;
                 baseOrderSparePart.SparePart = null;
             }
+            baseOrderSparePart.Number = sparePart.Number;
+            baseOrderSparePart.Source = sparePart.Source;
             if (sparePart.IsNew)
                 Add(baseOrderSparePart);
         }

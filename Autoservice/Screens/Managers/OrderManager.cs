@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -151,6 +152,11 @@ namespace Autoservice.Screens.Managers
                         {
                             if (SelectedOrder != null)
                             {
+                                if(SelectedOrder.Car.Client==null)
+                                {
+                                    MessageBox.Show("Непредвиденная ошибка");
+                                    return;
+                                }
                                 if (SelectedOrder.Car.Client.IsIndinidual)
                                     GeneratePDFReport(SelectedOrder,@"Templates\ActOfPerfWorks_Ind.docx");
                                 else
@@ -252,7 +258,8 @@ namespace Autoservice.Screens.Managers
                 {
                     await Task.Run(() => addManager.Save2DB());
 
-                    Refresh();
+                    var service = Get<IGeneralService>();
+                    SelectedOrder = service.GetOrderById(SelectedOrder.Id);
                 }
 
                 SetIsBusy(false);
@@ -356,7 +363,8 @@ namespace Autoservice.Screens.Managers
                     else
                     {
                         Save2DB();
-                        SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
+                        var service = Get<IGeneralService>();
+                        SelectedOrder = service.GetOrderById(_newOrder.Id);
                         EditHandler();
                     }
                 }
@@ -379,7 +387,8 @@ namespace Autoservice.Screens.Managers
                 {
                     _newOrder.PreOrderDateTime = addPreEntryManager.SelectedDate;
                     Save2DB();
-                    SelectedOrder = Orders.SingleOrDefault(o => o.Id == _newOrder.Id);
+                    var service = Get<IGeneralService>();
+                    SelectedOrder = service.GetOrderById(_newOrder.Id);
                     EditHandler();
                 }
                 SetIsBusy(false);
@@ -402,7 +411,7 @@ namespace Autoservice.Screens.Managers
                 OrderId = _newOrder.Id
             };
             generalService.AddActivity(activity);
-            Refresh();
+            //Refresh();
         }
         private void UpdateTemplate(WorkTemplate template)
         {
@@ -457,19 +466,19 @@ namespace Autoservice.Screens.Managers
 
                 fnd.Wrap = Microsoft.Office.Interop.Word.WdFindWrap.wdFindContinue;
 
-                ReplaceLarge(wordApp, "#number", $"АГ-{order.Number}");
-                //ReplaceLarge(wordApp, "Status", order.Status?.ToString() ?? "");
-                ReplaceLarge(wordApp, "#car_name", order.Car?.Car.LocalName);
-                ReplaceLarge(wordApp, "#car_number", order.Car?.RegistrationNumber);
-                //ReplaceLarge(wordApp, "CarBrand", order.Car.Car.Brand);
-                //ReplaceLarge(wordApp, "CarModel", order.Car.Car.Model);
-                ReplaceLarge(wordApp, "#client_name", order.Car?.Client?.Name);
-                ReplaceLarge(wordApp, "#client_phone", order.Car?.Client?.Phone);
-                ReplaceLarge(wordApp, "#client_discount", $"{order.Car?.Client?.Discount.ToString()} %");
-                ReplaceLarge(wordApp, "#repair_zone", order.RepairZone);
-                ReplaceLarge(wordApp, "#payment_method", order.PaymentMethod?.ToDescriptionString() ?? "");
-                ReplaceLarge(wordApp, "#notes", order.Notes);
-                ReplaceLarge(wordApp, "#total_price", order.TotalPrice.ToString());
+                WordTemplateHelper.ReplaceLarge(wordApp, "#number", $"АГ-{order.Number}");
+                //WordTemplateHelper.ReplaceLarge(wordApp, "Status", order.Status?.ToString() ?? "");
+                WordTemplateHelper.ReplaceLarge(wordApp, "#car_name", order.Car?.Car?.LocalName);
+                WordTemplateHelper.ReplaceLarge(wordApp, "#car_number", order.Car?.RegistrationNumber);
+                //WordTemplateHelper.ReplaceLarge(wordApp, "CarBrand", order.Car.Car.Brand);
+                //WordTemplateHelper.ReplaceLarge(wordApp, "CarModel", order.Car.Car.Model);
+                WordTemplateHelper.ReplaceLarge(wordApp, "#client_name", order.Car?.Client?.Name);
+                WordTemplateHelper.ReplaceLarge(wordApp, "#client_phone", order.Car?.Client?.Phone);
+                WordTemplateHelper.ReplaceLarge(wordApp, "#client_discount", $"{order.Car?.Client?.Discount.ToString()} %");
+                WordTemplateHelper.ReplaceLarge(wordApp, "#repair_zone", order.RepairZone);
+                WordTemplateHelper.ReplaceLarge(wordApp, "#payment_method", order.PaymentMethod?.ToDescriptionString() ?? "");
+                WordTemplateHelper.ReplaceLarge(wordApp, "#notes", order.Notes);
+                WordTemplateHelper.ReplaceLarge(wordApp, "#total_price", order.CalculatingTotalPrice.ToString());
 
                 WriteSpareParts(wordApp, order);
                 WriteWorks(wordApp, order);
@@ -499,45 +508,7 @@ namespace Autoservice.Screens.Managers
 
                 wordApp?.Quit();
             }
-        }
-
-        private void ReplaceLarge(Microsoft.Office.Interop.Word.Application wordApp, string text, string replacement)
-        {
-            if (replacement == null)
-                replacement = "";
-
-            List<string> subs = new List<string>();
-            int counter = 0;
-            while (counter <= replacement.Length)
-            {
-                if (replacement.Length < counter + 250)
-                {
-                    subs.Add(replacement.ToString().Substring(counter, replacement.Length - counter));
-                }
-                else
-                {
-                    subs.Add(replacement.Substring(counter, 250) + "#r#");
-                }
-                counter += 250;
-            }
-
-            Microsoft.Office.Interop.Word.Find fnd = wordApp.ActiveWindow.Selection.Find;
-
-            fnd.ClearFormatting();
-            fnd.Replacement.ClearFormatting();
-            fnd.Forward = true;
-
-            fnd.Text = text;
-            fnd.Wrap = Microsoft.Office.Interop.Word.WdFindWrap.wdFindStop;
-            fnd.Replacement.Text = subs[0];
-            fnd.Execute(Forward: true, Replace: Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll);
-            fnd.Text = "#r#";
-            for (int i = 1; i < subs.Count; i++)
-            {
-                fnd.Replacement.Text = subs[i];
-                fnd.Execute(Forward: true, Replace: Microsoft.Office.Interop.Word.WdReplace.wdReplaceAll);
-            }
-        }
+        }       
 
         private void WriteSpareParts(Microsoft.Office.Interop.Word.Application wordApp, Order order)
         {
@@ -548,33 +519,36 @@ namespace Autoservice.Screens.Managers
                 return;
             for (int i = 0; i < list.Count; i++)
             {
-                ReplaceLarge(wordApp, $"#spare_part{i}", list[i].SparePart.Name);
-                ReplaceLarge(wordApp, $"#sp_price{i}", list[i].SparePart.Price.ToString());
-                ReplaceLarge(wordApp, $"#sp_count{i}", list[i].Number.ToString());
+                if (list[i] == null)
+                    continue;
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#spare_part{i}", list[i].SparePart?.Name);
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#sp_price{i}", list[i].SparePart?.Price.ToString());
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#sp_count{i}", list[i].Number.ToString());
             }
             for (int i = list.Count; i < COUNT_OF_ROWS; i++)
             {
-                ReplaceLarge(wordApp, $"#spare_part{i}", "");
-                ReplaceLarge(wordApp, $"#sp_price{i}", "");
-                ReplaceLarge(wordApp, $"#sp_count{i}", "");
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#spare_part{i}", "");
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#sp_price{i}", "");
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#sp_count{i}", "");
             }
         }
         private void WriteWorks(Microsoft.Office.Interop.Word.Application wordApp, Order order)
         {
             int COUNT_OF_ROWS = 8;
-
             List<OrderWork> list = order.Works;
             if (list == null)
                 return;
             for (int i = 0; i < list.Count; i++)
             {
-                ReplaceLarge(wordApp, $"#work{i}", list[i].Work.Name);
-                ReplaceLarge(wordApp, $"#w_price{i}", list[i].Work.Price.ToString());
+                if (list[i] == null)
+                    continue;
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#work{i}", list[i].Work?.Name);
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#w_price{i}", list[i].Price.ToString());
             }
             for (int i = list.Count; i < COUNT_OF_ROWS; i++)
             {
-                ReplaceLarge(wordApp, $"#work{i}", "");
-                ReplaceLarge(wordApp, $"#w_price{i}", "");
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#work{i}", "");
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#w_price{i}", "");
             }
         }
 
@@ -597,16 +571,6 @@ namespace Autoservice.Screens.Managers
             _pbm.ButtonText = SelectedOrder?.Activities?.LastOrDefault()?.GetNextStatus()?.ToString() ?? "";
             RaisePropertyChanged("Orders");
             SetIsBusy(false);
-        }
-
-        public async Task<Order> GetOrder(Guid id)
-        {
-            SetIsBusy(true);
-            var service = Get<IGeneralService>();
-            var order = await Task.Run(() => service.GetOrderById(id));
-            RaisePropertyChanged("Orders");
-            SetIsBusy(false);
-            return order;
         }
     }
 }

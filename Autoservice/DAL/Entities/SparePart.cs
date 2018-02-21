@@ -10,13 +10,17 @@ using System.Threading.Tasks;
 
 namespace Autoservice.DAL.Entities
 {
-    public class SparePart : IEntity,ITreeViewNode
+    public class SparePart : IEntity, ITreeViewNode
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
         public string Cargo { get; set; }
+        public string OriginalNumber { get; set; }
         public DateTime ReceiptDate { get; set; }
         public int Number { get; set; }
+        public int Limit { get; set; }
+        public int Deficit => Limit > Number ? Limit - Number : 0;
+        public decimal DeficitCost => Deficit * PurchasePrice;
         public decimal Price { get; set; }
         public decimal PurchasePrice { get; set; }
         public string Manufacturer { get; set; }

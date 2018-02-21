@@ -71,6 +71,15 @@ namespace Autoservice.Screens
             if (node == null)
                 node = e.Data.GetData(typeof(SparePartsFolder));
             wm.MoveNode((ITreeViewNode)node, null);
-        }           
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            WarehouseManager wm = (WarehouseManager)DataContext;
+            if (wm == null)
+                return;
+            if(!wm.PurchasePriceIsVisible)
+                tree.Columns.Remove(purchase);
+        }
     }
 }

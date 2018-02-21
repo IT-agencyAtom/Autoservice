@@ -1,5 +1,4 @@
 ﻿using Autoservice.Dialogs.Managers;
-using Autoservice.ViewModel.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,25 +17,15 @@ using System.Windows.Shapes;
 namespace Autoservice.Dialogs
 {
     /// <summary>
-    /// Interaction logic for AddWorkDialog.xaml
+    /// Interaction logic for AddClientDialog.xaml
     /// </summary>
-    public partial class AddOrderDialog
+    public partial class PurchaseScreen
     {
-        public AddOrderDialog(AddOrderManager aom)
+        public PurchaseScreen(PurchaseManager acm)
         {
             InitializeComponent();
-
-            DataContext = aom;
-            aom.OnExit = Close;
-        }
-
-        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            var aom = (AddOrderManager)DataContext;
-            if (aom == null)
-                return;
-            if(!UserService.Instance.IsAdmin)
-                works.Columns.Remove(percentColumn);
+            DataContext = acm;
+            acm.OnExit = Close;
         }
     }
 }

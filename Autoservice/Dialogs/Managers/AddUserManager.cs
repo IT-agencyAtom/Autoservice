@@ -114,7 +114,7 @@ namespace Autoservice.Dialogs.Managers
             Roles = new ObservableCollection<string>
             {
                 "Admin",
-                "User"
+                "Manager"
             };
         }
 

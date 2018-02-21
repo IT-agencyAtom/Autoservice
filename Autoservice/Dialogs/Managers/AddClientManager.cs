@@ -1,5 +1,6 @@
 ﻿using Autoservice.DAL.Entities;
 using Autoservice.DAL.Services;
+using Autoservice.ViewModel.Utils;
 using ConstaSoft.Core.Controls.Managers;
 using GalaSoft.MvvmLight.Command;
 using System;
@@ -17,7 +18,7 @@ namespace Autoservice.Dialogs.Managers
 
         public string Title { get; set; }
 
-        private Client _client;
+        private Client _client;       
 
         public Client Client
         {

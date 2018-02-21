@@ -11,8 +11,11 @@ namespace Autoservice.DAL.Entities
     {
         public Guid Id { get; set; }
         public string Name { get; set;}
+
         public string Phone { get; set; }
+
         public int Discount { get; set; }
+
         public List<ClientCar> Cars { get; set; }
 
         public bool IsLegalEntity { get; set; }

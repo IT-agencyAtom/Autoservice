@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
-using System.Windows.Forms;
+using System.Windows;
 
 namespace Autoservice.Dialogs.Managers
 {
@@ -45,7 +45,8 @@ namespace Autoservice.Dialogs.Managers
         public decimal GetWorksSum => OrderWorks.Sum(ow => ow.Price);
 
         public decimal GetSparesSum => OrderSpareParts.Where(osp => osp.Source != (int) SparePartSource.FromClient)
-            .Sum(sp => sp.Number * sp.SparePart.Price);
+            .Sum(sp => sp.Number * sp.Price.Value);
+        public Visibility MasterPercentageVisibility => UserService.Instance.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
 
         public int SelectedMethod {
             get { return _selectedMethod; }
@@ -167,7 +168,7 @@ namespace Autoservice.Dialogs.Managers
         {
             foreach (var part in _newParts)
             {
-                var sparePartModel = new OrderSparePartModel(new OrderSparePart { IsNew = true, Number = 0, Order = Order, OrderId = Order.Id, Source = 0, SparePart = part, SparePartId = part.Id });
+                var sparePartModel = new OrderSparePartModel(new OrderSparePart { IsNew = true, Number = 1, Order = Order, OrderId = Order.Id, Source = 0, SparePart = part, SparePartId = part.Id });
                 sparePartModel.PropertyChanged += (s, e) =>
                 {
                     RaisePropertyChanged(e.PropertyName);
@@ -263,7 +264,7 @@ namespace Autoservice.Dialogs.Managers
                 generalService.AddOrder(Order);
         }
 
-        public async override void Refresh()
+        public override async void Refresh()
         {
             SetIsBusy(true);
             var service = Get<IGeneralService>();

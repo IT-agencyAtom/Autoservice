@@ -204,6 +204,10 @@
     <Compile Include="Dialogs\AddCarSelectorDialog.xaml.cs">
       <DependentUpon>AddCarSelectorDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Dialogs\Managers\PurchaseManager.cs" />
+    <Compile Include="Dialogs\PurchaseScreen.xaml.cs">
+      <DependentUpon>PurchaseScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Dialogs\AddClientSelectorDialog.xaml.cs">
       <DependentUpon>AddClientSelectorDialog.xaml</DependentUpon>
     </Compile>
@@ -285,6 +289,14 @@
     <Compile Include="Migrations\201802060931398_ReturnedPriceFieldInOrderWork.Designer.cs">
       <DependentUpon>201802060931398_ReturnedPriceFieldInOrderWork.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201802140830010_AddedFieldOriginalNumber.cs" />
+    <Compile Include="Migrations\201802140830010_AddedFieldOriginalNumber.Designer.cs">
+      <DependentUpon>201802140830010_AddedFieldOriginalNumber.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201802142259086_AddedFieldLimitToSparePart.cs" />
+    <Compile Include="Migrations\201802142259086_AddedFieldLimitToSparePart.Designer.cs">
+      <DependentUpon>201802142259086_AddedFieldLimitToSparePart.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Reports\ReportDataSource.cs" />
     <Compile Include="Screens\CarsScreen.xaml.cs">
@@ -340,6 +352,7 @@
     <Compile Include="ViewModel\Utils\RandomStrings.cs" />
     <Compile Include="ViewModel\Utils\TreeListView.cs" />
     <Compile Include="ViewModel\Utils\UserService.cs" />
+    <Compile Include="ViewModel\Utils\WordTemplateHelper.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -381,6 +394,12 @@
     <EmbeddedResource Include="Migrations\201802060931398_ReturnedPriceFieldInOrderWork.resx">
       <DependentUpon>201802060931398_ReturnedPriceFieldInOrderWork.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802140830010_AddedFieldOriginalNumber.resx">
+      <DependentUpon>201802140830010_AddedFieldOriginalNumber.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201802142259086_AddedFieldLimitToSparePart.resx">
+      <DependentUpon>201802142259086_AddedFieldLimitToSparePart.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -408,6 +427,9 @@
     <None Include="Templates\ActOfPerfWorks_LE.docx">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Templates\ListSP.docx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -421,6 +443,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Dialogs\AddCarSelectorDialog.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Dialogs\PurchaseScreen.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
