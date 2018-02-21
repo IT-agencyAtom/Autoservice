@@ -96,12 +96,16 @@ namespace Autoservice.Dialogs.Managers
             {
                 if (SpareParts[i] == null)
                     continue;
-                WordTemplateHelper.ReplaceLarge(wordApp, $"#name{i}#", SpareParts[i].Name);            
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#name{i}#", SpareParts[i].Name);   
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#cargo{i}#", SpareParts[i].Cargo);
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#mfctr{i}#", SpareParts[i].Manufacturer);
                 WordTemplateHelper.ReplaceLarge(wordApp, $"#count{i}#", SpareParts[i].Deficit.ToString());
             }
             for (int i = SpareParts.Count; i < COUNT_OF_ROWS; i++)
             {
                 WordTemplateHelper.ReplaceLarge(wordApp, $"#name{i}#", "");
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#cargo{i}#", "");
+                WordTemplateHelper.ReplaceLarge(wordApp, $"#mfctr{i}#", "");
                 WordTemplateHelper.ReplaceLarge(wordApp, $"#count{i}#", "");
             }
         }
