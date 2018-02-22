@@ -152,8 +152,7 @@ namespace Autoservice.Screens.Managers
             if (result == MessageDialogResult.Affirmative)
             {
                 var generalService = Get<IGeneralService>();
-                //generalService.DeleteCar(SelectedCar);
-
+                generalService.DeleteClientCar(SelectedCar);
                 await
                     metroWindow.ShowMessageAsync("Успех", $"Машина {SelectedCar.LocalName} была удалена");
 

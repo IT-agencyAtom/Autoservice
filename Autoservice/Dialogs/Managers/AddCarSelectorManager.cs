@@ -100,11 +100,7 @@ namespace Autoservice.Dialogs.Managers
             };
             Cars = client.Cars;
             _client = client;
-
-            if (Cars.Count == 0)
-                AddNewCar();
-            else
-                Car = Cars.FirstOrDefault();
+            Car = Cars.FirstOrDefault();
             RefreshWorks();
             AddWorkCommand = new RelayCommand(AddNewWork);
         }

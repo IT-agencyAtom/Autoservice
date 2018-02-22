@@ -30,6 +30,7 @@ namespace Autoservice.DAL.Repositories
         {
             var baseOrderWork = work.IsNew ? work : Context.OrderWorks.Single(ow => ow.Id == work.Id);
             baseOrderWork.MasterPercentage = work.MasterPercentage;
+            baseOrderWork.MasterId = work.MasterId;
             baseOrderWork.Price = work.Price;
             if (baseOrderWork.Work != null)
             {
