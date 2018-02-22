@@ -55,96 +55,100 @@
         </Grid>
 
         <GroupBox Grid.Row="1" Header="Заказы">
-                <DataGrid
-                    Margin="5"
-                    AutoGenerateColumns="False"
-                    CanUserAddRows="False"
-                    IsReadOnly="True"
-                    IsSynchronizedWithCurrentItem="True"
-                    ItemsSource="{Binding Orders}"
-                    RenderOptions.ClearTypeHint="Enabled"
-                    SelectedItem="{Binding SelectedOrder}"
-                    TextOptions.TextFormattingMode="Display">
-                    <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="CellEditEnding">
-                            <command:EventToCommand Command="{Binding EditActivityNotes}" PassEventArgsToCommand="True" />
-                        </i:EventTrigger>
-                        <i:EventTrigger EventName="MouseDoubleClick">
-                            <command:EventToCommand Command="{Binding MouseDoubleClickCommand}" />
-                        </i:EventTrigger>
-                    </i:Interaction.Triggers>
-                    <DataGrid.RowStyle>
-                        <Style BasedOn="{StaticResource MetroDataGridRow}" TargetType="DataGridRow">
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding Path=IsPinned}" Value="True">
-                                    <Setter Property="Background" Value="DarkCyan" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </DataGrid.RowStyle>
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Width="1*"
-                            Binding="{Binding PersonalNumber}"
-                            Header="Номер" />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Car.Client}"
-                            Header="Клиент" />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Car.Car}"
-                            Header="Марка авто" />
-                        <DataGridTextColumn
-                            Width="1*"
-                            Binding="{Binding Car.RegistrationNumber}"
-                            Header="Рег. знак" />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding PreOrderDateTime}"
-                            Header="Предварительная запись" />
-                        <DataGridTextColumn
-                            Width="3*"
-                            Binding="{Binding StartDate}"
-                            Header="Дата открытия заказа" />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding RepairZone}"
-                            Header="Зона ремонта" />
-                        <DataGridTextColumn
-                            Width="1*"
-                            Binding="{Binding StringStatus}"
-                            Header="Статус"
-                            IsReadOnly="True" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </GroupBox>
-            <GroupBox Grid.Row="2" Header="Действия над заказом">
-                <DataGrid
-                    Margin="10,1"
-                    AutoGenerateColumns="False"
-                    IsReadOnly="True"
-                    ItemsSource="{Binding SelectedOrder.Activities}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding StartTime}"
-                            Header="Начало" />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding Time}"
-                            Header="Длительность" />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding User.Login}"
-                            Header="Пользователь" />
-                        <DataGridTextColumn
-                            Width="2*"
-                            Binding="{Binding StringStatus}"
-                            Header="Статус" />
-                    </DataGrid.Columns>
-                </DataGrid>
-            </GroupBox>
+            <DataGrid
+                Margin="5"
+                AutoGenerateColumns="False"
+                CanUserAddRows="False"
+                IsReadOnly="True"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding Orders}"
+                RenderOptions.ClearTypeHint="Enabled"
+                SelectedItem="{Binding SelectedOrder}"
+                TextOptions.TextFormattingMode="Display">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="CellEditEnding">
+                        <command:EventToCommand Command="{Binding EditActivityNotes}" PassEventArgsToCommand="True" />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <command:EventToCommand Command="{Binding MouseDoubleClickCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+                <DataGrid.RowStyle>
+                    <Style BasedOn="{StaticResource MetroDataGridRow}" TargetType="DataGridRow">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=IsPinned}" Value="True">
+                                <Setter Property="Background" Value="DarkCyan" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="1*"
+                        Binding="{Binding PersonalNumber}"
+                        Header="Номер" />
+                    <DataGridTextColumn
+                        Width="2*"
+                        Binding="{Binding Car.Client}"
+                        Header="Клиент" />
+                    <DataGridTextColumn
+                        Width="2*"
+                        Binding="{Binding Car.Client.Phone}"
+                        Header="Телефон" />
+                    <DataGridTextColumn
+                        Width="2*"
+                        Binding="{Binding Car.Car}"
+                        Header="Марка авто" />
+                    <DataGridTextColumn
+                        Width="1*"
+                        Binding="{Binding Car.RegistrationNumber}"
+                        Header="Рег. знак" />
+                    <DataGridTextColumn
+                        Width="2*"
+                        Binding="{Binding PreOrderDateTime}"
+                        Header="Предварительная запись" />
+                    <DataGridTextColumn
+                        Width="3*"
+                        Binding="{Binding StartDate}"
+                        Header="Дата открытия заказа" />
+                    <DataGridTextColumn
+                        Width="2*"
+                        Binding="{Binding RepairZone}"
+                        Header="Зона ремонта" />
+                    <DataGridTextColumn
+                        Width="1*"
+                        Binding="{Binding StringStatus}"
+                        Header="Статус"
+                        IsReadOnly="True" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Header="Действия над заказом">
+            <DataGrid
+                Margin="10,1"
+                AutoGenerateColumns="False"
+                IsReadOnly="True"
+                ItemsSource="{Binding SelectedOrder.Activities}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn
+                        Width="2*"
+                        Binding="{Binding StartTime}"
+                        Header="Начало" />
+                    <DataGridTextColumn
+                        Width="2*"
+                        Binding="{Binding Time}"
+                        Header="Длительность" />
+                    <DataGridTextColumn
+                        Width="2*"
+                        Binding="{Binding User.Login}"
+                        Header="Пользователь" />
+                    <DataGridTextColumn
+                        Width="2*"
+                        Binding="{Binding StringStatus}"
+                        Header="Статус" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
 
 
         <controls:Flyout
