@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Autoservice.ViewModel.Utils;
 
 namespace Autoservice.Dialogs.Managers
 {
@@ -128,7 +129,10 @@ namespace Autoservice.Dialogs.Managers
         private async void AddNewTemplate()
         {
             WorkTemplate workTemplate = new WorkTemplate();
-            workTemplate.Name = "Новый шаблон";
+            workTemplate.Name = await DialogHelper.ShowInputDialog("Имя шаблона","Укажите имя создаваего шаблона работ");
+            DialogHelper.ActivateDialog(typeof(AddCarSelectorDialog));
+            if(workTemplate.Name==null)
+                return;
             Templates.Add(workTemplate);
             RaisePropertyChanged("Templates");
             SelectedTemplate = workTemplate;
