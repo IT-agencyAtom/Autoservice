@@ -150,6 +150,7 @@ namespace Autoservice.DAL.Services
         {
             using (var scope = Db.BeginWork())
             {
+                Car car = clientCar.Car;
                 if (clientCar.Car != null)
                 {
                     clientCar.CarId = clientCar.Car.Id;
@@ -157,8 +158,9 @@ namespace Autoservice.DAL.Services
                 }
 
                 _clientCarRepository.Add(clientCar);
-
                 scope.SaveChanges();
+                clientCar.Car = car;
+
             }
         }
 
@@ -196,7 +198,7 @@ namespace Autoservice.DAL.Services
         {
             using (Db.BeginReadOnlyWork())
             {
-                return _clientRepository.GetAll(c=>c.Cars);
+                return _clientRepository.GetAll(c=>c.Cars,c=>c.Cars.Select(cc=>cc.Car));
             }
         }       
 
