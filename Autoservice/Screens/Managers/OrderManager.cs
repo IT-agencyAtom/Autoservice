@@ -316,12 +316,38 @@ namespace Autoservice.Screens.Managers
                 if (addClientManager.WasChanged)
                 {
                     _client = addClientManager.Client;
-                    AddCar();
+                    if (_client.Cars.Count > 0)
+                        AddCar();
+                    else AddNewCar();
                 }
                 SetIsBusy(false);
             };
             addClientDialog.Show();
         }
+
+        private async void AddNewCar()
+        {
+            SetIsBusy(true);
+            var addCarManager = new AddCarManager { SetIsBusy = IsBusy => SetIsBusy(IsBusy) };
+            await Task.Run(() => addCarManager.initializeAdd());
+            var addCarDialog = new AddCarDialog(addCarManager);
+            addCarDialog.Closed += (sender, args) =>
+            {
+                SetIsBusy(true);
+                if (addCarManager.WasChanged)
+                {
+                    _client.Cars.Add(addCarManager.ClientCar);
+                    var car = addCarManager.ClientCar;
+                    car.ClientId = _client.Id;
+                    var generalService = Get<IGeneralService>();
+                    generalService.AddClientCar(car);
+                    AddCar();
+                }
+                SetIsBusy(false);
+            };
+            addCarDialog.Show();
+        }
+
         private async void AddCar()
         {
             SetIsBusy(true);
