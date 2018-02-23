@@ -129,7 +129,7 @@ namespace Autoservice.Dialogs.Managers
         private async void AddNewTemplate()
         {
             WorkTemplate workTemplate = new WorkTemplate();
-            workTemplate.Name = await DialogHelper.ShowInputDialog("Имя шаблона","Укажите имя создаваего шаблона работ");
+            workTemplate.Name = await DialogHelper.ShowInputDialog("Имя шаблона","Укажите имя создаваемого шаблона работ");
             DialogHelper.ActivateDialog(typeof(AddCarSelectorDialog));
             if(workTemplate.Name==null)
                 return;
