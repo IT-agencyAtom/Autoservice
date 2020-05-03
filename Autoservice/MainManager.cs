@@ -29,7 +29,7 @@ namespace Autoservice
     /// Model for Main screen.</summary>
     public class MainManager : ManagerBase
     {
-        public string ProgramVersion => $"Version: {Assembly.GetExecutingAssembly().GetName().Version}";
+        public string ProgramVersion => $"Версия: {Assembly.GetExecutingAssembly().GetName().Version}, Демо-версия";
         public string UserName => $"{UserService.Instance.CurrentUser?.Login}";
         
         public string Title => Process.GetCurrentProcess().ProcessName;
@@ -98,8 +98,13 @@ namespace Autoservice
 
             checkUpdates();
 
-            //Database.SetInitializer(new MigrateDatabaseToLatestVersion<AutoServiceDBContext, Configuration>());    
-                     
+            /*try
+            {
+                Database.SetInitializer(new MigrateDatabaseToLatestVersion<AutoServiceDBContext, Configuration>());    
+            }
+            catch (Exception ex)
+            {
+            }*/
 
             _settingsManager = new SettingsManager
             {
@@ -142,8 +147,8 @@ namespace Autoservice
             _carModelsManager = new CarModelsManager
             {
                 SetIsBusy = isBusy => IsBusy = isBusy
-            };
-            ShowChangelog = new RelayCommand(() => Process.Start("Changelog.docx"));
+            }; 
+            //ShowChangelog = new RelayCommand(() => Process.Start("Changelog.docx"));
             ShowLogs = new RelayCommand(() => Process.Start(Path.Combine(Environment.GetFolderPath(
                 Environment.SpecialFolder.ApplicationData), @"ConstaSoft\" + Assembly.GetExecutingAssembly().GetName().Name + @"\Logs")));
 
